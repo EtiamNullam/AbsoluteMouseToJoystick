@@ -73,43 +73,37 @@ namespace AbsoluteMouseToJoystick
             UInt32 DllVer = 0, DrvVer = 0;
             if (joy.DriverMatch(ref DllVer, ref DrvVer) && joy.vJoyEnabled())
             {
-                tb.Text += "True\n";
-
                 // Get the state of the requested device
-                uint id = 1; // or 1?
-                VjdStat status = joy.GetVJDStatus(id);
+                VjdStat status = joy.GetVJDStatus(deviceID);
 
                 switch (status)
                 {
                     case VjdStat.VJD_STAT_OWN:
-                        tb.Text += $"vJoy Device {id} is already owned by this feeder\n";
+                        _logger.Log($"vJoy Device {deviceID} is already owned by this feeder");
                         break;
                     case VjdStat.VJD_STAT_FREE:
-                        tb.Text += $"vJoy Device {id} is free\n";
-
-                        joy.AcquireVJD(id);
-
+                        _logger.Log($"vJoy Device {deviceID} is free");
                         break;
                     case VjdStat.VJD_STAT_BUSY:
-                        tb.Text += $"vJoy Device {id} is already owned by another feeder\nCannot continue\n";
+                        _logger.Log($"vJoy Device {deviceID} is already owned by another feeder\nCannot continue");
                         return false;
                     case VjdStat.VJD_STAT_MISS:
-                        tb.Text += $"vJoy Device {id} is not installed or disabled\nCannot continue\n";
+                        _logger.Log($"vJoy Device {deviceID} is not installed or disabled\nCannot continue");
                         return false;
                     default:
-                        tb.Text += $"vJoy Device {id} general error\nCannot continue\n";
+                        _logger.Log($"vJoy Device {deviceID} general error\nCannot continue");
                         return false;
                 }
 
                 ///// vJoy Device properties
-                int nBtn = joy.GetVJDButtonNumber(id);
-                int nDPov = joy.GetVJDDiscPovNumber(id);
-                int nCPov = joy.GetVJDContPovNumber(id);
-                bool X_Exist = joy.GetVJDAxisExist(id, HID_USAGES.HID_USAGE_X);
-                bool Y_Exist = joy.GetVJDAxisExist(id, HID_USAGES.HID_USAGE_Y);
-                bool Z_Exist = joy.GetVJDAxisExist(id, HID_USAGES.HID_USAGE_Z);
-                bool RX_Exist = joy.GetVJDAxisExist(id, HID_USAGES.HID_USAGE_RX);
-                tb.Text += $"Device[{id}]: Buttons={nBtn}; DiscPOVs:{nDPov}; ContPOVs:{nCPov}\n";
+                int nBtn = joy.GetVJDButtonNumber(deviceID);
+                int nDPov = joy.GetVJDDiscPovNumber(deviceID);
+                int nCPov = joy.GetVJDContPovNumber(deviceID);
+                bool X_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_X);
+                bool Y_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_Y);
+                bool Z_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_Z);
+                bool RX_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_RX);
+                _logger.Log($"Device[{deviceID}]: Buttons={nBtn}; DiscPOVs:{nDPov}; ContPOVs:{nCPov}");
                 return true;
             }
             else return false;
@@ -123,22 +117,35 @@ namespace AbsoluteMouseToJoystick
 
         private void Start()
         {
-            Running = true;
-
-            Timer timer = new Timer
+            if (_joy.AcquireVJD(DeviceID))
             {
-                Interval = 5,
-                AutoReset = true
-            };
+                Running = true;
 
-            timer.Start();
+                _logger.Log("Device acquired.");
 
-            _feeder = new Feeder(_joy, DeviceID, _logger, timer, _zoneDistributionX, _zoneDistributionY);
+                Timer timer = new Timer
+                {
+                    Interval = 5,
+                    AutoReset = true
+                };
+
+                timer.Start();
+
+                _feeder = new Feeder(_joy, DeviceID, _logger, timer, _zoneDistributionX, _zoneDistributionY);
+            }
+            else
+            {
+                _logger.Log("Device acquire FAILED.");
+            }
         }
 
         private void Stop()
         {
             Running = false;
+
+            _joy.RelinquishVJD(DeviceID);
+
+            _logger.Log("Device relinquished.");
 
             if (_feeder != null)
             {
