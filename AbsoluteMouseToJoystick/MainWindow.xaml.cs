@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbsoluteMouseToJoystick.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,8 +20,7 @@ namespace AbsoluteMouseToJoystick
 {
     /* TODO:
      * - Show current values in app (button)
-     * - Toggle Virtual Joystick in app (button)
-     * - Add Deadzones
+     * - Right now its fixed for 1080p make it customizable
      */
 
     /// <summary>
@@ -32,27 +32,43 @@ namespace AbsoluteMouseToJoystick
         {
             InitializeComponent();
 
-            var joy = new vJoy();
-            uint deviceID = 1;
+            _joy = new vJoy();
+            _logger = new TextBlockLogger(tb);
 
-            if (!ValidateJoystick(joy, deviceID)) return;
+            _zoneDistributionX = new ZoneDistribution
+            {
+                NegativeDeadZone = 0.05f,
+                NegativeZone = 0.45f,
+                NeutralDeadZone = 0f,
+                PositiveZone = 0.45f,
+                PositiveDeadZone = 0.05f
+            };
 
-            Timer timer = new Timer();
+            _zoneDistributionY = new ZoneDistribution
+            {
+                NegativeDeadZone = 0.1f,
+                NegativeZone = 0.45f,
+                NeutralDeadZone = 0.05f,
+                PositiveZone = 0.3f,
+                PositiveDeadZone = 0.1f
+            };
 
-            timer.Interval = 50;
-            timer.AutoReset = true;
-            timer.Start();
-
-            var logger = new TextBlockLogger(tb);
-
-            Feeder feeder = new Feeder(joy, deviceID, logger);
-            feeder.AddTimer(timer);
+            ShowJoystickInfo(_joy, DeviceID);
         }
+
+        private const uint DeviceID = 1;
+
+        private Feeder _feeder;
+        private vJoy _joy;
+        private ISimpleLogger _logger;
+
+        private ZoneDistribution _zoneDistributionX;
+        private ZoneDistribution _zoneDistributionY;
 
         // TODO:
         // - Acquire somewhere else
         // - Relinquish on exit (or some button press)
-        private bool ValidateJoystick(vJoy joy, uint deviceID)
+        private bool ShowJoystickInfo(vJoy joy, uint deviceID)
         {
             UInt32 DllVer = 0, DrvVer = 0;
             if (joy.DriverMatch(ref DllVer, ref DrvVer) && joy.vJoyEnabled())
@@ -98,5 +114,41 @@ namespace AbsoluteMouseToJoystick
             }
             else return false;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Running) Start();
+            else Stop();
+        }
+
+        private void Start()
+        {
+            Running = true;
+
+            Timer timer = new Timer
+            {
+                Interval = 5,
+                AutoReset = true
+            };
+
+            timer.Start();
+
+            _feeder = new Feeder(_joy, DeviceID, _logger, timer, _zoneDistributionX, _zoneDistributionY);
+        }
+
+        private void Stop()
+        {
+            Running = false;
+
+            if (_feeder != null)
+            {
+                _feeder.Dispose();
+                _feeder = null;
+            }
+
+            ShowJoystickInfo(_joy, DeviceID);
+        }
+
+        public bool Running = false;
     }
 }

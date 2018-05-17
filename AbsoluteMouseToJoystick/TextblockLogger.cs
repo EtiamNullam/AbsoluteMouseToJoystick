@@ -18,7 +18,10 @@ namespace AbsoluteMouseToJoystick
 
         public void Log(string message)
         {
-            this._textBlock.Text += $"{message}\n";
+            App.Current?.Dispatcher.Invoke(() =>
+            {
+                this._textBlock.Text = $"{message}\n{this._textBlock.Text}";
+            });
         }
     }
 }

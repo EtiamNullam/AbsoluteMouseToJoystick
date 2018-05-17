@@ -78,9 +78,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
     <Compile Include="ISimpleLogger.cs" />
     <Compile Include="TextBlockLogger.cs" />
+    <Compile Include="Data\ZoneDistribution.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -32,6 +32,7 @@ namespace AbsoluteMouseToJoystick
         [DllImport("user32.dll")]
         public static extern bool GetCursorPos(out POINT lpPoint);
 
+        // TODO: Use this or delete
         public static Point GetCursorPosition()
         {
             POINT lpPoint;
