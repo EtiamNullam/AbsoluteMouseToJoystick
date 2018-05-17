@@ -131,7 +131,7 @@ namespace AbsoluteMouseToJoystick
 
                 timer.Start();
 
-                _feeder = new Feeder(_joy, DeviceID, _logger, timer, _zoneDistributionX, _zoneDistributionY);
+                _feeder = new Feeder(_joy, DeviceID, _logger, timer, _zoneDistributionX, _zoneDistributionY, Convert.ToInt32(resXtb.Text), Convert.ToInt32(resYtb.Text));
             }
             else
             {
@@ -156,6 +156,19 @@ namespace AbsoluteMouseToJoystick
             ShowJoystickInfo(_joy, DeviceID);
         }
 
-        public bool Running = false;
+        public bool Running
+        {
+            get
+            {
+                return _running;
+            }
+            set
+            {
+                _running = value;
+                this.runningCheckBox.IsChecked = _running;
+            }
+        }
+
+        private bool _running;
     }
 }

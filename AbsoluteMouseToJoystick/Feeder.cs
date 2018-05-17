@@ -11,13 +11,15 @@ namespace AbsoluteMouseToJoystick
 {
     public class Feeder : IDisposable
     {
-        public Feeder(vJoy joy, uint deviceID, ISimpleLogger logger, Timer timer, ZoneDistribution zoneDistributionX, ZoneDistribution zoneDistributionY)
+        public Feeder(vJoy joy, uint deviceID, ISimpleLogger logger, Timer timer, ZoneDistribution zoneDistributionX, ZoneDistribution zoneDistributionY, int resolutionX, int resolutionY)
         {
             _joy = joy;
             _deviceID = deviceID;
             _logger = logger;
             _zoneDistributionX = zoneDistributionX;
             _zoneDistributionY = zoneDistributionY;
+            _resolutionX = resolutionX;
+            _resolutionY = resolutionY;
 
             _joy.ResetVJD(deviceID);
 
@@ -32,13 +34,16 @@ namespace AbsoluteMouseToJoystick
         private ZoneDistribution _zoneDistributionY;
         private Timer _timer;
 
+        private int _resolutionX;
+        private int _resolutionY;
+
         // TODO: use efficient way instead? (from readme.pdf)
         private void Execute(object sender, EventArgs e)
         {
             Interop.GetCursorPos(out Interop.POINT point);
 
-            var valueX = (float)point.X / (1920 - 1);
-            var valueY = (float)point.Y / (1080 - 1);
+            var valueX = (float)point.X / (_resolutionX - 1);
+            var valueY = (float)point.Y / (_resolutionY - 1);
 
             var zoneX = GetZone(valueX, _zoneDistributionX);
             var zoneY = GetZone(valueY, _zoneDistributionY);
