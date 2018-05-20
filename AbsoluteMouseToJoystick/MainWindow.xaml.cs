@@ -33,7 +33,7 @@ namespace AbsoluteMouseToJoystick
             InitializeComponent();
 
             _joy = new vJoy();
-            _logger = new TextBlockLogger(tb);
+            _logger = new TextBoxLogger(tb);
 
             _zoneDistributionX = new ZoneDistribution
             {

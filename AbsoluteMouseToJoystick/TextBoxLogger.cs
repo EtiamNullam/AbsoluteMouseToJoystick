@@ -7,20 +7,20 @@ using System.Windows.Controls;
 
 namespace AbsoluteMouseToJoystick
 {
-    public class TextBlockLogger : ISimpleLogger
+    public class TextBoxLogger : ISimpleLogger
     {
-        public TextBlockLogger(TextBlock textBlock)
+        public TextBoxLogger(TextBox textBox)
         {
-            this._textBlock = textBlock;
+            this._textBox = textBox;
         }
 
-        private TextBlock _textBlock;
+        private TextBox _textBox;
 
         public void Log(string message)
         {
             App.Current?.Dispatcher.Invoke(() =>
             {
-                this._textBlock.Text = $"{message}\n{this._textBlock.Text}";
+                this._textBox.Text = $"{message}\n{this._textBox.Text}";
             });
         }
     }
