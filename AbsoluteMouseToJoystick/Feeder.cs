@@ -42,11 +42,33 @@ namespace AbsoluteMouseToJoystick
         {
             Interop.GetCursorPos(out Interop.POINT point);
 
-            var valueX = (float)point.X / (_resolutionX - 1);
-            var valueY = (float)point.Y / (_resolutionY - 1);
+            var valueX = (double)point.X / (_resolutionX - 1);
+            var valueY = (double)point.Y / (_resolutionY - 1);
 
             var zoneX = GetZone(valueX, _zoneDistributionX);
             var zoneY = GetZone(valueY, _zoneDistributionY);
+
+            switch (zoneX)
+            {
+                case Zone.NegativeDead:
+                    valueX = 0;
+                    break;
+                case Zone.Negative:
+                    valueX = (valueX - this._zoneDistributionY.NegativeDeadZoneEnd) / this._zoneDistributionY.NegativeZone / 2;
+                    break;
+                case Zone.NeutralDead:
+                    valueX = 0.5f;
+                    break;
+                case Zone.Positive:
+                    valueX = (valueX - this._zoneDistributionY.NeutralDeadZoneEnd) / this._zoneDistributionY.PositiveZone / 2 + 0.5f;
+                    break;
+                case Zone.PositiveDead:
+                    valueX = 1;
+                    break;
+                default:
+                    _logger.Log("Feeder: Invalid Zone X");
+                    return;
+            }
 
             switch (zoneY)
             {
@@ -66,7 +88,7 @@ namespace AbsoluteMouseToJoystick
                     valueY = 1;
                     break;
                 default:
-                    _logger.Log("Feeder: Invalid Zone");
+                    _logger.Log("Feeder: Invalid Zone Y");
                     return;
             }
 
@@ -79,7 +101,7 @@ namespace AbsoluteMouseToJoystick
             //_logger.Log($"Feeder: Zones: {zoneX}/{zoneY}, Pixel: {point.X}/{point.Y}, Final: {finalValueX}/{finalValueY}");
         }
 
-        private Zone GetZone(float value, ZoneDistribution zoneDistribution)
+        private Zone GetZone(double value, ZoneDistribution zoneDistribution)
         {
             if (value <= zoneDistribution.NegativeDeadZoneEnd)
                 return Zone.NegativeDead;

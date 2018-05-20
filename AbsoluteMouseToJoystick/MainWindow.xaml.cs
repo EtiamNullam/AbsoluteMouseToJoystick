@@ -20,7 +20,12 @@ namespace AbsoluteMouseToJoystick
 {
     /* TODO:
      * - Show current values in app (button)
-     * - Right now its fixed for 1080p make it customizable
+     * - Add some kind of MVVM
+     *  - Split into regions (region for axisX region for axisX preview etc)
+     *  - Make them reusable (region for axisX and Y should only differ in a paramter passed
+     * - Save options to files (json)
+     * - Add textbox for device ID
+     * - Allow for use of different axes
      */
 
     /// <summary>
@@ -32,38 +37,20 @@ namespace AbsoluteMouseToJoystick
         {
             InitializeComponent();
 
-            _joy = new vJoy();
             _logger = new TextBoxLogger(tb);
 
-            _zoneDistributionX = new ZoneDistribution
-            {
-                NegativeDeadZone = 0.05f,
-                NegativeZone = 0.45f,
-                NeutralDeadZone = 0f,
-                PositiveZone = 0.45f,
-                PositiveDeadZone = 0.05f
-            };
-
-            _zoneDistributionY = new ZoneDistribution
-            {
-                NegativeDeadZone = 0.1f,
-                NegativeZone = 0.45f,
-                NeutralDeadZone = 0.05f,
-                PositiveZone = 0.3f,
-                PositiveDeadZone = 0.1f
-            };
-
             ShowJoystickInfo(_joy, DeviceID);
+            UpdateZoneDistributions();
         }
 
         private const uint DeviceID = 1;
 
         private Feeder _feeder;
-        private vJoy _joy;
+        private vJoy _joy = new vJoy();
         private ISimpleLogger _logger;
 
-        private ZoneDistribution _zoneDistributionX;
-        private ZoneDistribution _zoneDistributionY;
+        private ZoneDistribution _zoneDistributionX = new ZoneDistribution();
+        private ZoneDistribution _zoneDistributionY = new ZoneDistribution();
 
         // TODO:
         // - Acquire somewhere else
@@ -170,5 +157,38 @@ namespace AbsoluteMouseToJoystick
         }
 
         private bool _running;
+
+        /* TODO:
+         * - Introduce star-like behaviour for zones
+         */
+        private void OnZoneTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _logger?.Log("Zone text changed");
+
+            UpdateZoneDistributions();
+        }
+
+        private void UpdateZoneDistributions()
+        {
+            try
+            {
+                negativeDeadColumnX.Width = new GridLength(_zoneDistributionX.NegativeDeadZone = Convert.ToDouble(this.negativeDeadXtb.Text), GridUnitType.Star);
+                negativeColumnX.Width = new GridLength(_zoneDistributionX.NegativeZone = Convert.ToDouble(this.negativeXtb.Text), GridUnitType.Star);
+                neutralColumnX.Width = new GridLength(_zoneDistributionX.NeutralDeadZone = Convert.ToDouble(this.neutralXtb.Text), GridUnitType.Star);
+                positiveColumnX.Width = new GridLength(_zoneDistributionX.PositiveZone = Convert.ToDouble(this.positiveXtb.Text), GridUnitType.Star);
+                positiveDeadColumnX.Width = new GridLength(_zoneDistributionX.PositiveDeadZone = Convert.ToDouble(this.positiveDeadXtb.Text), GridUnitType.Star);
+
+                negativeDeadRowY.Height = new GridLength(_zoneDistributionY.NegativeDeadZone = Convert.ToDouble(this.negativeDeadYtb.Text), GridUnitType.Star);
+                negativeRowY.Height = new GridLength(_zoneDistributionY.NegativeZone = Convert.ToDouble(this.negativeYtb.Text), GridUnitType.Star);
+                neutralRowY.Height = new GridLength(_zoneDistributionY.NeutralDeadZone = Convert.ToDouble(this.neutralYtb.Text), GridUnitType.Star);
+                positiveRowY.Height = new GridLength(_zoneDistributionY.PositiveZone = Convert.ToDouble(this.positiveYtb.Text), GridUnitType.Star);
+                positiveDeadRowY.Height = new GridLength(_zoneDistributionY.PositiveDeadZone = Convert.ToDouble(this.positiveDeadYtb.Text), GridUnitType.Star);
+            }
+            catch (Exception ex)
+            {
+                _logger?.Log(ex.Message);
+                _logger?.Log("Invalid zone format");
+            }
+        }
     }
 }
