@@ -28,7 +28,6 @@ namespace AbsoluteMouseToJoystick
      * - Add textbox for device ID
      * - Allow for use of different axes
      * - Add tooltips over preview, buttons and fields
-     * - Allow for custom timer interval
      * - Allow creation of profiles to save preset for different conditions or games
      */
 
@@ -50,6 +49,7 @@ namespace AbsoluteMouseToJoystick
         private const uint DeviceID = 1;
 
         private Feeder _feeder;
+        private Timer _timer = new Timer { AutoReset = true };
         private vJoy _joy = new vJoy();
         private ISimpleLogger _logger;
 
@@ -108,25 +108,27 @@ namespace AbsoluteMouseToJoystick
 
         private void Start()
         {
-            if (_joy.AcquireVJD(DeviceID))
+            try
             {
-                Running = true;
+                _timer.Interval = Convert.ToDouble(this.TimerIntervalTextBox.Text);
 
-                _logger.Log("Device acquired.");
-
-                Timer timer = new Timer
+                if (_joy.AcquireVJD(DeviceID))
                 {
-                    Interval = 5,
-                    AutoReset = true
-                };
+                    _logger.Log("Device acquired.");
+                    _timer.Start();
 
-                timer.Start();
+                    _feeder = new Feeder(_joy, DeviceID, _logger, _timer, _zoneDistributionX, _zoneDistributionY, Convert.ToInt32(resXtb.Text), Convert.ToInt32(resYtb.Text));
+                }
+                else
+                {
+                    _logger.Log("Device acquire FAILED.");
+                }
 
-                _feeder = new Feeder(_joy, DeviceID, _logger, timer, _zoneDistributionX, _zoneDistributionY, Convert.ToInt32(resXtb.Text), Convert.ToInt32(resYtb.Text));
+                Running = true;
             }
-            else
+            catch (Exception e)
             {
-                _logger.Log("Device acquire FAILED.");
+                _logger?.Log(e.Message);
             }
         }
 
@@ -134,15 +136,17 @@ namespace AbsoluteMouseToJoystick
         {
             Running = false;
 
-            _joy.RelinquishVJD(DeviceID);
-
-            _logger.Log("Device relinquished.");
+            _timer.Stop();
 
             if (_feeder != null)
             {
                 _feeder.Dispose();
                 _feeder = null;
             }
+            
+            _joy.RelinquishVJD(DeviceID);
+
+            _logger.Log("Device relinquished.");
 
             ShowJoystickInfo(_joy, DeviceID);
         }
@@ -157,7 +161,7 @@ namespace AbsoluteMouseToJoystick
             {
                 _running = value;
                 this.runningCheckBox.IsChecked = _running;
-                this.resXtb.IsEnabled = this.resYtb.IsEnabled = !_running;
+                this.TimerIntervalTextBox.IsEnabled = this.resXtb.IsEnabled = this.resYtb.IsEnabled = !_running;
             }
         }
 

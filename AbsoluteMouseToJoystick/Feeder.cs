@@ -127,7 +127,6 @@ namespace AbsoluteMouseToJoystick
             if (_timer != null)
             {
                 _timer.Elapsed -= Execute;
-                _timer.Dispose();
                 _timer = null;
             }
         }
