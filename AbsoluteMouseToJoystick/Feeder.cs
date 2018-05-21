@@ -29,77 +29,58 @@ namespace AbsoluteMouseToJoystick
 
         private ISimpleLogger _logger;
         private vJoy _joy;
-        private uint _deviceID;
-        private ZoneDistribution _zoneDistributionX;
-        private ZoneDistribution _zoneDistributionY;
+        private readonly uint _deviceID;
+        private readonly ZoneDistribution _zoneDistributionX;
+        private readonly ZoneDistribution _zoneDistributionY;
         private Timer _timer;
 
-        private int _resolutionX;
-        private int _resolutionY;
+        private readonly int _resolutionX;
+        private readonly int _resolutionY;
 
         // TODO: use efficient way instead? (from readme.pdf)
         private void Execute(object sender, EventArgs e)
         {
             Interop.GetCursorPos(out Interop.POINT point);
 
-            var valueX = (double)point.X / (_resolutionX - 1);
-            var valueY = (double)point.Y / (_resolutionY - 1);
+            var xAxisValue = CalculateAxisValue(point.X, _resolutionX, _zoneDistributionX);
+            var yAxisValue = CalculateAxisValue(point.Y, _resolutionY, _zoneDistributionY);
 
-            valueX *= _zoneDistributionX.Total;
-            valueY *= _zoneDistributionY.Total;
+            SetAxes(xAxisValue, yAxisValue);
+        }
 
-            var zoneX = GetZone(valueX, _zoneDistributionX);
-            var zoneY = GetZone(valueY, _zoneDistributionY);
-
-            switch (zoneX)
+        private int CalculateAxisValue(int pixel, int pixelsCount, ZoneDistribution zoneDistribution)
+        {
+            var value = (double)pixel / (pixelsCount - 1);
+            value *= zoneDistribution.Total;
+            var zone = GetZone(value, zoneDistribution);
+            switch (zone)
             {
                 case Zone.NegativeDead:
-                    valueX = 0;
+                    value = 0;
                     break;
                 case Zone.Negative:
-                    valueX = (valueX - this._zoneDistributionX.NegativeDeadZoneEnd) / this._zoneDistributionX.NegativeZone / 2;
+                    value = (value - zoneDistribution.NegativeDeadZoneEnd) / zoneDistribution.NegativeZone / 2;
                     break;
                 case Zone.NeutralDead:
-                    valueX = 0.5f;
+                    value = 0.5f;
                     break;
                 case Zone.Positive:
-                    valueX = (valueX - this._zoneDistributionX.NeutralDeadZoneEnd) / this._zoneDistributionX.PositiveZone / 2 + 0.5f;
+                    value = (value - zoneDistribution.NeutralDeadZoneEnd) / zoneDistribution.PositiveZone / 2 + 0.5f;
                     break;
                 case Zone.PositiveDead:
-                    valueX = 1;
+                    value = 1;
                     break;
                 default:
                     _logger.Log("Feeder: Invalid Zone X");
                     break;
             }
+            return Convert.ToInt32(value * short.MaxValue);
+        }
 
-            switch (zoneY)
-            {
-                case Zone.NegativeDead:
-                    valueY = 0;
-                    break;
-                case Zone.Negative:
-                    valueY = (valueY - this._zoneDistributionY.NegativeDeadZoneEnd) / this._zoneDistributionY.NegativeZone / 2;
-                    break;
-                case Zone.NeutralDead:
-                    valueY = 0.5f;
-                    break;
-                case Zone.Positive:
-                    valueY = (valueY - this._zoneDistributionY.NeutralDeadZoneEnd) / this._zoneDistributionY.PositiveZone / 2 + 0.5f;
-                    break;
-                case Zone.PositiveDead:
-                    valueY = 1;
-                    break;
-                default:
-                    _logger.Log("Feeder: Invalid Zone Y");
-                    break;
-            }
-
-            var finalValueX = Convert.ToInt32(valueX * short.MaxValue);
-            var finalValueY = Convert.ToInt32(valueY * short.MaxValue);
-
-            this._joy.SetAxis(finalValueX, _deviceID, HID_USAGES.HID_USAGE_X);
-            this._joy.SetAxis(finalValueY, _deviceID, HID_USAGES.HID_USAGE_Y);
+        private void SetAxes(int x, int y)
+        {
+            this._joy.SetAxis(x, _deviceID, HID_USAGES.HID_USAGE_X);
+            this._joy.SetAxis(y, _deviceID, HID_USAGES.HID_USAGE_Y);
         }
 
         private Zone GetZone(double value, ZoneDistribution zoneDistribution)
@@ -129,6 +110,8 @@ namespace AbsoluteMouseToJoystick
                 _timer.Elapsed -= Execute;
                 _timer = null;
             }
+
+            SetAxes(short.MaxValue / 2, short.MaxValue / 2);
         }
     }
 }
