@@ -26,6 +26,7 @@ namespace AbsoluteMouseToJoystick
      * - Save options to files (json)
      * - Add textbox for device ID
      * - Allow for use of different axes
+     * - Add tooltips over preview, buttons and fields
      */
 
     /// <summary>

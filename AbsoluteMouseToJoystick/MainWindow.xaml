@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AbsoluteMouseToJoystick"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="560" Height="450" Width="800">
+        Title="MainWindow" MinHeight="260" MinWidth="320" Height="600" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
