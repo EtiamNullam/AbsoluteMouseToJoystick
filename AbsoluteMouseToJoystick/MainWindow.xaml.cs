@@ -27,6 +27,7 @@ namespace AbsoluteMouseToJoystick
      * - Add textbox for device ID
      * - Allow for use of different axes
      * - Add tooltips over preview, buttons and fields
+     * - Allow for custom timer interval
      */
 
     /// <summary>
@@ -159,9 +160,6 @@ namespace AbsoluteMouseToJoystick
 
         private bool _running;
 
-        /* TODO:
-         * - Introduce star-like behaviour for zones
-         */
         private void OnZoneTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _logger?.Log("Zone text changed");

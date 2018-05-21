@@ -20,5 +20,7 @@ namespace AbsoluteMouseToJoystick.Data
         public double NeutralDeadZoneEnd => NegativeZoneEnd + NeutralDeadZone;
         public double PositiveZoneEnd => NeutralDeadZoneEnd + PositiveZone;
         public double PositiveDeadZoneEnd => PositiveZoneEnd + PositiveDeadZone;
+
+        public double Total => NegativeDeadZone + NegativeZone + NeutralDeadZone + PositiveZone + PositiveDeadZone;
     }
 }
