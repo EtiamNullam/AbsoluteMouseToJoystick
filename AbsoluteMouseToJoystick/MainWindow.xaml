@@ -23,8 +23,18 @@
 
         <StackPanel Grid.Column="1" Grid.RowSpan="2" >
             <TextBlock Margin="5" Text="Resolution" />
-            <TextBox Text="1920" Margin="5" Name="resXtb"/>
-            <TextBox Text="1080" Margin="5" Name="resYtb"/>
+
+            <Grid Height="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="7"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox Text="1920" Margin="5" Name="resXtb"/>
+                <TextBlock Grid.Column="1" Text="x" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="2" Text="1080" Margin="5" Name="resYtb"/>
+            </Grid>
             
             <TextBlock Margin="5" Text="Axis X zones" />
             <Grid>
