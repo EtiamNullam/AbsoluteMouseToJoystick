@@ -46,11 +46,11 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 
-                <TextBox Name="negativeDeadXtb" Text="0,05" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="negativeXtb" Grid.Column="1" Text="0,45" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="negativeDeadXtb" Text="1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="negativeXtb" Grid.Column="1" Text="100" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
                 <TextBox Name="neutralXtb" Grid.Column="2" Text="0" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="positiveXtb" Grid.Column="3" Text="0,45" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="positiveDeadXtb" Grid.Column="4" Text="0,05" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="positiveXtb" Grid.Column="3" Text="100" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="positiveDeadXtb" Grid.Column="4" Text="1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
             </Grid>
             <TextBlock Margin="5" Text="Axis Y zones" />
             <Grid>
@@ -62,11 +62,11 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 
-                <TextBox Name="positiveDeadYtb" Text="0,1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="positiveYtb" Grid.Column="1" Text="0,45" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="neutralYtb" Grid.Column="2" Text="0,05" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="negativeYtb" Grid.Column="3" Text="0,3" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="negativeDeadYtb" Grid.Column="4" Text="0,1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="positiveDeadYtb" Text="1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="positiveYtb" Grid.Column="1" Text="12" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="neutralYtb" Grid.Column="2" Text="2" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="negativeYtb" Grid.Column="3" Text="8" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
+                <TextBox Name="negativeDeadYtb" Grid.Column="4" Text="3" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
             </Grid>
             <Button Grid.Column="1" Height="30" Margin="5" Content="Start/Stop" Click="Button_Click"/>
 
@@ -86,7 +86,7 @@
                 <RowDefinition Name="positiveDeadRowY"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Axis XY preview"/>
+            <TextBlock Text="Axis Y preview"/>
 
             <Border Grid.Row="1" Background="Red">
                 <TextBlock Text="Negative" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
