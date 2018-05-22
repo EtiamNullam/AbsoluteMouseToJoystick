@@ -27,38 +27,11 @@
         </Grid>
         
         <TextBlock Margin="5" Text="Axis X zones" />
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
-            <TextBox Text="1" Margin="3"/>
-            <TextBox Grid.Column="1" Text="100" Margin="3"  />
-            <TextBox Grid.Column="2" Text="0" Margin="3"  />
-            <TextBox Grid.Column="3" Text="100" Margin="3"  />
-            <TextBox Grid.Column="4" Text="1" Margin="3"  />
-        </Grid>
-        <TextBlock Margin="5" Text="Axis Y zones" />
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
-            <TextBox Text="1" Margin="3"  />
-            <TextBox Grid.Column="1" Text="12" Margin="3"  />
-            <TextBox Grid.Column="2" Text="2" Margin="3"  />
-            <TextBox Grid.Column="3" Text="8" Margin="3"  />
-            <TextBox Grid.Column="4" Text="3" Margin="3"  />
-        </Grid>
+        <local:AxisZoneSettingsView DataContext="{Binding ZoneDistributionX}"/>
         
+        <TextBlock Margin="5" Text="Axis Y zones" />
+        <local:AxisZoneSettingsView DataContext="{Binding ZoneDistributionY}"/>
+
         <TextBlock Text="Timer interval (ms)"/>
         <TextBox Text="{Binding TimerInterval}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}"/>
 

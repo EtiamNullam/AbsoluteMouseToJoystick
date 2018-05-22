@@ -71,7 +71,7 @@ namespace AbsoluteMouseToJoystick
                     value = 1;
                     break;
                 default:
-                    _logger.Log("Feeder: Invalid Zone X");
+                    _logger.Log("Feeder: Invalid Zone");
                     break;
             }
             return Convert.ToInt32(value * short.MaxValue);

@@ -16,7 +16,7 @@ namespace AbsoluteMouseToJoystick.ViewModel
     {
         public ControlsViewModel(ISimpleLogger logger)
         {
-            _logger = logger;
+            _logger = _zoneDistributionX.Logger = _zoneDistributionY.Logger = logger;
 
             StartStopCommand = new RelayCommand(this.StartStop);
         }
