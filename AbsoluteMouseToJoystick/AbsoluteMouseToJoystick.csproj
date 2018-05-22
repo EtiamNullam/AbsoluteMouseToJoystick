@@ -121,6 +121,7 @@
     <Compile Include="ISimpleLogger.cs" />
     <Compile Include="MessageBasedLogger.cs" />
     <Compile Include="Data\ZoneDistribution.cs" />
+    <Compile Include="ValueConverters\DoubleToStarValueConverter.cs" />
     <Compile Include="ValueConverters\NegateValueConverter.cs" />
     <Compile Include="ViewModel\AxisViewModel.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />

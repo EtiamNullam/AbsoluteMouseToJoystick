@@ -4,9 +4,61 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AbsoluteMouseToJoystick.Views"
+             xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:DoubleToStarValueConverter x:Key="doubleToStar"/>
+    </UserControl.Resources>
+    <Grid Name="rootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="{Binding NegativeDeadZone, Converter={StaticResource doubleToStar}}" />
+            <RowDefinition Height="{Binding NegativeZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <RowDefinition Height="{Binding NeutralDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <RowDefinition Height="{Binding PositiveZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <RowDefinition Height="{Binding PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding NegativeDeadZone, Converter={StaticResource doubleToStar}}"/>
+            <ColumnDefinition Width="{Binding NegativeZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <ColumnDefinition Width="{Binding NeutralDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <ColumnDefinition Width="{Binding PositiveZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <ColumnDefinition Width="{Binding PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="5" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"/>
+        <Border Background="Red" Grid.Row="1">
+            <Viewbox>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Negative" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="Dead" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Viewbox>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1" Background="Orange">
+            <Viewbox>
+                <TextBlock Text="Negative" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Viewbox>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="2" Background="LightGray">
+            <Viewbox>
+                <TextBlock Text="Neutral" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Viewbox>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="3" Background="Teal">
+            <Viewbox>
+                <TextBlock Text="Positive" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Viewbox>
+        </Border>
+        <Border Grid.Row="5" Grid.Column="4" Background="Blue">
+            <Viewbox>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Positive" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="Dead" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Viewbox>
+        </Border>
     </Grid>
 </UserControl>
