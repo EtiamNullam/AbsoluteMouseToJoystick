@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AbsoluteMouseToJoystick"
+        xmlns:views="clr-namespace:AbsoluteMouseToJoystick.Views"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="260" MinWidth="320" Height="600" Width="800">
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+        Title="MainWindow" MinHeight="300" MinWidth="320" Height="600" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -17,68 +19,10 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <TextBox IsReadOnly="True" Grid.RowSpan="2" Name="tb" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
-        
 
-        <StackPanel Grid.Column="1" Grid.RowSpan="2" >
-            <TextBlock Margin="5" Text="Resolution" />
+        <views:LogView Grid.RowSpan="2"/>
 
-            <Grid Height="30">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="7"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                
-                <TextBox Text="1920" Margin="5" Name="resXtb"/>
-                <TextBlock Grid.Column="1" Text="x" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="2" Text="1080" Margin="5" Name="resYtb"/>
-            </Grid>
-            
-            <TextBlock Margin="5" Text="Axis X zones" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                
-                <TextBox Name="negativeDeadXtb" Text="1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="negativeXtb" Grid.Column="1" Text="100" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="neutralXtb" Grid.Column="2" Text="0" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="positiveXtb" Grid.Column="3" Text="100" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="positiveDeadXtb" Grid.Column="4" Text="1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-            </Grid>
-            <TextBlock Margin="5" Text="Axis Y zones" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                
-                <TextBox Name="positiveDeadYtb" Text="1" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="positiveYtb" Grid.Column="1" Text="12" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="neutralYtb" Grid.Column="2" Text="2" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="negativeYtb" Grid.Column="3" Text="8" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-                <TextBox Name="negativeDeadYtb" Grid.Column="4" Text="3" Margin="3" TextChanged="OnZoneTextBox_TextChanged"/>
-            </Grid>
-            
-            <TextBlock Text="Timer interval (ms)"/>
-            <TextBox Name="TimerIntervalTextBox" Text="5"/>
-
-            <Button Grid.Column="1" Height="30" Margin="5" Content="Start/Stop" Click="Button_Click"/>
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="5" Text="Is running" />
-                <CheckBox Name="runningCheckBox" IsEnabled="False" Margin="5" IsChecked="False"/>
-            </StackPanel>
-        </StackPanel>
+        <views:ControlsView Grid.Column="1" Grid.RowSpan="2"/>
 
         <Grid Grid.Column="3" Margin="10">
             <Grid.RowDefinitions>

@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="AbsoluteMouseToJoystick.Views.ControlsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AbsoluteMouseToJoystick.Views"
+             xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
+             mc:Ignorable="d"
+             DataContext="{Binding Source={StaticResource Locator}, Path=Controls}"
+             d:DesignHeight="500" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:NegateValueConverter x:Key="negate" />
+    </UserControl.Resources>
+    <StackPanel Grid.Column="1" Grid.RowSpan="2" >
+        <TextBlock Margin="5" Text="Resolution" />
+
+        <Grid Height="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="7"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Text="{Binding ResolutionX}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
+            <TextBlock Grid.Column="1" Text="x" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="2" Text="{Binding ResolutionY}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
+        </Grid>
+        
+        <TextBlock Margin="5" Text="Axis X zones" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Text="1" Margin="3"/>
+            <TextBox Grid.Column="1" Text="100" Margin="3"  />
+            <TextBox Grid.Column="2" Text="0" Margin="3"  />
+            <TextBox Grid.Column="3" Text="100" Margin="3"  />
+            <TextBox Grid.Column="4" Text="1" Margin="3"  />
+        </Grid>
+        <TextBlock Margin="5" Text="Axis Y zones" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Text="1" Margin="3"  />
+            <TextBox Grid.Column="1" Text="12" Margin="3"  />
+            <TextBox Grid.Column="2" Text="2" Margin="3"  />
+            <TextBox Grid.Column="3" Text="8" Margin="3"  />
+            <TextBox Grid.Column="4" Text="3" Margin="3"  />
+        </Grid>
+        
+        <TextBlock Text="Timer interval (ms)"/>
+        <TextBox Text="{Binding TimerInterval}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}"/>
+
+        <Button Grid.Column="1" Height="30" Margin="5" Content="Start/Stop" Command="{Binding StartStopCommand}"/>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5" Text="Is running" />
+            <CheckBox IsEnabled="False" Margin="5" IsChecked="{Binding IsRunning}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

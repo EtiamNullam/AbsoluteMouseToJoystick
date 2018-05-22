@@ -12,9 +12,10 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace AbsoluteMouseToJoystick.ViewModel
 {
@@ -43,16 +44,17 @@ namespace AbsoluteMouseToJoystick.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<LogViewModel>();
+            SimpleIoc.Default.Register<ControlsViewModel>();
+            SimpleIoc.Default.Register<ISimpleLogger, MessageBasedLogger>();
         }
 
-        public MainViewModel Main
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
-        
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        public LogViewModel Log => ServiceLocator.Current.GetInstance<LogViewModel>();
+
+        public ControlsViewModel Controls => ServiceLocator.Current.GetInstance<ControlsViewModel>();
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

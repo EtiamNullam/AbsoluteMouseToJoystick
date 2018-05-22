@@ -9,11 +9,11 @@ namespace AbsoluteMouseToJoystick.Data
     // TODO: save and load from file (json)
     public class ZoneDistribution
     {
-        public double NegativeDeadZone;
-        public double NegativeZone;
-        public double NeutralDeadZone;
-        public double PositiveZone;
-        public double PositiveDeadZone;
+        public double NegativeDeadZone { get; set; }
+        public double NegativeZone { get; set; }
+        public double NeutralDeadZone { get; set; }
+        public double PositiveZone { get; set; }
+        public double PositiveDeadZone { get; set; }
 
         public double NegativeDeadZoneEnd => NegativeDeadZone;
         public double NegativeZoneEnd => NegativeDeadZoneEnd + NegativeZone;

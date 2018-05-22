@@ -119,10 +119,20 @@
     <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
     <Compile Include="ISimpleLogger.cs" />
-    <Compile Include="TextBoxLogger.cs" />
+    <Compile Include="MessageBasedLogger.cs" />
     <Compile Include="Data\ZoneDistribution.cs" />
+    <Compile Include="ValueConverters\NegateValueConverter.cs" />
+    <Compile Include="ViewModel\AxisViewModel.cs" />
+    <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ControlsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\LogView.xaml.cs">
+      <DependentUpon>LogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ControlsView.xaml.cs">
+      <DependentUpon>ControlsView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -136,6 +146,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\LogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
