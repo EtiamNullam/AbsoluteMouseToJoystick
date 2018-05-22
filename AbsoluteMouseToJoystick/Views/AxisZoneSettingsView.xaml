@@ -15,10 +15,10 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <TextBox Text="{Binding NegativeDeadZone}" Margin="3"/>
-        <TextBox Text="{Binding NegativeZone}" Margin="3" Grid.Column="1"/>
-        <TextBox Text="{Binding NeutralDeadZone}" Margin="3" Grid.Column="2"/>
-        <TextBox Text="{Binding PositiveZone}" Margin="3" Grid.Column="3"/>
-        <TextBox Text="{Binding PositiveDeadZone}" Margin="3" Grid.Column="4"/>
+        <TextBox Text="{Binding NegativeDeadZone, Mode=TwoWay}" Margin="5"/>
+        <TextBox Text="{Binding NegativeZone}" Margin="5" Grid.Column="1"/>
+        <TextBox Text="{Binding NeutralDeadZone}" Margin="5" Grid.Column="2"/>
+        <TextBox Text="{Binding PositiveZone}" Margin="5" Grid.Column="3"/>
+        <TextBox Text="{Binding PositiveDeadZone}" Margin="5" Grid.Column="4"/>
     </Grid>
 </UserControl>

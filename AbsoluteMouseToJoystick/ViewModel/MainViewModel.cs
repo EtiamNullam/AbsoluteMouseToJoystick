@@ -1,3 +1,5 @@
+using System;
+using AbsoluteMouseToJoystick.Data;
 using GalaSoft.MvvmLight;
 
 namespace AbsoluteMouseToJoystick.ViewModel
@@ -33,8 +35,9 @@ namespace AbsoluteMouseToJoystick.ViewModel
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(Settings settings)
         {
+            Settings = settings;
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.
@@ -44,5 +47,7 @@ namespace AbsoluteMouseToJoystick.ViewModel
             ////    // Code runs "for real"
             ////}
         }
+
+        public Settings Settings { get; set; }
     }
 }

@@ -22,7 +22,7 @@
 
         <views:LogView Grid.RowSpan="2"/>
         <views:ControlsView Grid.Column="1" Grid.RowSpan="2"/>
-        <views:AxisPreviewView Grid.Column="2" Title="Axis Y preview" Orientation="Vertical" DataContext="{Binding}" Margin="5"/>
-        <views:AxisPreviewView Grid.Column="2" Grid.Row="1" Title="Axis X preview" Orientation="Horizontal" DataContext="{Binding}" Margin="5"/>
+        <views:AxisPreviewView Grid.Column="2" Title="Axis Y preview" Orientation="Vertical" DataContext="{Binding Settings.ZoneDistributionY}" Margin="5"/>
+        <views:AxisPreviewView Grid.Column="2" Grid.Row="1" Title="Axis X preview" Orientation="Horizontal" DataContext="{Binding Settings.ZoneDistributionX}" Margin="5"/>
     </Grid>
 </Window>

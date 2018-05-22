@@ -14,31 +14,16 @@ namespace AbsoluteMouseToJoystick.ViewModel
 {
     public class ControlsViewModel : ViewModelBase
     {
-        public ControlsViewModel(ISimpleLogger logger)
+        public ControlsViewModel(ISimpleLogger logger, Settings settings)
         {
-            _logger = _zoneDistributionX.Logger = _zoneDistributionY.Logger = logger;
+            _logger = logger;
+            Settings = settings;
 
             StartStopCommand = new RelayCommand(this.StartStop);
         }
 
         public ICommand StartStopCommand { get; private set; }
 
-        public int ResolutionX
-        {
-            get => _resolutionX;
-            set => Set(ref _resolutionX, value);
-        }
-        public int ResolutionY
-        {
-            get => _resolutionY;
-            set => Set(ref _resolutionY, value);
-        }
-
-        public double TimerInterval
-        {
-            get => _timerInterval;
-            set => Set(ref _timerInterval, value);
-        }
         public bool IsRunning
         {
             get
@@ -51,51 +36,12 @@ namespace AbsoluteMouseToJoystick.ViewModel
             }
         }
 
-        public uint DeviceID
-        {
-            get => _deviceID;
-            set => Set(ref _deviceID, value);
-        }
-        public ZoneDistribution ZoneDistributionX
-        {
-            get => _zoneDistributionX;
-            set
-            {
-                Set(ref _zoneDistributionX, value);
-            }
-        }
-        public ZoneDistribution ZoneDistributionY
-        {
-            get => _zoneDistributionY;
-            set => Set(ref _zoneDistributionY, value);
-        }
-
-        private int _resolutionX = 1920;
-        private int _resolutionY = 1080;
-        private bool _isRunning = false;
-        private double _timerInterval = 5;
-        private uint _deviceID = 1;
-        private ZoneDistribution _zoneDistributionX = new ZoneDistribution
-        {
-            NegativeDeadZone = 1,
-            NegativeZone = 100,
-            NeutralDeadZone = 0,
-            PositiveZone = 100,
-            PositiveDeadZone = 1,
-        };
-        private ZoneDistribution _zoneDistributionY = new ZoneDistribution
-        {
-            NegativeDeadZone = 1,
-            NegativeZone = 12,
-            NeutralDeadZone = 2,
-            PositiveZone = 8,
-            PositiveDeadZone = 3,
-        };
-
         private ISimpleLogger _logger;
         private vJoy _joy = new vJoy();
+        public Settings Settings { get; set; }
         private Feeder _feeder;
         private Timer _timer = new Timer { AutoReset = true };
+        private bool _isRunning = false;
 
         private void StartStop()
         {
@@ -151,14 +97,14 @@ namespace AbsoluteMouseToJoystick.ViewModel
         {
             try
             {
-                _timer.Interval = TimerInterval;
+                _timer.Interval = Settings.TimerInterval;
 
-                if (_joy.AcquireVJD(this.DeviceID))
+                if (_joy.AcquireVJD(Settings.DeviceID))
                 {
                     _logger.Log("Device acquired.");
                     _timer.Start();
 
-                    _feeder = new Feeder(_joy, DeviceID, _logger, _timer, this.ZoneDistributionX, this.ZoneDistributionY, ResolutionX, ResolutionY);
+                    _feeder = new Feeder(_joy, _logger, _timer, Settings);
                 }
                 else
                 {
@@ -185,59 +131,11 @@ namespace AbsoluteMouseToJoystick.ViewModel
                 _feeder = null;
             }
 
-            _joy.RelinquishVJD(DeviceID);
+            _joy.RelinquishVJD(Settings.DeviceID);
 
             _logger.Log("Device relinquished.");
 
-            ShowJoystickInfo(_joy, DeviceID);
+            ShowJoystickInfo(_joy, Settings.DeviceID);
         }
-        /*
-                public bool Running
-                {
-                    get
-                    {
-                        return _running;
-                    }
-                    set
-                    {
-                        _running = value;
-                        //this.runningCheckBox.IsChecked = _running;
-                        //this.TimerIntervalTextBox.IsEnabled = this.resXtb.IsEnabled = this.resYtb.IsEnabled = !_running;
-                    }
-                }
-
-                private bool _running;
-
-                private void OnZoneTextBox_TextChanged(object sender, TextChangedEventArgs e)
-                {
-                    _logger?.Log("Zone text changed");
-
-                    UpdateZoneDistributions();
-                }
-
-
-                private void UpdateZoneDistributions()
-                {
-                    try
-                    {
-                        negativeDeadColumnX.Width = new GridLength(_zoneDistributionX.NegativeDeadZone = Convert.ToDouble(this.negativeDeadXtb.Text), GridUnitType.Star);
-                        negativeColumnX.Width = new GridLength(_zoneDistributionX.NegativeZone = Convert.ToDouble(this.negativeXtb.Text), GridUnitType.Star);
-                        neutralColumnX.Width = new GridLength(_zoneDistributionX.NeutralDeadZone = Convert.ToDouble(this.neutralXtb.Text), GridUnitType.Star);
-                        positiveColumnX.Width = new GridLength(_zoneDistributionX.PositiveZone = Convert.ToDouble(this.positiveXtb.Text), GridUnitType.Star);
-                        positiveDeadColumnX.Width = new GridLength(_zoneDistributionX.PositiveDeadZone = Convert.ToDouble(this.positiveDeadXtb.Text), GridUnitType.Star);
-
-                        negativeDeadRowY.Height = new GridLength(_zoneDistributionY.NegativeDeadZone = Convert.ToDouble(this.negativeDeadYtb.Text), GridUnitType.Star);
-                        negativeRowY.Height = new GridLength(_zoneDistributionY.NegativeZone = Convert.ToDouble(this.negativeYtb.Text), GridUnitType.Star);
-                        neutralRowY.Height = new GridLength(_zoneDistributionY.NeutralDeadZone = Convert.ToDouble(this.neutralYtb.Text), GridUnitType.Star);
-                        positiveRowY.Height = new GridLength(_zoneDistributionY.PositiveZone = Convert.ToDouble(this.positiveYtb.Text), GridUnitType.Star);
-                        positiveDeadRowY.Height = new GridLength(_zoneDistributionY.PositiveDeadZone = Convert.ToDouble(this.positiveDeadYtb.Text), GridUnitType.Star);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger?.Log(ex.Message);
-                        _logger?.Log("Invalid zone format");
-                    }
-                }
-            */
     }
 }

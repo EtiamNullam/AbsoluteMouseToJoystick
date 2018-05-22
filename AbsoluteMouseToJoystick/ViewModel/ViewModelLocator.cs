@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using AbsoluteMouseToJoystick.Data;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
@@ -43,10 +44,13 @@ namespace AbsoluteMouseToJoystick.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<LogViewModel>();
-            SimpleIoc.Default.Register<ControlsViewModel>();
-            SimpleIoc.Default.Register<ISimpleLogger, MessageBasedLogger>();
+            var container = SimpleIoc.Default;
+
+            container.Register<MainViewModel>();
+            container.Register<LogViewModel>();
+            container.Register<ControlsViewModel>();
+            container.Register<ISimpleLogger, MessageBasedLogger>();
+            container.Register<Settings>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();

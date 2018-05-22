@@ -21,19 +21,19 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <TextBox Text="{Binding ResolutionX}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
+            <TextBox Text="{Binding Settings.ResolutionX}" Margin="5"/>
             <TextBlock Grid.Column="1" Text="x" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" Text="{Binding ResolutionY}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
+            <TextBox Grid.Column="2" Text="{Binding Settings.ResolutionY}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
         </Grid>
         
         <TextBlock Margin="5" Text="Axis X zones" />
-        <local:AxisZoneSettingsView DataContext="{Binding ZoneDistributionX}"/>
+        <local:AxisZoneSettingsView DataContext="{Binding Settings.ZoneDistributionX}"/>
         
         <TextBlock Margin="5" Text="Axis Y zones" />
-        <local:AxisZoneSettingsView DataContext="{Binding ZoneDistributionY}"/>
+        <local:AxisZoneSettingsView DataContext="{Binding Settings.ZoneDistributionY}"/>
 
         <TextBlock Text="Timer interval (ms)"/>
-        <TextBox Text="{Binding TimerInterval}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}"/>
+        <TextBox Text="{Binding Settings.TimerInterval}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
 
         <Button Grid.Column="1" Height="30" Margin="5" Content="Start/Stop" Command="{Binding StartStopCommand}"/>
 

@@ -11,17 +11,13 @@ namespace AbsoluteMouseToJoystick
 {
     public class Feeder : IDisposable
     {
-        public Feeder(vJoy joy, uint deviceID, ISimpleLogger logger, Timer timer, ZoneDistribution zoneDistributionX, ZoneDistribution zoneDistributionY, int resolutionX, int resolutionY)
+        public Feeder(vJoy joy, ISimpleLogger logger, Timer timer, Settings settings)
         {
             _joy = joy;
-            _deviceID = deviceID;
             _logger = logger;
-            _zoneDistributionX = zoneDistributionX;
-            _zoneDistributionY = zoneDistributionY;
-            _resolutionX = resolutionX;
-            _resolutionY = resolutionY;
+            _settings = settings;
 
-            _joy.ResetVJD(deviceID);
+            _joy.ResetVJD(_settings.DeviceID);
 
             _timer = timer;
             _timer.Elapsed += Execute;
@@ -29,21 +25,16 @@ namespace AbsoluteMouseToJoystick
 
         private ISimpleLogger _logger;
         private vJoy _joy;
-        private readonly uint _deviceID;
-        private readonly ZoneDistribution _zoneDistributionX;
-        private readonly ZoneDistribution _zoneDistributionY;
         private Timer _timer;
-
-        private readonly int _resolutionX;
-        private readonly int _resolutionY;
+        private Settings _settings;
 
         // TODO: use efficient way instead? (from readme.pdf)
         private void Execute(object sender, EventArgs e)
         {
             Interop.GetCursorPos(out Interop.POINT point);
 
-            var xAxisValue = CalculateAxisValue(point.X, _resolutionX, _zoneDistributionX);
-            var yAxisValue = CalculateAxisValue(point.Y, _resolutionY, _zoneDistributionY);
+            var xAxisValue = CalculateAxisValue(point.X, _settings.ResolutionX, _settings.ZoneDistributionX);
+            var yAxisValue = CalculateAxisValue(point.Y, _settings.ResolutionY, _settings.ZoneDistributionY);
 
             SetAxes(xAxisValue, yAxisValue);
         }
@@ -79,8 +70,8 @@ namespace AbsoluteMouseToJoystick
 
         private void SetAxes(int x, int y)
         {
-            this._joy.SetAxis(x, _deviceID, HID_USAGES.HID_USAGE_X);
-            this._joy.SetAxis(y, _deviceID, HID_USAGES.HID_USAGE_Y);
+            this._joy.SetAxis(x, _settings.DeviceID, HID_USAGES.HID_USAGE_X);
+            this._joy.SetAxis(y, _settings.DeviceID, HID_USAGES.HID_USAGE_Y);
         }
 
         private Zone GetZone(double value, ZoneDistribution zoneDistribution)

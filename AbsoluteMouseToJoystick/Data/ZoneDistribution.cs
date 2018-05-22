@@ -10,6 +10,8 @@ namespace AbsoluteMouseToJoystick.Data
     // TODO: save and load from file (json)
     public class ZoneDistribution : ObservableObject
     {
+        public ISimpleLogger Logger { get; set; }
+
         public double NegativeDeadZone
         {
             get => _negativeDeadZone;
@@ -62,8 +64,6 @@ namespace AbsoluteMouseToJoystick.Data
         public double PositiveZoneEnd => NeutralDeadZoneEnd + PositiveZone;
         public double PositiveDeadZoneEnd => PositiveZoneEnd + PositiveDeadZone;
 
-        public ISimpleLogger Logger { get; set; }
-
         public double Total => NegativeDeadZone + NegativeZone + NeutralDeadZone + PositiveZone + PositiveDeadZone;
         private double _negativeDeadZone;
         private double _negativeZone;
@@ -73,7 +73,7 @@ namespace AbsoluteMouseToJoystick.Data
 
         private void LogZoneChanged()
         {
-            Logger?.Log("Zone distribution changed");
+            Logger?.Log("Distribution: Zone distribution changed");
         }
     }
 }

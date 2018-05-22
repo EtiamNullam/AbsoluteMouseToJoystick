@@ -116,6 +116,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
     <Compile Include="ISimpleLogger.cs" />
@@ -123,7 +124,6 @@
     <Compile Include="Data\ZoneDistribution.cs" />
     <Compile Include="ValueConverters\DoubleToStarValueConverter.cs" />
     <Compile Include="ValueConverters\NegateValueConverter.cs" />
-    <Compile Include="ViewModel\AxisViewModel.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ControlsViewModel.cs" />
