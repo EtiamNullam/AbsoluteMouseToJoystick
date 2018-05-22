@@ -91,11 +91,11 @@ namespace AbsoluteMouseToJoystick.Data
         };
         private ZoneDistribution _zoneDistributionY = new ZoneDistribution
         {
-            NegativeDeadZone = 1,
-            NegativeZone = 12,
+            NegativeDeadZone = 2,
+            NegativeZone = 8,
             NeutralDeadZone = 2,
-            PositiveZone = 8,
-            PositiveDeadZone = 3,
+            PositiveZone = 12,
+            PositiveDeadZone = 1,
         };
     }
 }
