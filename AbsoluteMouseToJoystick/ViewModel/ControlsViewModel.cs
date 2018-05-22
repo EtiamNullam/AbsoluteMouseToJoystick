@@ -1,4 +1,5 @@
 ﻿using AbsoluteMouseToJoystick.Data;
+using AbsoluteMouseToJoystick.Logging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using System;

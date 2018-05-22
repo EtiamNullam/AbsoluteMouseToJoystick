@@ -13,6 +13,7 @@
 */
 
 using AbsoluteMouseToJoystick.Data;
+using AbsoluteMouseToJoystick.Logging;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;

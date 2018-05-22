@@ -1,4 +1,5 @@
 ﻿using AbsoluteMouseToJoystick.Data;
+using AbsoluteMouseToJoystick.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbsoluteMouseToJoystick
+namespace AbsoluteMouseToJoystick.Logging
 {
     public class MessageBasedLogger : ISimpleLogger
     {

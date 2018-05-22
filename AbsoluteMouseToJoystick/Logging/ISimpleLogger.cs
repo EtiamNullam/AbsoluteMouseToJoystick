@@ -1,4 +1,4 @@
-﻿namespace AbsoluteMouseToJoystick
+﻿namespace AbsoluteMouseToJoystick.Logging
 {
     public interface ISimpleLogger
     {

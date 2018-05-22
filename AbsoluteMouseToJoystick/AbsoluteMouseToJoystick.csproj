@@ -119,8 +119,8 @@
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
-    <Compile Include="ISimpleLogger.cs" />
-    <Compile Include="MessageBasedLogger.cs" />
+    <Compile Include="Logging\ISimpleLogger.cs" />
+    <Compile Include="Logging\MessageBasedLogger.cs" />
     <Compile Include="Data\ZoneDistribution.cs" />
     <Compile Include="ValueConverters\DoubleToStarValueConverter.cs" />
     <Compile Include="ValueConverters\NegateValueConverter.cs" />
