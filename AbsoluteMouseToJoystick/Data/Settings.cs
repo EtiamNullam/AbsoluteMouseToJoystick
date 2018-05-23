@@ -105,7 +105,7 @@ namespace AbsoluteMouseToJoystick.Data
             NegativeDeadZone = 2,
             NegativeZone = 8,
             NeutralDeadZone = 2,
-            PositiveZone = 12,
+            PositiveZone = 11,
             PositiveDeadZone = 1,
         };
     }

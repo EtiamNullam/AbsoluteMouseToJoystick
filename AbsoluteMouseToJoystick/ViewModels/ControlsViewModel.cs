@@ -29,6 +29,8 @@ namespace AbsoluteMouseToJoystick.ViewModels
             StartStopCommand = new RelayCommand(this.StartStop);
             LoadCommand = new RelayCommand(this.LoadSettings);
             SaveCommand = new RelayCommand(this.SaveSettings);
+
+            ShowJoystickInfo(_joy, Settings.DeviceID);
         }
 
         public ICommand StartStopCommand { get; private set; }
