@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbsoluteMouseToJoystick.ViewModel
+namespace AbsoluteMouseToJoystick.ViewModels
 {
     public class LogViewModel : ViewModelBase
     {

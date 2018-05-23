@@ -1,9 +1,13 @@
 ﻿using AbsoluteMouseToJoystick.Data;
+using AbsoluteMouseToJoystick.IO;
 using AbsoluteMouseToJoystick.Logging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,35 +15,37 @@ using System.Timers;
 using System.Windows.Input;
 using vJoyInterfaceWrap;
 
-namespace AbsoluteMouseToJoystick.ViewModel
+namespace AbsoluteMouseToJoystick.ViewModels
 {
     public class ControlsViewModel : ViewModelBase
     {
-        public ControlsViewModel(ISimpleLogger logger, Settings settings)
+        public ControlsViewModel(ISimpleLogger logger, Settings settings, JsonFileManager jsonFileManager)
         {
             _logger = logger;
+            _jsonFileManager = jsonFileManager;
+
             Settings = settings;
 
             StartStopCommand = new RelayCommand(this.StartStop);
+            LoadCommand = new RelayCommand(this.LoadSettings);
+            SaveCommand = new RelayCommand(this.SaveSettings);
         }
 
         public ICommand StartStopCommand { get; private set; }
+        public ICommand LoadCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
 
         public bool IsRunning
         {
-            get
-            {
-                return _isRunning;
-            }
-            set
-            {
-                Set(ref _isRunning, value);
-            }
+            get => _isRunning;
+            set => Set(ref _isRunning, value);
         }
 
-        private ISimpleLogger _logger;
-        private vJoy _joy = new vJoy();
-        public Settings Settings { get; set; }
+        public Settings Settings { get; private set; }
+
+        private readonly ISimpleLogger _logger;
+        private readonly JsonFileManager _jsonFileManager;
+        private readonly vJoy _joy = new vJoy();
         private Feeder _feeder;
         private Timer _timer = new Timer { AutoReset = true };
         private bool _isRunning = false;
@@ -49,6 +55,29 @@ namespace AbsoluteMouseToJoystick.ViewModel
             if (!IsRunning) Start();
             else Stop();
         }
+
+        // Extract to other class
+        private void SaveSettings()
+        {
+            _jsonFileManager.Save(Settings);
+        }
+
+        private void LoadSettings()
+        {
+            _jsonFileManager.OnFileLoaded += OnSettingsLoaded;
+            _jsonFileManager.Open<Settings>();
+        }
+
+        private void OnSettingsLoaded(object sender, object settings)
+        {
+            _jsonFileManager.OnFileLoaded -= OnSettingsLoaded;
+
+            if (settings is Settings castedSettings)
+            {
+                Settings.Load(castedSettings);
+            }
+        }
+        //
 
         // TODO:
         // - Acquire somewhere else

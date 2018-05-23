@@ -13,13 +13,16 @@
 */
 
 using AbsoluteMouseToJoystick.Data;
+using AbsoluteMouseToJoystick.IO;
 using AbsoluteMouseToJoystick.Logging;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
+using Newtonsoft.Json;
+using System;
 
-namespace AbsoluteMouseToJoystick.ViewModel
+namespace AbsoluteMouseToJoystick.ViewModels
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -34,24 +37,24 @@ namespace AbsoluteMouseToJoystick.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            ////}
-            ////else
-            ////{
-            ////    // Create run time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DataService>();
-            ////}
-
             var container = SimpleIoc.Default;
+
+            if (ViewModelBase.IsInDesignModeStatic)
+            {
+            }
+            else
+            {
+                container.Register<JsonSerializer>(() => new JsonSerializer { Formatting = Formatting.Indented });
+            }
+
 
             container.Register<MainViewModel>();
             container.Register<LogViewModel>();
             container.Register<ControlsViewModel>();
+
             container.Register<ISimpleLogger, MessageBasedLogger>();
             container.Register<Settings>();
+            container.Register<JsonFileManager>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();

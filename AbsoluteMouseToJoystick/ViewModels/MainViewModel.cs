@@ -2,7 +2,7 @@ using System;
 using AbsoluteMouseToJoystick.Data;
 using GalaSoft.MvvmLight;
 
-namespace AbsoluteMouseToJoystick.ViewModel
+namespace AbsoluteMouseToJoystick.ViewModels
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.

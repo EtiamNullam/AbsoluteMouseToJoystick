@@ -1,5 +1,6 @@
 ﻿using AbsoluteMouseToJoystick.Logging;
 using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,13 +60,20 @@ namespace AbsoluteMouseToJoystick.Data
             }
         }
 
+        [JsonIgnore]
         public double NegativeDeadZoneEnd => NegativeDeadZone;
+        [JsonIgnore]
         public double NegativeZoneEnd => NegativeDeadZoneEnd + NegativeZone;
+        [JsonIgnore]
         public double NeutralDeadZoneEnd => NegativeZoneEnd + NeutralDeadZone;
+        [JsonIgnore]
         public double PositiveZoneEnd => NeutralDeadZoneEnd + PositiveZone;
+        [JsonIgnore]
         public double PositiveDeadZoneEnd => PositiveZoneEnd + PositiveDeadZone;
 
+        [JsonIgnore]
         public double Total => NegativeDeadZone + NegativeZone + NeutralDeadZone + PositiveZone + PositiveDeadZone;
+
         private double _negativeDeadZone;
         private double _negativeZone;
         private double _neutralDeadZone;

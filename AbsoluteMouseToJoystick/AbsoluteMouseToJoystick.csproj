@@ -119,15 +119,16 @@
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
+    <Compile Include="IO\JsonFileManager.cs" />
     <Compile Include="Logging\ISimpleLogger.cs" />
     <Compile Include="Logging\MessageBasedLogger.cs" />
     <Compile Include="Data\ZoneDistribution.cs" />
     <Compile Include="ValueConverters\DoubleToStarValueConverter.cs" />
     <Compile Include="ValueConverters\NegateValueConverter.cs" />
-    <Compile Include="ViewModel\LogViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ControlsViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\LogViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ControlsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\AxisPreviewView.xaml.cs">
       <DependentUpon>AxisPreviewView.xaml</DependentUpon>
     </Compile>

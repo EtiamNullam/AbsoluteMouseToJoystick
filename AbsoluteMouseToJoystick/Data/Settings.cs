@@ -1,5 +1,6 @@
 ﻿using AbsoluteMouseToJoystick.Logging;
 using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AbsoluteMouseToJoystick.Data
 {
-    // TODO: save/load from/to file
+    // TODO: load from default.json on start
     public class Settings : ObservableObject
     {
         public Settings(ISimpleLogger logger)
@@ -16,7 +17,15 @@ namespace AbsoluteMouseToJoystick.Data
             _logger = logger;
         }
 
-        private readonly ISimpleLogger _logger;
+        public void Load(Settings settings)
+        {
+            this.ResolutionX = settings.ResolutionX;
+            this.ResolutionY = settings.ResolutionY;
+            this.TimerInterval = settings.TimerInterval;
+            this.DeviceID = settings.DeviceID;
+            this.ZoneDistributionX = settings.ZoneDistributionX;
+            this.ZoneDistributionY = settings.ZoneDistributionY;
+        }
 
         public int ResolutionX
         {
@@ -24,7 +33,7 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _resolutionX, value);
-                _logger.Log("Resolution X changed");
+                _logger?.Log("Resolution X changed");
             }
         }
         public int ResolutionY
@@ -33,7 +42,7 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _resolutionY, value);
-                _logger.Log("Resolution Y changed");
+                _logger?.Log("Resolution Y changed");
             }
         }
 
@@ -43,7 +52,7 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _timerInterval, value);
-                _logger.Log("Timer interval changed");
+                _logger?.Log("Timer interval changed");
             }
         }
 
@@ -53,7 +62,7 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _deviceID, value);
-                _logger.Log("Device ID changed");
+                _logger?.Log("Device ID changed");
             }
         }
 
@@ -63,7 +72,7 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _zoneDistributionX, value);
-                _logger.Log("Zone distribution X changed");
+                _logger?.Log("Zone distribution X changed");
             }
         }
         public ZoneDistribution ZoneDistributionY
@@ -72,16 +81,18 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _zoneDistributionY, value);
-                _logger.Log("Zone Distribution Y changed");
+                _logger?.Log("Zone distribution Y changed");
             }
         }
+
+        private ISimpleLogger _logger;
 
         private int _resolutionX = 1920;
         private int _resolutionY = 1080;
         private double _timerInterval = 5;
         private uint _deviceID = 1;
 
-        public ZoneDistribution _zoneDistributionX = new ZoneDistribution
+        private ZoneDistribution _zoneDistributionX = new ZoneDistribution
         {
             NegativeDeadZone = 1,
             NegativeZone = 100,
