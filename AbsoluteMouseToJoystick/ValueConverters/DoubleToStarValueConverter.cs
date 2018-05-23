@@ -13,7 +13,8 @@ namespace AbsoluteMouseToJoystick.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new GridLength(((double)value), GridUnitType.Star);
+            var convertedValue = System.Convert.ToDouble(value);
+            return new GridLength(convertedValue <= 0 ? 0.0001 : convertedValue, GridUnitType.Star);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
