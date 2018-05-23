@@ -23,7 +23,7 @@
             
             <TextBox Text="{Binding Settings.ResolutionX}" Margin="5"/>
             <TextBlock Grid.Column="1" Text="x" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" Text="{Binding Settings.ResolutionY}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
+            <TextBox Grid.Column="2" Text="{Binding Settings.ResolutionY}" Margin="5"/>
         </Grid>
         
         <TextBlock Margin="5" Text="Axis X zones" />
