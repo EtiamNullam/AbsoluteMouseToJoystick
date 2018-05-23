@@ -15,7 +15,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <TextBox Text="{Binding NegativeDeadZone, Mode=TwoWay}" Margin="5"/>
+        <TextBox Text="{Binding NegativeDeadZone}" Margin="5"/>
         <TextBox Text="{Binding NegativeZone}" Margin="5" Grid.Column="1"/>
         <TextBox Text="{Binding NeutralDeadZone}" Margin="5" Grid.Column="2"/>
         <TextBox Text="{Binding PositiveZone}" Margin="5" Grid.Column="3"/>

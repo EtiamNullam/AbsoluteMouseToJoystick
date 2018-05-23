@@ -82,7 +82,7 @@ namespace AbsoluteMouseToJoystick.Data
 
         private void LogZoneChanged()
         {
-            Logger?.Log("Distribution: Zone distribution changed");
+            Logger?.Log("Property of zone distribution changed");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace AbsoluteMouseToJoystick.Data
     {
         public Settings(ISimpleLogger logger)
         {
-            _logger = logger;
+            _logger = _zoneDistributionX.Logger = _zoneDistributionY.Logger = logger;
         }
 
         public void Load(Settings settings)
@@ -85,7 +85,7 @@ namespace AbsoluteMouseToJoystick.Data
             }
         }
 
-        private ISimpleLogger _logger;
+        private readonly ISimpleLogger _logger;
 
         private int _resolutionX = 1920;
         private int _resolutionY = 1080;
