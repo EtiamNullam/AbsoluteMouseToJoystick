@@ -9,15 +9,14 @@ using System.Threading.Tasks;
 
 namespace AbsoluteMouseToJoystick.Data
 {
-    // TODO: load from default.json on start
-    public class Settings : ObservableObject
+    public class Settings : ObservableObject, ISettingsManager
     {
         public Settings(ISimpleLogger logger)
         {
             _logger = _zoneDistributionX.Logger = _zoneDistributionY.Logger = logger;
         }
 
-        public void Load(Settings settings)
+        public void Load(ISettings settings)
         {
             this.ResolutionX = settings.ResolutionX;
             this.ResolutionY = settings.ResolutionY;

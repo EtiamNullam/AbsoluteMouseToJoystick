@@ -116,7 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\ISettings.cs" />
+    <Compile Include="Data\ISettingsManager.cs" />
     <Compile Include="Data\Settings.cs" />
+    <Compile Include="Data\SettingsRaw.cs" />
     <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
     <Compile Include="IO\JsonFileManager.cs" />

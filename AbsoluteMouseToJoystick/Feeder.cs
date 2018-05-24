@@ -12,7 +12,7 @@ namespace AbsoluteMouseToJoystick
 {
     public class Feeder : IDisposable
     {
-        public Feeder(vJoy joy, ISimpleLogger logger, Timer timer, Settings settings)
+        public Feeder(vJoy joy, ISimpleLogger logger, Timer timer, ISettings settings)
         {
             _joy = joy;
             _logger = logger;
@@ -27,7 +27,7 @@ namespace AbsoluteMouseToJoystick
         private ISimpleLogger _logger;
         private vJoy _joy;
         private Timer _timer;
-        private Settings _settings;
+        private ISettings _settings;
 
         // TODO: use efficient way instead? (from readme.pdf)
         private void Execute(object sender, EventArgs e)

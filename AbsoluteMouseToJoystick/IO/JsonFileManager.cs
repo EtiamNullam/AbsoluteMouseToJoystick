@@ -42,7 +42,7 @@ namespace AbsoluteMouseToJoystick.IO
             dialog.ShowDialog();
         }
 
-        public void Open<T>()
+        public void OpenWithDialog<T>()
         {
             var dialog = new OpenFileDialog
             {
@@ -56,6 +56,16 @@ namespace AbsoluteMouseToJoystick.IO
 
             dialog.FileOk += OnFileForOpenSelected<T>;
             dialog.ShowDialog();
+        }
+
+        /// <summary>
+        /// Throws exception when can't read file.
+        /// </summary>
+        public T Open<T>(string path)
+        {
+            using (var streamReader = new StreamReader(path))
+            using (var jsonTextReader = new JsonTextReader(streamReader))
+                return _jsonSerializer.Deserialize<T>(jsonTextReader);
         }
 
         private void OnFileForOpenSelected<T>(object sender, CancelEventArgs e)

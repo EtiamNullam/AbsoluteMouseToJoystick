@@ -19,7 +19,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
 {
     public class ControlsViewModel : ViewModelBase
     {
-        public ControlsViewModel(ISimpleLogger logger, Settings settings, JsonFileManager jsonFileManager)
+        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, JsonFileManager jsonFileManager)
         {
             _logger = logger;
             _jsonFileManager = jsonFileManager;
@@ -31,6 +31,21 @@ namespace AbsoluteMouseToJoystick.ViewModels
             SaveCommand = new RelayCommand(this.SaveSettings);
 
             ShowJoystickInfo(_joy, Settings.DeviceID);
+
+            LoadDefaultSettings();
+        }
+
+        // TODO: Remove magic string
+        private void LoadDefaultSettings()
+        {
+            try
+            {
+                Settings.Load(_jsonFileManager.Open<SettingsRaw>(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "default.json"));
+            }
+            catch (Exception e)
+            {
+                _logger.Log(e.Message);
+            }
         }
 
         public ICommand StartStopCommand { get; private set; }
@@ -43,7 +58,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
             set => Set(ref _isRunning, value);
         }
 
-        public Settings Settings { get; private set; }
+        public ISettingsManager Settings { get; private set; }
 
         private readonly ISimpleLogger _logger;
         private readonly JsonFileManager _jsonFileManager;
@@ -67,14 +82,14 @@ namespace AbsoluteMouseToJoystick.ViewModels
         private void LoadSettings()
         {
             _jsonFileManager.OnFileLoaded += OnSettingsLoaded;
-            _jsonFileManager.Open<Settings>();
+            _jsonFileManager.OpenWithDialog<SettingsRaw>();
         }
 
         private void OnSettingsLoaded(object sender, object settings)
         {
             _jsonFileManager.OnFileLoaded -= OnSettingsLoaded;
 
-            if (settings is Settings castedSettings)
+            if (settings is ISettings castedSettings)
             {
                 Settings.Load(castedSettings);
             }

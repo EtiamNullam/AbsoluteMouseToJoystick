@@ -12,6 +12,7 @@ namespace AbsoluteMouseToJoystick.Data
     // TODO: save and load from file (json)
     public class ZoneDistribution : ObservableObject
     {
+        [JsonIgnore]
         public ISimpleLogger Logger { get; set; }
 
         public double NegativeDeadZone

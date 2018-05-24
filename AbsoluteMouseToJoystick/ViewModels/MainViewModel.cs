@@ -35,7 +35,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(Settings settings)
+        public MainViewModel(ISettings settings)
         {
             Settings = settings;
             ////if (IsInDesignMode)
@@ -48,6 +48,6 @@ namespace AbsoluteMouseToJoystick.ViewModels
             ////}
         }
 
-        public Settings Settings { get; set; }
+        public ISettings Settings { get; set; }
     }
 }

@@ -39,21 +39,19 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
             var container = SimpleIoc.Default;
 
-            if (ViewModelBase.IsInDesignModeStatic)
-            {
-            }
+            if (ViewModelBase.IsInDesignModeStatic) { }
             else
             {
                 container.Register<JsonSerializer>(() => new JsonSerializer { Formatting = Formatting.Indented });
             }
-
 
             container.Register<MainViewModel>();
             container.Register<LogViewModel>();
             container.Register<ControlsViewModel>();
 
             container.Register<ISimpleLogger, MessageBasedLogger>();
-            container.Register<Settings>();
+            container.Register<ISettingsManager, Settings>();
+            container.Register<ISettings>(() => container.GetInstance<ISettingsManager>());
             container.Register<JsonFileManager>();
         }
 
