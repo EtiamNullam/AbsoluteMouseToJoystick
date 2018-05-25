@@ -5,31 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AbsoluteMouseToJoystick.Views"
              xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:DoubleToStarValueConverter x:Key="doubleToStar"/>
+        <converters:BoolToVisibilityValueConverter x:Key="boolToVisibility"/>
     </UserControl.Resources>
     <Grid Name="rootGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="{Binding NegativeDeadZone, Converter={StaticResource doubleToStar}}" />
-            <RowDefinition Height="{Binding NegativeZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
-            <RowDefinition Height="{Binding NeutralDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
-            <RowDefinition Height="{Binding PositiveZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
-            <RowDefinition Height="{Binding PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <RowDefinition Height="{Binding ZoneDistribution.NegativeDeadZone, Converter={StaticResource doubleToStar}}" />
+            <RowDefinition Height="{Binding ZoneDistribution.NegativeZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <RowDefinition Height="{Binding ZoneDistribution.NeutralDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <RowDefinition Height="{Binding ZoneDistribution.PositiveZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <RowDefinition Height="{Binding ZoneDistribution.PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding NegativeDeadZone, Converter={StaticResource doubleToStar}}"/>
-            <ColumnDefinition Width="{Binding NegativeZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
-            <ColumnDefinition Width="{Binding NeutralDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
-            <ColumnDefinition Width="{Binding PositiveZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
-            <ColumnDefinition Width="{Binding PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <ColumnDefinition Width="{Binding ZoneDistribution.NegativeDeadZone, Converter={StaticResource doubleToStar}}"/>
+            <ColumnDefinition Width="{Binding ZoneDistribution.NegativeZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <ColumnDefinition Width="{Binding ZoneDistribution.NeutralDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <ColumnDefinition Width="{Binding ZoneDistribution.PositiveZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
+            <ColumnDefinition Width="{Binding ZoneDistribution.PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="5" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"/>
-        <Border Background="Red" Grid.Row="1">
+
+        <Border Background="Red" Grid.Row="1" Visibility="{Binding IsEnabled, Converter={StaticResource boolToVisibility}}">
             <Viewbox>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="Negative" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -37,22 +39,22 @@
                 </StackPanel>
             </Viewbox>
         </Border>
-        <Border Grid.Row="2" Grid.Column="1" Background="Orange">
+        <Border Grid.Row="2" Grid.Column="1" Background="Orange" Visibility="{Binding IsEnabled, Converter={StaticResource boolToVisibility}}">
             <Viewbox>
                 <TextBlock Text="Negative" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Viewbox>
         </Border>
-        <Border Grid.Row="3" Grid.Column="2" Background="LightGray">
+        <Border Grid.Row="3" Grid.Column="2" Background="LightGray" Visibility="{Binding IsEnabled, Converter={StaticResource boolToVisibility}}">
             <Viewbox>
                 <TextBlock Text="Neutral" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Viewbox>
         </Border>
-        <Border Grid.Row="4" Grid.Column="3" Background="Teal">
+        <Border Grid.Row="4" Grid.Column="3" Background="Teal" Visibility="{Binding IsEnabled, Converter={StaticResource boolToVisibility}}">
             <Viewbox>
                 <TextBlock Text="Positive" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Viewbox>
         </Border>
-        <Border Grid.Row="5" Grid.Column="4" Background="Blue">
+        <Border Grid.Row="5" Grid.Column="4" Background="Blue" Visibility="{Binding IsEnabled, Converter={StaticResource boolToVisibility}}">
             <Viewbox>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="Positive" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>

@@ -18,9 +18,9 @@ namespace AbsoluteMouseToJoystick.Views
     /// <summary>
     /// Interaction logic for AxisZoneSettingsView.xaml
     /// </summary>
-    public partial class AxisZoneSettingsView : UserControl
+    public partial class AxisSettingsView : UserControl
     {
-        public AxisZoneSettingsView()
+        public AxisSettingsView()
         {
             InitializeComponent();
         }

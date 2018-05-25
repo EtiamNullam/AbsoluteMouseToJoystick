@@ -13,7 +13,7 @@ namespace AbsoluteMouseToJoystick.Data
     {
         public Settings(ISimpleLogger logger)
         {
-            _logger = _zoneDistributionX.Logger = _zoneDistributionY.Logger = logger;
+            _logger = logger;
         }
 
         public void Load(ISettings settings)
@@ -22,8 +22,9 @@ namespace AbsoluteMouseToJoystick.Data
             this.ResolutionY = settings.ResolutionY;
             this.TimerInterval = settings.TimerInterval;
             this.DeviceID = settings.DeviceID;
-            this.ZoneDistributionX = settings.ZoneDistributionX;
-            this.ZoneDistributionY = settings.ZoneDistributionY;
+            this.AxisX = settings.AxisX;
+            this.AxisY = settings.AxisY;
+            this.AxisZ = settings.AxisZ;
         }
 
         public int ResolutionX
@@ -65,23 +66,22 @@ namespace AbsoluteMouseToJoystick.Data
             }
         }
 
-        public ZoneDistribution ZoneDistributionX
+        public AxisSettings AxisX
         {
-            get => _zoneDistributionX;
-            set
-            {
-                Set(ref _zoneDistributionX, value);
-                _logger?.Log("Zone distribution X changed");
-            }
+            get => _axisX;
+            set => Set(ref _axisX, value);
         }
-        public ZoneDistribution ZoneDistributionY
+
+        public AxisSettings AxisY
         {
-            get => _zoneDistributionY;
-            set
-            {
-                Set(ref _zoneDistributionY, value);
-                _logger?.Log("Zone distribution Y changed");
-            }
+            get => _axisY;
+            set => Set(ref _axisY, value);
+        }
+
+        public AxisSettings AxisZ
+        {
+            get => _axisZ;
+            set => Set(ref _axisZ, value);
         }
 
         private readonly ISimpleLogger _logger;
@@ -91,21 +91,8 @@ namespace AbsoluteMouseToJoystick.Data
         private double _timerInterval = 5;
         private uint _deviceID = 1;
 
-        private ZoneDistribution _zoneDistributionX = new ZoneDistribution
-        {
-            NegativeDeadZone = 1,
-            NegativeZone = 100,
-            NeutralDeadZone = 0,
-            PositiveZone = 100,
-            PositiveDeadZone = 1,
-        };
-        private ZoneDistribution _zoneDistributionY = new ZoneDistribution
-        {
-            NegativeDeadZone = 2,
-            NegativeZone = 8,
-            NeutralDeadZone = 2,
-            PositiveZone = 11,
-            PositiveDeadZone = 1,
-        };
+        private AxisSettings _axisX = new AxisSettings { MouseAxis = MouseAxis.X };
+        private AxisSettings _axisY = new AxisSettings { MouseAxis = MouseAxis.Y };
+        private AxisSettings _axisZ = new AxisSettings();
     }
 }

@@ -24,23 +24,44 @@ namespace AbsoluteMouseToJoystick
             _timer.Elapsed += Execute;
         }
 
-        private ISimpleLogger _logger;
-        private vJoy _joy;
         private Timer _timer;
-        private ISettings _settings;
+
+        private readonly ISimpleLogger _logger;
+        private readonly vJoy _joy;
+        private readonly ISettings _settings;
+
+        private readonly short DisabledAxisValue = short.MaxValue / 2;
 
         // TODO: use efficient way instead? (from readme.pdf)
         private void Execute(object sender, EventArgs e)
         {
-            Interop.GetCursorPos(out Interop.POINT point);
+            var mousePosition = Interop.GetCursorPosition();
 
-            var xAxisValue = CalculateAxisValue(point.X, _settings.ResolutionX, _settings.ZoneDistributionX);
-            var yAxisValue = CalculateAxisValue(point.Y, _settings.ResolutionY, _settings.ZoneDistributionY);
+            var xAxisValue = CalculateAxisValue(mousePosition, _settings.AxisX);
+            var yAxisValue = CalculateAxisValue(mousePosition, _settings.AxisY);
+            var zAxisValue = CalculateAxisValue(mousePosition, _settings.AxisZ);
 
-            SetAxes(xAxisValue, yAxisValue);
+            SetAxes(xAxisValue, yAxisValue, zAxisValue);
+        }
+
+        private int CalculateAxisValue(IntPoint mousePosition, AxisSettings axisSettings)
+        {
+            switch (axisSettings.MouseAxis)
+            {
+                case MouseAxis.X:
+                    return CalculateAxisValue(mousePosition.X, _settings.ResolutionX, axisSettings.ZoneDistribution);
+                case MouseAxis.Y:
+                    return CalculateAxisValue(mousePosition.Y, _settings.ResolutionY, axisSettings.ZoneDistribution);
+                case MouseAxis.None:
+                    return DisabledAxisValue;
+                default:
+                    _logger.Log("Invalid MouseAxis");
+                    return DisabledAxisValue;
+            }
         }
 
         private int CalculateAxisValue(int pixel, int pixelsCount, ZoneDistribution zoneDistribution)
+        //private int CalculateAxisValue(int pixel, int pixelsCount, AxisSettings axisSettings)
         {
             var value = (double)pixel / (pixelsCount - 1);
             value *= zoneDistribution.Total;
@@ -69,10 +90,16 @@ namespace AbsoluteMouseToJoystick
             return Convert.ToInt32(value * short.MaxValue);
         }
 
-        private void SetAxes(int x, int y)
+        private void SetAxes(int value)
+        {
+            this.SetAxes(value, value, value);
+        }
+
+        private void SetAxes(int x, int y, int z)
         {
             this._joy.SetAxis(x, _settings.DeviceID, HID_USAGES.HID_USAGE_X);
             this._joy.SetAxis(y, _settings.DeviceID, HID_USAGES.HID_USAGE_Y);
+            this._joy.SetAxis(z, _settings.DeviceID, HID_USAGES.HID_USAGE_Z);
         }
 
         private Zone GetZone(double value, ZoneDistribution zoneDistribution)
@@ -103,7 +130,7 @@ namespace AbsoluteMouseToJoystick
                 _timer = null;
             }
 
-            SetAxes(short.MaxValue / 2, short.MaxValue / 2);
+            SetAxes(DisabledAxisValue);
         }
     }
 }

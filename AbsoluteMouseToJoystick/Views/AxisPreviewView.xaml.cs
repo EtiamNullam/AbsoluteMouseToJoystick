@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbsoluteMouseToJoystick.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,29 +25,29 @@ namespace AbsoluteMouseToJoystick.Views
         {
             InitializeComponent();
 
-            RotatePreview(Orientation);
+            RotatePreview(MouseAxis);
         }
 
-        public static readonly DependencyProperty OrientationProperty =
-            DependencyProperty.Register("Orientation", typeof(Orientation), typeof(AxisPreviewView), new PropertyMetadata(Orientation.Horizontal, OnOrientationChanged));
+        public static readonly DependencyProperty MouseAxisProperty =
+            DependencyProperty.Register("MouseAxis", typeof(MouseAxis), typeof(AxisPreviewView), new PropertyMetadata(Data.MouseAxis.None, OnMouseAxisChanged));
 
-        private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnMouseAxisChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != e.OldValue)
             {
-                ((AxisPreviewView)d).RotatePreview((Orientation)e.NewValue);
+                ((AxisPreviewView)d).RotatePreview((MouseAxis)e.NewValue);
             }
         }
 
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(AxisPreviewView));
 
-        public Orientation Orientation
+        public MouseAxis MouseAxis
         {
-            get => (Orientation)GetValue(OrientationProperty);
+            get => (MouseAxis)GetValue(MouseAxisProperty);
             set
             {
-                SetValue(OrientationProperty, value);
+                SetValue(MouseAxisProperty, value);
                 RotatePreview(value);
             }
         }
@@ -60,17 +61,22 @@ namespace AbsoluteMouseToJoystick.Views
         private List<ColumnDefinition> DisabledColumns = new List<ColumnDefinition>();
         private List<RowDefinition> DisabledRows = new List<RowDefinition>();
 
-        public void RotatePreview(Orientation orientation)
+        public void RotatePreview(MouseAxis axis)
         {
-            if (orientation == Orientation.Horizontal)
+            switch (axis)
             {
-                DisableRows();
-                EnableColumns();
-            }
-            else
-            {
-                DisableColumns();
-                EnableRows();
+                case MouseAxis.None:
+                    DisableRows();
+                    DisableColumns();
+                    break;
+                case MouseAxis.X:
+                    DisableRows();
+                    EnableColumns();
+                    break;
+                case MouseAxis.Y:
+                    DisableColumns();
+                    EnableRows();
+                    break;
             }
         }
 

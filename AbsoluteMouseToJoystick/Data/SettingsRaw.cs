@@ -12,7 +12,8 @@ namespace AbsoluteMouseToJoystick.Data
         public int ResolutionY { get; set; }
         public int ResolutionX { get; set; }
         public double TimerInterval { get; set; }
-        public ZoneDistribution ZoneDistributionX { get; set; }
-        public ZoneDistribution ZoneDistributionY { get; set; }
+        public AxisSettings AxisX { get; set; }
+        public AxisSettings AxisY { get; set; }
+        public AxisSettings AxisZ { get; set; }
     }
 }

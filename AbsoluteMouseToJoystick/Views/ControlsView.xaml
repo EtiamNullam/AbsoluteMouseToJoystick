@@ -26,13 +26,16 @@
             <TextBox Grid.Column="2" Text="{Binding Settings.ResolutionY}" Margin="5"/>
         </Grid>
         
-        <TextBlock Margin="5" Text="Axis X zones" />
-        <local:AxisZoneSettingsView DataContext="{Binding Settings.ZoneDistributionX}"/>
+        <TextBlock Margin="5" Text="Axis X settings" />
+        <local:AxisSettingsView DataContext="{Binding Settings.AxisX}"/>
         
-        <TextBlock Margin="5" Text="Axis Y zones" />
-        <local:AxisZoneSettingsView DataContext="{Binding Settings.ZoneDistributionY}"/>
+        <TextBlock Margin="5" Text="Axis Y settings" />
+        <local:AxisSettingsView DataContext="{Binding Settings.AxisY}"/>
+        
+        <TextBlock Margin="5" Text="Axis Z settings" />
+        <local:AxisSettingsView DataContext="{Binding Settings.AxisZ}"/>
 
-        <TextBlock Text="Timer interval (ms)"/>
+        <TextBlock Text="Timer interval (ms)" Margin="5"/>
         <TextBox Text="{Binding Settings.TimerInterval}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
 
         <Button Height="30" Margin="5" Content="Start/Stop" Command="{Binding StartStopCommand}"/>

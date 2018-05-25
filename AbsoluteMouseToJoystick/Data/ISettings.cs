@@ -7,7 +7,8 @@
         int ResolutionY { get; set; }
         int ResolutionX { get; set; }
         double TimerInterval { get; set; }
-        ZoneDistribution ZoneDistributionX { get; set; }
-        ZoneDistribution ZoneDistributionY { get; set; }
+        AxisSettings AxisX { get; set; }
+        AxisSettings AxisY { get; set; }
+        AxisSettings AxisZ { get; set; }
     }
 }

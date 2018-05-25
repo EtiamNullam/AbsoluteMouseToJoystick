@@ -75,11 +75,11 @@ namespace AbsoluteMouseToJoystick.Data
         [JsonIgnore]
         public double Total => NegativeDeadZone + NegativeZone + NeutralDeadZone + PositiveZone + PositiveDeadZone;
 
-        private double _negativeDeadZone;
-        private double _negativeZone;
-        private double _neutralDeadZone;
-        private double _positiveZone;
-        private double _positiveDeadZone;
+        private double _negativeDeadZone = 0;
+        private double _negativeZone = 1;
+        private double _neutralDeadZone = 0;
+        private double _positiveZone = 1;
+        private double _positiveDeadZone = 0;
 
         private void LogZoneChanged()
         {

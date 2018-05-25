@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="AbsoluteMouseToJoystick.Views.AxisSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AbsoluteMouseToJoystick.Views"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:data="clr-namespace:AbsoluteMouseToJoystick.Data"
+             xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
+             mc:Ignorable="d"
+             d:DesignHeight="100" d:DesignWidth="400">
+    <UserControl.Resources>
+        <converters:MouseAxisToValueBoolean x:Key="mouseAxisToBoolean"/>
+        <ObjectDataProvider x:Key="enumValues" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="data:MouseAxis"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Border BorderBrush="Black" BorderThickness="0.5" Margin="5" CornerRadius="4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Source" Margin="5" Grid.ColumnSpan="1"/>
+            <ComboBox Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Source={StaticResource enumValues}}" SelectedItem="{Binding MouseAxis}" Margin="5">
+            
+            </ComboBox>
+            
+            <TextBlock Text="Zones" Margin="5" Grid.Row="1" Grid.ColumnSpan="5"/>
+
+            <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeDeadZone}" Margin="5"/>
+            <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeZone}" Margin="5" Grid.Column="1"/>
+            <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NeutralDeadZone}" Margin="5" Grid.Column="2"/>
+            <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveZone}" Margin="5" Grid.Column="3"/>
+            <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveDeadZone}" Margin="5" Grid.Column="4"/>
+        </Grid>
+    </Border>
+</UserControl>

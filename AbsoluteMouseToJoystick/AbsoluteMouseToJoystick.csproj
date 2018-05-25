@@ -116,17 +116,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\AxisSettings.cs" />
     <Compile Include="Data\ISettings.cs" />
     <Compile Include="Data\ISettingsManager.cs" />
+    <Compile Include="Data\MouseAxis.cs" />
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\SettingsRaw.cs" />
     <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
+    <Compile Include="Data\IntPoint.cs" />
     <Compile Include="IO\JsonFileManager.cs" />
     <Compile Include="Logging\ISimpleLogger.cs" />
     <Compile Include="Logging\MessageBasedLogger.cs" />
     <Compile Include="Data\ZoneDistribution.cs" />
+    <Compile Include="ValueConverters\BoolToVisibilityValueConverter.cs" />
     <Compile Include="ValueConverters\DoubleToStarValueConverter.cs" />
+    <Compile Include="ValueConverters\MouseAxisToValueBoolean.cs" />
     <Compile Include="ValueConverters\NegateValueConverter.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -135,8 +140,8 @@
     <Compile Include="Views\AxisPreviewView.xaml.cs">
       <DependentUpon>AxisPreviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AxisZoneSettingsView.xaml.cs">
-      <DependentUpon>AxisZoneSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\AxisSettingsView.xaml.cs">
+      <DependentUpon>AxisSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LogView.xaml.cs">
       <DependentUpon>LogView.xaml</DependentUpon>
@@ -161,7 +166,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AxisZoneSettingsView.xaml">
+    <Page Include="Views\AxisSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

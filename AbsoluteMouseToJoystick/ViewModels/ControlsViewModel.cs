@@ -19,10 +19,11 @@ namespace AbsoluteMouseToJoystick.ViewModels
 {
     public class ControlsViewModel : ViewModelBase
     {
-        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, JsonFileManager jsonFileManager)
+        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, JsonFileManager jsonFileManager, vJoy joy)
         {
             _logger = logger;
             _jsonFileManager = jsonFileManager;
+            _joy = joy;
 
             Settings = settings;
 
@@ -62,7 +63,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
         private readonly ISimpleLogger _logger;
         private readonly JsonFileManager _jsonFileManager;
-        private readonly vJoy _joy = new vJoy();
+        private readonly vJoy _joy;
         private Feeder _feeder;
         private Timer _timer = new Timer { AutoReset = true };
         private bool _isRunning = false;

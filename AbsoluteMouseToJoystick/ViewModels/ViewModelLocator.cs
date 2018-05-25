@@ -21,6 +21,7 @@ using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using Newtonsoft.Json;
 using System;
+using vJoyInterfaceWrap;
 
 namespace AbsoluteMouseToJoystick.ViewModels
 {
@@ -49,6 +50,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
             container.Register<LogViewModel>();
             container.Register<ControlsViewModel>();
 
+            container.Register<vJoy>();
             container.Register<ISimpleLogger, MessageBasedLogger>();
             container.Register<ISettingsManager, Settings>();
             container.Register<ISettings>(() => container.GetInstance<ISettingsManager>());

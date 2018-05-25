@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AbsoluteMouseToJoystick"
         xmlns:views="clr-namespace:AbsoluteMouseToJoystick.Views"
+        xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
         mc:Ignorable="d"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         Title="Absolute Mouse To Joystick - vJoy Feeder" MinHeight="300" MinWidth="320" Height="600" Width="800">
@@ -12,6 +13,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -21,8 +23,11 @@
         </Grid.RowDefinitions>
 
         <views:LogView Grid.RowSpan="2"/>
+        
         <views:ControlsView Grid.Column="1" Grid.RowSpan="2"/>
-        <views:AxisPreviewView Grid.Column="2" Title="Axis Y preview" Orientation="Vertical" DataContext="{Binding Settings.ZoneDistributionY}" Margin="5"/>
-        <views:AxisPreviewView Grid.Column="2" Grid.Row="1" Title="Axis X preview" Orientation="Horizontal" DataContext="{Binding Settings.ZoneDistributionX}" Margin="5"/>
+        
+        <views:AxisPreviewView Title="Axis X preview" DataContext="{Binding Settings.AxisX}" MouseAxis="{Binding MouseAxis}" Margin="5" Grid.Column="2" />
+        <views:AxisPreviewView Title="Axis Y preview" DataContext="{Binding Settings.AxisY}" MouseAxis="{Binding MouseAxis}" Margin="5" Grid.Column="2" Grid.Row="1" />
+        <views:AxisPreviewView Title="Axis Z preview" DataContext="{Binding Settings.AxisZ}" MouseAxis="{Binding MouseAxis}" Margin="5" Grid.Column="3" Grid.Row="0" />
     </Grid>
 </Window>
