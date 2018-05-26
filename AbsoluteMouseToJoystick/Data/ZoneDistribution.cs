@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace AbsoluteMouseToJoystick.Data
 {
-    // TODO: save and load from file (json)
     public class ZoneDistribution : ObservableObject
     {
         [JsonIgnore]
@@ -21,6 +20,12 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _negativeDeadZone, value);
+                RaisePropertyChanged(nameof(NegativeDeadZoneEnd));
+                RaisePropertyChanged(nameof(NegativeZoneEnd));
+                RaisePropertyChanged(nameof(NeutralDeadZoneEnd));
+                RaisePropertyChanged(nameof(PositiveZoneEnd));
+                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(Total));
                 LogZoneChanged();
             }
         }
@@ -30,6 +35,11 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _negativeZone, value);
+                RaisePropertyChanged(nameof(NegativeZoneEnd));
+                RaisePropertyChanged(nameof(NeutralDeadZoneEnd));
+                RaisePropertyChanged(nameof(PositiveZoneEnd));
+                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(Total));
                 LogZoneChanged();
             }
         }
@@ -39,6 +49,10 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _neutralDeadZone, value);
+                RaisePropertyChanged(nameof(NeutralDeadZoneEnd));
+                RaisePropertyChanged(nameof(PositiveZoneEnd));
+                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(Total));
                 LogZoneChanged();
             }
         }
@@ -48,6 +62,9 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _positiveZone, value);
+                RaisePropertyChanged(nameof(PositiveZoneEnd));
+                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(Total));
                 LogZoneChanged();
             }
         }
@@ -57,6 +74,8 @@ namespace AbsoluteMouseToJoystick.Data
             set
             {
                 Set(ref _positiveDeadZone, value);
+                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(Total));
                 LogZoneChanged();
             }
         }
