@@ -21,7 +21,8 @@ namespace AbsoluteMouseToJoystick.ViewModels
      * - Show current values in app (button)
      *  - Also show dot on preview
      * - Add textbox for device ID
-     * - Allow for use of different axes
+     * - Allow for use of all axes
+     *  - Only show previews of active ones
      * - Add tooltips over preview, buttons and fields
      */
 
