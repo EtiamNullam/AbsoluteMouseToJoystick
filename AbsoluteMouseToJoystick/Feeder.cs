@@ -30,7 +30,9 @@ namespace AbsoluteMouseToJoystick
         private readonly vJoy _joy;
         private readonly ISettings _settings;
 
-        private readonly short DisabledAxisValue = short.MaxValue / 2;
+        private readonly short AxisNeutralValue = short.MaxValue / 2;
+        private readonly short AxisMaxValue = short.MaxValue;
+        private readonly short AxisMinValue = 0;
 
         // TODO: use efficient way instead? (from readme.pdf)
         private void Execute(object sender, EventArgs e)
@@ -53,15 +55,14 @@ namespace AbsoluteMouseToJoystick
                 case MouseAxis.Y:
                     return CalculateAxisValue(mousePosition.Y, _settings.ResolutionY, axisSettings.ZoneDistribution);
                 case MouseAxis.None:
-                    return DisabledAxisValue;
+                    return AxisNeutralValue;
                 default:
                     _logger.Log("Invalid MouseAxis");
-                    return DisabledAxisValue;
+                    return AxisNeutralValue;
             }
         }
 
         private int CalculateAxisValue(int pixel, int pixelsCount, ZoneDistribution zoneDistribution)
-        //private int CalculateAxisValue(int pixel, int pixelsCount, AxisSettings axisSettings)
         {
             var value = (double)pixel / (pixelsCount - 1);
             value *= zoneDistribution.Total;
@@ -69,31 +70,29 @@ namespace AbsoluteMouseToJoystick
             switch (zone)
             {
                 case Zone.NegativeDead:
-                    value = 0;
+                    value = AxisMinValue;
                     break;
                 case Zone.Negative:
                     value = (value - zoneDistribution.NegativeDeadZoneEnd) / zoneDistribution.NegativeZone / 2;
                     break;
                 case Zone.NeutralDead:
-                    value = 0.5f;
+                    value = AxisNeutralValue;
                     break;
                 case Zone.Positive:
                     value = (value - zoneDistribution.NeutralDeadZoneEnd) / zoneDistribution.PositiveZone / 2 + 0.5f;
                     break;
                 case Zone.PositiveDead:
-                    value = 1;
+                    value = AxisMaxValue;
                     break;
                 default:
                     _logger.Log("Feeder: Invalid Zone");
                     break;
             }
-            return Convert.ToInt32(value * short.MaxValue);
+            return Convert.ToInt32(value * AxisMaxValue);
         }
 
         private void SetAxes(int value)
-        {
-            this.SetAxes(value, value, value);
-        }
+            => this.SetAxes(value, value, value);
 
         private void SetAxes(int x, int y, int z)
         {
@@ -130,7 +129,7 @@ namespace AbsoluteMouseToJoystick
                 _timer = null;
             }
 
-            SetAxes(DisabledAxisValue);
+            SetAxes(AxisNeutralValue);
         }
     }
 }
