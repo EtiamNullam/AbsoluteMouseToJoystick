@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,5 +16,8 @@ namespace AbsoluteMouseToJoystick.Data
         public AxisSettings AxisX { get; set; }
         public AxisSettings AxisY { get; set; }
         public AxisSettings AxisZ { get; set; }
+
+        // Not used
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

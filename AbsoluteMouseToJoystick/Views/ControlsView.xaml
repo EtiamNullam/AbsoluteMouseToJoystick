@@ -36,7 +36,7 @@
         <local:AxisSettingsView DataContext="{Binding Settings.AxisZ}"/>
 
         <TextBlock Text="Timer interval (ms)" Margin="5"/>
-        <TextBox Text="{Binding Settings.TimerInterval}" IsEnabled="{Binding IsRunning, Converter={StaticResource negate}}" Margin="5"/>
+        <TextBox Text="{Binding Settings.TimerInterval}" Margin="5"/>
 
         <Button Height="30" Margin="5" Content="Start/Stop" Command="{Binding StartStopCommand}"/>
 

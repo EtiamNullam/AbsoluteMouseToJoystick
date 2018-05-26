@@ -19,19 +19,17 @@ namespace AbsoluteMouseToJoystick.ViewModels
 {
     public class ControlsViewModel : ViewModelBase
     {
-        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, JsonFileManager jsonFileManager, vJoy joy)
+        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, JsonFileManager jsonFileManager, Feeder feeder)
         {
             _logger = logger;
             _jsonFileManager = jsonFileManager;
-            _joy = joy;
+            _feeder = feeder;
 
             Settings = settings;
 
             StartStopCommand = new RelayCommand(this.StartStop);
             LoadCommand = new RelayCommand(this.LoadSettings);
             SaveCommand = new RelayCommand(this.SaveSettings);
-
-            ShowJoystickInfo(_joy, Settings.DeviceID);
 
             LoadDefaultSettings();
         }
@@ -63,9 +61,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
         private readonly ISimpleLogger _logger;
         private readonly JsonFileManager _jsonFileManager;
-        private readonly vJoy _joy;
-        private Feeder _feeder;
-        private Timer _timer = new Timer { AutoReset = true };
+        private readonly Feeder _feeder;
         private bool _isRunning = false;
 
         private void StartStop()
@@ -101,66 +97,18 @@ namespace AbsoluteMouseToJoystick.ViewModels
                 }
             }
         }
-
-        private bool ShowJoystickInfo(vJoy joy, uint deviceID)
-        {
-            UInt32 DllVer = 0, DrvVer = 0;
-            if (joy.DriverMatch(ref DllVer, ref DrvVer) && joy.vJoyEnabled())
-            {
-                // Get the state of the requested device
-                VjdStat status = joy.GetVJDStatus(deviceID);
-
-                switch (status)
-                {
-                    case VjdStat.VJD_STAT_OWN:
-                        _logger.Log($"vJoy Device {deviceID} is already owned by this feeder");
-                        break;
-                    case VjdStat.VJD_STAT_FREE:
-                        _logger.Log($"vJoy Device {deviceID} is free");
-                        break;
-                    case VjdStat.VJD_STAT_BUSY:
-                        _logger.Log($"vJoy Device {deviceID} is already owned by another feeder\nCannot continue");
-                        return false;
-                    case VjdStat.VJD_STAT_MISS:
-                        _logger.Log($"vJoy Device {deviceID} is not installed or disabled\nCannot continue");
-                        return false;
-                    default:
-                        _logger.Log($"vJoy Device {deviceID} general error\nCannot continue");
-                        return false;
-                }
-
-                ///// vJoy Device properties
-                int nBtn = joy.GetVJDButtonNumber(deviceID);
-                int nDPov = joy.GetVJDDiscPovNumber(deviceID);
-                int nCPov = joy.GetVJDContPovNumber(deviceID);
-                bool X_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_X);
-                bool Y_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_Y);
-                bool Z_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_Z);
-                bool RX_Exist = joy.GetVJDAxisExist(deviceID, HID_USAGES.HID_USAGE_RX);
-                _logger.Log($"Device[{deviceID}]: Buttons={nBtn}; DiscPOVs:{nDPov}; ContPOVs:{nCPov}");
-                return true;
-            }
-            else return false;
-        }
-
         private void Start()
         {
             try
             {
-                _timer.Interval = Settings.TimerInterval;
-
-                if (_joy.AcquireVJD(Settings.DeviceID))
+                if (_feeder.Start())
                 {
-                    _feeder = new Feeder(_joy, _logger, _timer, Settings);
-                    _timer.Start();
-
                     IsRunning = true;
-
-                    _logger.Log("Device acquired.");
+                    _logger.Log("Device acquired. Feeder started.");
                 }
                 else _logger.Log("Device acquire FAILED.");
-
             }
+
             catch (Exception e)
             {
                 _logger.Log(e.Message);
@@ -169,21 +117,10 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
         private void Stop()
         {
-            _timer.Stop();
-
-            if (_feeder != null)
-            {
-                _feeder.Dispose();
-                _feeder = null;
-            }
-
-            _joy.RelinquishVJD(Settings.DeviceID);
-
+            _feeder.Stop();
             IsRunning = false;
 
             _logger.Log("Device relinquished.");
-
-            ShowJoystickInfo(_joy, Settings.DeviceID);
         }
     }
 }

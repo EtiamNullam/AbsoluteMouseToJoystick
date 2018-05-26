@@ -1,7 +1,9 @@
 ﻿using AbsoluteMouseToJoystick.Data;
 using AbsoluteMouseToJoystick.Logging;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,19 +14,51 @@ namespace AbsoluteMouseToJoystick
 {
     public class Feeder : IDisposable
     {
-        public Feeder(vJoy joy, ISimpleLogger logger, Timer timer, ISettings settings)
+        public Feeder(vJoy joy, ISimpleLogger logger, ISettings settings)
         {
             _joy = joy;
             _logger = logger;
             _settings = settings;
 
-            _joy.ResetVJD(_settings.DeviceID);
+            _timer.Interval = settings.TimerInterval;
 
-            _timer = timer;
-            _timer.Elapsed += Execute;
+            _timer.Elapsed += OnTimerTick;
+            _settings.PropertyChanged += OnSettingsPropertyChanged;
+
+            _joy.ResetVJD(_settings.DeviceID);
+            ShowJoystickInfo();
         }
 
-        private Timer _timer;
+        public bool Start()
+        {
+            var acquireResult = _joy.AcquireVJD(_settings.DeviceID);
+        
+            if (acquireResult)
+            {
+                _timer.Start();
+                Feed();
+            }
+
+            return acquireResult;
+        }
+
+        public void Stop()
+        {
+            _joy.RelinquishVJD(_settings.DeviceID);
+            _timer.Stop();
+            SetAxes(AxisDisabledValue);
+            ShowJoystickInfo();
+        }
+
+        private void OnSettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Settings.TimerInterval))
+            {
+                _timer.Interval = _settings.TimerInterval;
+            }
+        }
+
+        private Timer _timer = new Timer { AutoReset = true };
 
         private readonly ISimpleLogger _logger;
         private readonly vJoy _joy;
@@ -32,10 +66,12 @@ namespace AbsoluteMouseToJoystick
 
         private readonly short AxisNeutralValue = short.MaxValue / 2;
         private readonly short AxisMaxValue = short.MaxValue;
-        private readonly short AxisMinValue = 0;
+
+        private void OnTimerTick(object sender, EventArgs e)
+            => Feed();
 
         // TODO: use efficient way instead? (from readme.pdf)
-        private void Execute(object sender, EventArgs e)
+        private void Feed()
         {
             var mousePosition = Interop.GetCursorPosition();
 
@@ -125,11 +161,58 @@ namespace AbsoluteMouseToJoystick
         {
             if (_timer != null)
             {
-                _timer.Elapsed -= Execute;
+                _timer.Elapsed -= OnTimerTick;
                 _timer = null;
             }
 
-            SetAxes(AxisNeutralValue);
+            if (_settings != null)
+            {
+                _settings.PropertyChanged -= OnSettingsPropertyChanged;
+            }
+
+            Stop();
+        }
+
+        // TODO: refactor (move to other class?)
+        private bool ShowJoystickInfo()
+        {
+            UInt32 DllVer = 0, DrvVer = 0;
+            if (_joy.DriverMatch(ref DllVer, ref DrvVer) && _joy.vJoyEnabled())
+            {
+                // Get the state of the requested device
+                VjdStat status = _joy.GetVJDStatus(_settings.DeviceID);
+
+                switch (status)
+                {
+                    case VjdStat.VJD_STAT_OWN:
+                        _logger.Log($"vJoy Device {_settings.DeviceID} is already owned by this feeder");
+                        break;
+                    case VjdStat.VJD_STAT_FREE:
+                        _logger.Log($"vJoy Device {_settings.DeviceID} is free");
+                        break;
+                    case VjdStat.VJD_STAT_BUSY:
+                        _logger.Log($"vJoy Device {_settings.DeviceID} is already owned by another feeder\nCannot continue");
+                        return false;
+                    case VjdStat.VJD_STAT_MISS:
+                        _logger.Log($"vJoy Device {_settings.DeviceID} is not installed or disabled\nCannot continue");
+                        return false;
+                    default:
+                        _logger.Log($"vJoy Device {_settings.DeviceID} general error\nCannot continue");
+                        return false;
+                }
+
+                ///// vJoy Device properties
+                int nBtn = _joy.GetVJDButtonNumber(_settings.DeviceID);
+                int nDPov = _joy.GetVJDDiscPovNumber(_settings.DeviceID);
+                int nCPov = _joy.GetVJDContPovNumber(_settings.DeviceID);
+                bool X_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_X);
+                bool Y_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Y);
+                bool Z_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Z);
+                bool RX_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_RX);
+                _logger.Log($"Device[{_settings.DeviceID}]: Buttons={nBtn}; DiscPOVs:{nDPov}; ContPOVs:{nCPov}");
+                return true;
+            }
+            else return false;
         }
     }
 }

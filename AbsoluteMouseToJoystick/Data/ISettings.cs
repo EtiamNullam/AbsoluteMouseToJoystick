@@ -1,7 +1,8 @@
-﻿namespace AbsoluteMouseToJoystick.Data
+﻿using System.ComponentModel;
+
+namespace AbsoluteMouseToJoystick.Data
 {
-    // derive from INotifyPropertyChanged?
-    public interface ISettings
+    public interface ISettings : INotifyPropertyChanged
     {
         uint DeviceID { get; set; }
         int ResolutionY { get; set; }
