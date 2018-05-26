@@ -64,7 +64,7 @@ namespace AbsoluteMouseToJoystick
         private readonly vJoy _joy;
         private readonly ISettings _settings;
 
-        private readonly short AxisNeutralValue = short.MaxValue / 2;
+        private readonly short AxisDisabledValue = short.MaxValue / 2;
         private readonly short AxisMaxValue = short.MaxValue;
 
         private void OnTimerTick(object sender, EventArgs e)
@@ -91,10 +91,10 @@ namespace AbsoluteMouseToJoystick
                 case MouseAxis.Y:
                     return CalculateAxisValue(mousePosition.Y, _settings.ResolutionY, axisSettings.ZoneDistribution);
                 case MouseAxis.None:
-                    return AxisNeutralValue;
+                    return AxisDisabledValue;
                 default:
                     _logger.Log("Invalid MouseAxis");
-                    return AxisNeutralValue;
+                    return AxisDisabledValue;
             }
         }
 
@@ -106,19 +106,19 @@ namespace AbsoluteMouseToJoystick
             switch (zone)
             {
                 case Zone.NegativeDead:
-                    value = AxisMinValue;
+                    value = 0;
                     break;
                 case Zone.Negative:
                     value = (value - zoneDistribution.NegativeDeadZoneEnd) / zoneDistribution.NegativeZone / 2;
                     break;
                 case Zone.NeutralDead:
-                    value = AxisNeutralValue;
+                    value = 0.5f;
                     break;
                 case Zone.Positive:
                     value = (value - zoneDistribution.NeutralDeadZoneEnd) / zoneDistribution.PositiveZone / 2 + 0.5f;
                     break;
                 case Zone.PositiveDead:
-                    value = AxisMaxValue;
+                    value = 1;
                     break;
                 default:
                     _logger.Log("Feeder: Invalid Zone");
