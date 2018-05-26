@@ -151,28 +151,24 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
                 if (_joy.AcquireVJD(Settings.DeviceID))
                 {
-                    _logger.Log("Device acquired.");
+                    _feeder = new Feeder(_joy, _logger, _timer, Settings);
                     _timer.Start();
 
-                    _feeder = new Feeder(_joy, _logger, _timer, Settings);
-                }
-                else
-                {
-                    _logger.Log("Device acquire FAILED.");
-                }
+                    IsRunning = true;
 
-                IsRunning = true;
+                    _logger.Log("Device acquired.");
+                }
+                else _logger.Log("Device acquire FAILED.");
+
             }
             catch (Exception e)
             {
-                _logger?.Log(e.Message);
+                _logger.Log(e.Message);
             }
         }
 
         private void Stop()
         {
-            IsRunning = false;
-
             _timer.Stop();
 
             if (_feeder != null)
@@ -182,6 +178,8 @@ namespace AbsoluteMouseToJoystick.ViewModels
             }
 
             _joy.RelinquishVJD(Settings.DeviceID);
+
+            IsRunning = false;
 
             _logger.Log("Device relinquished.");
 
