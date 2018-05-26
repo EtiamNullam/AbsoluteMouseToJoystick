@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace AbsoluteMouseToJoystick.Data
         private MouseAxis _mouseAxis = MouseAxis.None;
         private ZoneDistribution _zoneDistribution = new ZoneDistribution();
 
+        [JsonIgnore]
         public bool IsEnabled => MouseAxis != MouseAxis.None;
 
         public MouseAxis MouseAxis
