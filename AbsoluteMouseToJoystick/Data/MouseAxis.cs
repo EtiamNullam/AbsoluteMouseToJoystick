@@ -8,8 +8,8 @@ namespace AbsoluteMouseToJoystick.Data
 {
     public enum MouseAxis
     {
-        None,
-        X,
-        Y
+        None = -1,
+        X = 0,
+        Y = 1
     }
 }
