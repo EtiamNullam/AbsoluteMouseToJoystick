@@ -4,13 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AbsoluteMouseToJoystick.Views"
-             xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <converters:DoubleToStarValueConverter x:Key="doubleToStar"/>
-        <converters:BoolToVisibilityValueConverter x:Key="boolToVisibility"/>
-    </UserControl.Resources>
     <Grid Name="rootGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -29,7 +24,7 @@
             <ColumnDefinition Width="{Binding ZoneDistribution.PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="5" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"/>
+        <Label Grid.ColumnSpan="5" Content="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"/>
 
         <Border Background="Red" Grid.Row="1" Visibility="{Binding IsEnabled, Converter={StaticResource boolToVisibility}}">
             <Viewbox>

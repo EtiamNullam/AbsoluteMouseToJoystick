@@ -5,12 +5,17 @@
     xmlns:local="clr-namespace:AbsoluteMouseToJoystick"
     StartupUri="Shell.xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
     d1p1:Ignorable="d"
     xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
     >
-  <Application.Resources>
-    <ResourceDictionary>
-      <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:AbsoluteMouseToJoystick.ViewModels" />
-    </ResourceDictionary>
-  </Application.Resources>
+    <Application.Resources>
+        <ResourceDictionary>
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:AbsoluteMouseToJoystick.ViewModels" />
+            <converters:NegateValueConverter x:Key="negate"/>
+            <converters:MouseAxisToValueBoolean x:Key="mouseAxisToBoolean"/>
+            <converters:DoubleToStarValueConverter x:Key="doubleToStar"/>
+            <converters:BoolToVisibilityValueConverter x:Key="boolToVisibility"/>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

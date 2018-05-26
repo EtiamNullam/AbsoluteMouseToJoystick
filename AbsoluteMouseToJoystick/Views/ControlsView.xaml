@@ -4,17 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AbsoluteMouseToJoystick.Views"
-             xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator}, Path=Controls}"
-             d:DesignHeight="500" d:DesignWidth="300">
+             d:DesignHeight="800" d:DesignWidth="300">
     <UserControl.Resources>
-        <converters:NegateValueConverter x:Key="negate" />
+        <Style TargetType="FrameworkElement" x:Key="indent">
+            <Setter Property="Margin">
+                <Setter.Value>
+                    <Thickness>
+                        10,5,5,5
+                    </Thickness>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin">
+                <Setter.Value>
+                    <Thickness>
+                        5
+                    </Thickness>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="local:AxisSettingsView">
+            <Setter Property="Margin">
+                <Setter.Value>
+                    <Thickness>
+                        10,0
+                    </Thickness>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <StackPanel Grid.Column="1" Grid.RowSpan="2" >
-        <TextBlock Margin="5" Text="Resolution" />
+        <Label Content="Resolution" />
 
-        <Grid Height="30">
+        <Grid Height="30" Style="{Binding Source={StaticResource indent}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="7"/>
@@ -26,19 +52,19 @@
             <TextBox Grid.Column="2" Text="{Binding Settings.ResolutionY}" Margin="5"/>
         </Grid>
         
-        <TextBlock Margin="5" Text="Axis X settings" />
+        <Label FontWeight="Bold" Content="Axis X" />
         <local:AxisSettingsView DataContext="{Binding Settings.AxisX}"/>
         
-        <TextBlock Margin="5" Text="Axis Y settings" />
+        <Label FontWeight="Bold" Content="Axis Y" />
         <local:AxisSettingsView DataContext="{Binding Settings.AxisY}"/>
         
-        <TextBlock Margin="5" Text="Axis Z settings" />
+        <Label FontWeight="Bold" Content="Axis Z" />
         <local:AxisSettingsView DataContext="{Binding Settings.AxisZ}"/>
 
-        <TextBlock Text="Timer interval (ms)" Margin="5"/>
-        <TextBox Text="{Binding Settings.TimerInterval}" Margin="5"/>
+        <Label Content="Timer interval (ms)"/>
+        <TextBox Text="{Binding Settings.TimerInterval}" Style="{Binding Source={StaticResource indent}}" />
 
-        <Button Height="30" Margin="5" Content="Start/Stop" Command="{Binding StartStopCommand}"/>
+        <Button Content="Start/Stop" Command="{Binding StartStopCommand}"/>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -46,13 +72,13 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <Button Height="30" Margin="5" Content="Load from file" Command="{Binding LoadCommand}"/>
-            <Button Grid.Column="1" Height="30" Margin="5" Content="Save to file" Command="{Binding SaveCommand}"/>
+            <Button Content="Load from file" Command="{Binding LoadCommand}"/>
+            <Button Grid.Column="1" Content="Save to file" Command="{Binding SaveCommand}"/>
         </Grid>
 
         <StackPanel Orientation="Horizontal">
-            <TextBlock Margin="5" Text="Is running" />
-            <CheckBox IsEnabled="False" Margin="5" IsChecked="{Binding IsRunning}"/>
+            <Label Content="Is running"/>
+            <CheckBox IsEnabled="False" IsChecked="{Binding IsRunning}" Margin="7"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

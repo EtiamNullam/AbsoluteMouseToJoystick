@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AbsoluteMouseToJoystick"
         xmlns:views="clr-namespace:AbsoluteMouseToJoystick.Views"
-        xmlns:converters="clr-namespace:AbsoluteMouseToJoystick.ValueConverters"
         mc:Ignorable="d"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
-        Title="Absolute Mouse To Joystick - vJoy Feeder" MinHeight="300" MinWidth="320" Height="640" Width="800">
+        Title="Absolute Mouse To Joystick - vJoy Feeder" MinHeight="300" MinWidth="320" Height="670" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

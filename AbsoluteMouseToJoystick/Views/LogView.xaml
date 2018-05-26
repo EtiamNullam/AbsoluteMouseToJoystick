@@ -9,11 +9,11 @@
              d:DesignHeight="300" d:DesignWidth="200">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <TextBlock Text="Log" Margin="3"/>
+        <Label Content="Log"/>
         <TextBox Grid.Row="1" Margin="3" IsReadOnly="True" Text="{Binding Log}" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap"/>
     </Grid>
 </UserControl>
