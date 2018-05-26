@@ -93,13 +93,15 @@ namespace AbsoluteMouseToJoystick.ViewModels
             if (settings is ISettings castedSettings)
             {
                 Settings.Load(castedSettings);
+
+                if (IsRunning)
+                {
+                    Stop();
+                    Start();
+                }
             }
         }
-        //
 
-        // TODO:
-        // - Acquire somewhere else
-        // - Relinquish on exit (or some button press)
         private bool ShowJoystickInfo(vJoy joy, uint deviceID)
         {
             UInt32 DllVer = 0, DrvVer = 0;
