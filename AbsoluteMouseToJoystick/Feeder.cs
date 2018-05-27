@@ -14,11 +14,12 @@ namespace AbsoluteMouseToJoystick
 {
     public class Feeder : IDisposable
     {
-        public Feeder(vJoy joy, ISimpleLogger logger, ISettings settings)
+        public Feeder(vJoy joy, ISimpleLogger logger, ISettings settings, Interop interop)
         {
             _joy = joy;
             _logger = logger;
             _settings = settings;
+            _interop = interop;
 
             _timer.Interval = settings.TimerInterval;
 
@@ -63,7 +64,7 @@ namespace AbsoluteMouseToJoystick
         private readonly ISimpleLogger _logger;
         private readonly vJoy _joy;
         private readonly ISettings _settings;
-
+        private readonly Interop _interop;
         private readonly short AxisDisabledValue = short.MaxValue / 2;
         private readonly short AxisMaxValue = short.MaxValue;
 
@@ -73,7 +74,7 @@ namespace AbsoluteMouseToJoystick
         // TODO: use efficient way instead? (from readme.pdf)
         private void Feed()
         {
-            var mousePosition = Interop.GetCursorPosition();
+            var mousePosition = _interop.GetCursorPosition();
 
             var xAxisValue = CalculateAxisValue(mousePosition, _settings.AxisX);
             var yAxisValue = CalculateAxisValue(mousePosition, _settings.AxisY);

@@ -56,6 +56,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
             container.Register<ISettings>(() => container.GetInstance<ISettingsManager>());
             container.Register<JsonFileManager>();
             container.Register<Feeder>();
+            container.Register<Interop>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();

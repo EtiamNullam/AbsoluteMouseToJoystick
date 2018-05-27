@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace AbsoluteMouseToJoystick
 {
-    public static class Interop
+    public class Interop
     {
         /// <summary>
         /// Retrieves the cursor's position, in screen coordinates.
@@ -18,11 +18,9 @@ namespace AbsoluteMouseToJoystick
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out IntPoint lpPoint);
 
-        public static IntPoint GetCursorPosition()
+        public IntPoint GetCursorPosition()
         {
             GetCursorPos(out IntPoint lpPoint);
-            //bool success = User32.GetCursorPos(out lpPoint);
-            // if (!success)
 
             return lpPoint;
         }
