@@ -18,11 +18,20 @@ namespace AbsoluteMouseToJoystick
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out IntPoint lpPoint);
 
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(UInt16 virtualKeyCode);
+
         public IntPoint GetCursorPosition()
         {
             GetCursorPos(out IntPoint lpPoint);
 
             return lpPoint;
+        }
+
+        // bitwise testing needed
+        public bool IsMouseButtonDown(MouseButton mouseButton)
+        {
+            return GetAsyncKeyState((ushort)mouseButton) < 0;
         }
     }
 }

@@ -45,9 +45,15 @@ namespace AbsoluteMouseToJoystick
 
         public void Stop()
         {
-            _joy.RelinquishVJD(_settings.DeviceID);
             _timer.Stop();
-            SetAxes(AxisDisabledValue);
+
+            ResetAxes();
+            ResetJoystickButtons();
+
+            UpdateJoystick();
+
+            _joy.RelinquishVJD(_settings.DeviceID);
+
             ShowJoystickInfo();
         }
 
@@ -74,14 +80,51 @@ namespace AbsoluteMouseToJoystick
 
         private void Feed()
         {
-            var mousePosition = _interop.GetCursorPosition();
+            UpdateAxes();
+            UpdateJoystickButtons();
 
+            UpdateJoystick();
+        }
+
+        private void UpdateAxes()
+        {
+            var mousePosition = _interop.GetCursorPosition();
+            
             var xAxisValue = CalculateAxisValue(mousePosition, _settings.AxisX);
             var yAxisValue = CalculateAxisValue(mousePosition, _settings.AxisY);
             var zAxisValue = CalculateAxisValue(mousePosition, _settings.AxisZ);
 
             SetAxes(xAxisValue, yAxisValue, zAxisValue);
         }
+
+        private void UpdateJoystickButtons()
+        {
+            ResetJoystickButtons();
+
+            if (_interop.IsMouseButtonDown(MouseButton.Left))
+            {
+                _joystickState.Buttons |= 1;
+            }
+            if (_interop.IsMouseButtonDown(MouseButton.Right))
+            {
+                _joystickState.Buttons |= 1 << 1;
+            }
+            if (_interop.IsMouseButtonDown(MouseButton.Middle))
+            {
+                _joystickState.Buttons |= 1 << 2;
+            }
+            if (_interop.IsMouseButtonDown(MouseButton.Extra))
+            {
+                _joystickState.Buttons |= 1 << 3;
+            }
+            if (_interop.IsMouseButtonDown(MouseButton.Extra2))
+            {
+                _joystickState.Buttons |= 1 << 4;
+            }
+        }
+
+        private void ResetJoystickButtons()
+            => _joystickState.Buttons = 0;
 
         private int CalculateAxisValue(IntPoint mousePosition, AxisSettings axisSettings)
         {
@@ -128,19 +171,17 @@ namespace AbsoluteMouseToJoystick
             return Convert.ToInt32(value * AxisMaxValue);
         }
 
+        private void ResetAxes()
+            => this.SetAxes(AxisDisabledValue);
+
         private void SetAxes(int value)
             => this.SetAxes(value, value, value);
 
         private void SetAxes(int x, int y, int z)
         {
-            this._joystickState = new vJoy.JoystickState
-            {
-                AxisX = x,
-                AxisY = y,
-                AxisZ = z,
-            };
-
-            UpdateJoystick();
+            this._joystickState.AxisX = x;
+            this._joystickState.AxisY = y;
+            this._joystickState.AxisZ = z;
         }
 
         private void UpdateJoystick()

@@ -120,6 +120,7 @@
     <Compile Include="Data\ISettings.cs" />
     <Compile Include="Data\ISettingsManager.cs" />
     <Compile Include="Data\MouseAxis.cs" />
+    <Compile Include="Data\MouseButton.cs" />
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\SettingsRaw.cs" />
     <Compile Include="Data\Zone.cs" />
