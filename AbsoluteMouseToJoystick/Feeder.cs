@@ -60,6 +60,7 @@ namespace AbsoluteMouseToJoystick
         }
 
         private Timer _timer = new Timer { AutoReset = true };
+        private vJoy.JoystickState _joystickState = new vJoy.JoystickState();
 
         private readonly ISimpleLogger _logger;
         private readonly vJoy _joy;
@@ -71,7 +72,6 @@ namespace AbsoluteMouseToJoystick
         private void OnTimerTick(object sender, EventArgs e)
             => Feed();
 
-        // TODO: use efficient way instead? (from readme.pdf)
         private void Feed()
         {
             var mousePosition = _interop.GetCursorPosition();
@@ -133,9 +133,19 @@ namespace AbsoluteMouseToJoystick
 
         private void SetAxes(int x, int y, int z)
         {
-            this._joy.SetAxis(x, _settings.DeviceID, HID_USAGES.HID_USAGE_X);
-            this._joy.SetAxis(y, _settings.DeviceID, HID_USAGES.HID_USAGE_Y);
-            this._joy.SetAxis(z, _settings.DeviceID, HID_USAGES.HID_USAGE_Z);
+            this._joystickState = new vJoy.JoystickState
+            {
+                AxisX = x,
+                AxisY = y,
+                AxisZ = z,
+            };
+
+            UpdateJoystick();
+        }
+
+        private void UpdateJoystick()
+        {
+            this._joy.UpdateVJD(_settings.DeviceID, ref this._joystickState);
         }
 
         private Zone GetZone(double value, ZoneDistribution zoneDistribution)
