@@ -9,13 +9,21 @@ namespace AbsoluteMouseToJoystick.Data
 {
     public class SettingsRaw : ISettings
     {
-        public uint DeviceID { get; set; }
-        public int ResolutionY { get; set; }
-        public int ResolutionX { get; set; }
-        public double TimerInterval { get; set; }
-        public AxisSettings AxisX { get; set; }
-        public AxisSettings AxisY { get; set; }
-        public AxisSettings AxisZ { get; set; }
+        public uint DeviceID { get; set; } = 1;
+        public int ResolutionX { get; set; } = 1920;
+        public int ResolutionY { get; set; } = 1080;
+        public double TimerInterval { get; set; } = 5;
+        public AxisSettings AxisX { get; set; } = new AxisSettings();
+        public AxisSettings AxisY { get; set; } = new AxisSettings();
+        public AxisSettings AxisZ { get; set; } = new AxisSettings();
+        public IList<bool> Buttons { get; set; } = new List<bool>(5)
+        {
+            true,
+            true,
+            true,
+            true,
+            true
+        };
 
         // Not used
         public event PropertyChangedEventHandler PropertyChanged;
