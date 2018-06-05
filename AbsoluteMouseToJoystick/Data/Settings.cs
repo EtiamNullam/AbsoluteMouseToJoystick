@@ -16,15 +16,16 @@ namespace AbsoluteMouseToJoystick.Data
             _logger = logger;
         }
 
-        public void Load(ISettings settings)
+        public void Load(ISettings source)
         {
-            this.ResolutionX = settings.ResolutionX;
-            this.ResolutionY = settings.ResolutionY;
-            this.TimerInterval = settings.TimerInterval;
-            this.DeviceID = settings.DeviceID;
-            this.AxisX = settings.AxisX;
-            this.AxisY = settings.AxisY;
-            this.AxisZ = settings.AxisZ;
+            this.ResolutionX = source.ResolutionX;
+            this.ResolutionY = source.ResolutionY;
+            this.TimerInterval = source.TimerInterval;
+            this.DeviceID = source.DeviceID;
+            this.AxisX = source.AxisX;
+            this.AxisY = source.AxisY;
+            this.AxisZ = source.AxisZ;
+            this.Buttons = source.Buttons;
         }
 
         public int ResolutionX
@@ -83,6 +84,11 @@ namespace AbsoluteMouseToJoystick.Data
             get => _axisZ;
             set => Set(ref _axisZ, value);
         }
+        public IList<bool> Buttons
+        {
+            get => _buttons;
+            set => Set(ref _buttons, value);
+        }
 
         private readonly ISimpleLogger _logger;
 
@@ -94,5 +100,14 @@ namespace AbsoluteMouseToJoystick.Data
         private AxisSettings _axisX = new AxisSettings { MouseAxis = MouseAxis.X };
         private AxisSettings _axisY = new AxisSettings { MouseAxis = MouseAxis.Y };
         private AxisSettings _axisZ = new AxisSettings();
+
+        private IList<bool> _buttons = new List<bool>(5)
+        {
+            true,
+            true,
+            true,
+            true,
+            true
+        };
     }
 }

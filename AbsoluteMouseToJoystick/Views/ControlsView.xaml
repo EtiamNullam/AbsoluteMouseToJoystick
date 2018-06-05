@@ -61,6 +61,35 @@
         <Label FontWeight="Bold" Content="Axis Z" />
         <local:AxisSettingsView DataContext="{Binding Settings.AxisZ}"/>
 
+        <Label Content="Mouse buttons" Grid.Row="3" Grid.ColumnSpan="5" FontWeight="Bold"/>
+ 
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Content="Left"/>
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Content="Right"/>
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" Content="Middle"/>
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3" Content="Thumb 1"/>
+            <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="4" Content="Thumb 2"/>
+            
+            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.Buttons[0]}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.Buttons[1]}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"/>
+            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.Buttons[2]}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>
+            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.Buttons[3]}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3"/>
+            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.Buttons[4]}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="4"/>
+        </Grid>
+        
         <Label Content="Timer interval (ms)"/>
         <TextBox Text="{Binding Settings.TimerInterval}" Style="{Binding Source={StaticResource indent}}" />
 

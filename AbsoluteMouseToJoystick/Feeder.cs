@@ -12,6 +12,7 @@ using vJoyInterfaceWrap;
 
 namespace AbsoluteMouseToJoystick
 {
+    // TODO: extract non feeder related things to another class
     public class Feeder : IDisposable
     {
         public Feeder(vJoy joy, ISimpleLogger logger, ISettings settings, Interop interop)
@@ -97,27 +98,28 @@ namespace AbsoluteMouseToJoystick
             SetAxes(xAxisValue, yAxisValue, zAxisValue);
         }
 
+        // extract button logic
         private void UpdateButtons()
         {
             ResetButtons();
 
-            if (_interop.IsMouseButtonDown(MouseButton.Left))
+            if (_settings.Buttons[0] && _interop.IsMouseButtonDown(MouseButton.Left))
             {
                 _joystickState.Buttons |= 1;
             }
-            if (_interop.IsMouseButtonDown(MouseButton.Right))
+            if (_settings.Buttons[1] && _interop.IsMouseButtonDown(MouseButton.Right))
             {
                 _joystickState.Buttons |= 1 << 1;
             }
-            if (_interop.IsMouseButtonDown(MouseButton.Middle))
+            if (_settings.Buttons[2] && _interop.IsMouseButtonDown(MouseButton.Middle))
             {
                 _joystickState.Buttons |= 1 << 2;
             }
-            if (_interop.IsMouseButtonDown(MouseButton.Extra))
+            if (_settings.Buttons[3] && _interop.IsMouseButtonDown(MouseButton.Extra))
             {
                 _joystickState.Buttons |= 1 << 3;
             }
-            if (_interop.IsMouseButtonDown(MouseButton.Extra2))
+            if (_settings.Buttons[4] && _interop.IsMouseButtonDown(MouseButton.Extra2))
             {
                 _joystickState.Buttons |= 1 << 4;
             }

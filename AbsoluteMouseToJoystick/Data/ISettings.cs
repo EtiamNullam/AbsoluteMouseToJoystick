@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AbsoluteMouseToJoystick.Data
 {
@@ -11,5 +12,6 @@ namespace AbsoluteMouseToJoystick.Data
         AxisSettings AxisX { get; set; }
         AxisSettings AxisY { get; set; }
         AxisSettings AxisZ { get; set; }
+        IList<bool> Buttons { get; set; }
     }
 }
