@@ -130,10 +130,10 @@
     <Compile Include="Logging\ISimpleLogger.cs" />
     <Compile Include="Logging\MessageBasedLogger.cs" />
     <Compile Include="Data\ZoneDistribution.cs" />
-    <Compile Include="ValueConverters\BoolToVisibilityValueConverter.cs" />
-    <Compile Include="ValueConverters\DoubleToStarValueConverter.cs" />
-    <Compile Include="ValueConverters\MouseAxisToValueBoolean.cs" />
-    <Compile Include="ValueConverters\NegateValueConverter.cs" />
+    <Compile Include="ValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\DoubleToStarConverter.cs" />
+    <Compile Include="ValueConverters\MouseAxisToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\NegateConverter.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ControlsViewModel.cs" />

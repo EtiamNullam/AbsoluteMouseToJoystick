@@ -12,10 +12,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:AbsoluteMouseToJoystick.ViewModels" />
-            <converters:NegateValueConverter x:Key="negate"/>
-            <converters:MouseAxisToValueBoolean x:Key="mouseAxisToBoolean"/>
-            <converters:DoubleToStarValueConverter x:Key="doubleToStar"/>
-            <converters:BoolToVisibilityValueConverter x:Key="boolToVisibility"/>
+            <converters:NegateConverter x:Key="negate"/>
+            <converters:MouseAxisToBooleanConverter x:Key="mouseAxisToBoolean"/>
+            <converters:DoubleToStarConverter x:Key="doubleToStar"/>
+            <converters:BoolToVisibilityConverter x:Key="boolToVisibility"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
