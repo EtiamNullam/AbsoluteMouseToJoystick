@@ -27,7 +27,7 @@ namespace AbsoluteMouseToJoystick
             _settings.PropertyChanged += OnSettingsPropertyChanged;
 
             _joy.ResetVJD(_settings.DeviceID);
-            ShowJoystickInfo();
+            ShowInfo();
         }
 
         public bool Start()
@@ -48,13 +48,13 @@ namespace AbsoluteMouseToJoystick
             _timer.Stop();
 
             ResetAxes();
-            ResetJoystickButtons();
+            ResetButtons();
 
-            UpdateJoystick();
+            Update();
 
             _joy.RelinquishVJD(_settings.DeviceID);
 
-            ShowJoystickInfo();
+            ShowInfo();
         }
 
         private void OnSettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -81,9 +81,9 @@ namespace AbsoluteMouseToJoystick
         private void Feed()
         {
             UpdateAxes();
-            UpdateJoystickButtons();
+            UpdateButtons();
 
-            UpdateJoystick();
+            Update();
         }
 
         private void UpdateAxes()
@@ -97,9 +97,9 @@ namespace AbsoluteMouseToJoystick
             SetAxes(xAxisValue, yAxisValue, zAxisValue);
         }
 
-        private void UpdateJoystickButtons()
+        private void UpdateButtons()
         {
-            ResetJoystickButtons();
+            ResetButtons();
 
             if (_interop.IsMouseButtonDown(MouseButton.Left))
             {
@@ -123,7 +123,7 @@ namespace AbsoluteMouseToJoystick
             }
         }
 
-        private void ResetJoystickButtons()
+        private void ResetButtons()
             => _joystickState.Buttons = 0;
 
         private int CalculateAxisValue(IntPoint mousePosition, AxisSettings axisSettings)
@@ -184,7 +184,7 @@ namespace AbsoluteMouseToJoystick
             this._joystickState.AxisZ = z;
         }
 
-        private void UpdateJoystick()
+        private void Update()
         {
             this._joy.UpdateVJD(_settings.DeviceID, ref this._joystickState);
         }
@@ -226,7 +226,7 @@ namespace AbsoluteMouseToJoystick
         }
 
         // TODO: refactor (move to other class?)
-        private bool ShowJoystickInfo()
+        private bool ShowInfo()
         {
             UInt32 DllVer = 0, DrvVer = 0;
             if (_joy.DriverMatch(ref DllVer, ref DrvVer) && _joy.vJoyEnabled())
