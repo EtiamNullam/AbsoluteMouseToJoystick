@@ -12,7 +12,7 @@
             <Setter Property="Margin">
                 <Setter.Value>
                     <Thickness>
-                        10,5,5,5
+                        10,5
                     </Thickness>
                 </Setter.Value>
             </Setter>
@@ -40,7 +40,7 @@
     <StackPanel Grid.Column="1" Grid.RowSpan="2" >
         <Label Content="Resolution" />
 
-        <Grid Height="30" Style="{Binding Source={StaticResource indent}}">
+        <Grid Height="30" Style="{StaticResource indent}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="7"/>
@@ -91,7 +91,7 @@
         </Grid>
         
         <Label Content="Timer interval (ms)"/>
-        <TextBox Text="{Binding Settings.TimerInterval}" Style="{Binding Source={StaticResource indent}}" />
+        <TextBox Text="{Binding Settings.TimerInterval}" Style="{StaticResource indent}" />
 
         <Button Content="Start/Stop" Command="{Binding StartStopCommand}"/>
 
