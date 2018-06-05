@@ -93,7 +93,7 @@
         <Label Content="Timer interval (ms)"/>
         <TextBox Text="{Binding Settings.TimerInterval}" Style="{StaticResource indent}" />
 
-        <Button Content="Start/Stop" Command="{Binding StartStopCommand}"/>
+        <Button Content="Sta_rt/Stop" IsDefault="True" Command="{Binding StartStopCommand}"/>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -101,8 +101,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <Button Content="Load from file" Command="{Binding LoadCommand}"/>
-            <Button Grid.Column="1" Content="Save to file" Command="{Binding SaveCommand}"/>
+            <Button Content="Lo_ad from file" Command="{Binding LoadCommand}"/>
+            <Button Grid.Column="1" Content="_Save to file" Command="{Binding SaveCommand}"/>
         </Grid>
 
         <StackPanel Orientation="Horizontal">
