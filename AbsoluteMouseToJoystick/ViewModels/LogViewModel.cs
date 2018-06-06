@@ -1,10 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace AbsoluteMouseToJoystick.ViewModels
 {
@@ -12,8 +14,12 @@ namespace AbsoluteMouseToJoystick.ViewModels
     {
         public LogViewModel()
         {
+            ClearLogCommand = new RelayCommand(ClearLog);
+
             Messenger.Default.Register<string>(this, LogMessage);
         }
+
+        public ICommand ClearLogCommand { get; private set; }
 
         public string Log
         {
@@ -26,6 +32,11 @@ namespace AbsoluteMouseToJoystick.ViewModels
         private void LogMessage(string message)
         {
             Log = $"{message}\n{Log}";
+        }
+
+        private void ClearLog()
+        {
+            Log = "Log cleared";
         }
     }
 }
