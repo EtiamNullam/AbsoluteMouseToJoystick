@@ -19,32 +19,16 @@ namespace AbsoluteMouseToJoystick.ViewModels
 {
     public class ControlsViewModel : ViewModelBase
     {
-        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, JsonFileManager jsonFileManager, Feeder feeder)
+        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, Feeder feeder)
         {
             _logger = logger;
-            _jsonFileManager = jsonFileManager;
             _feeder = feeder;
 
             Settings = settings;
 
             StartStopCommand = new RelayCommand(this.StartStop);
-            LoadCommand = new RelayCommand(this.LoadSettings);
-            SaveCommand = new RelayCommand(this.SaveSettings);
-
-            LoadDefaultSettings();
-        }
-
-        // TODO: Remove magic string
-        private void LoadDefaultSettings()
-        {
-            try
-            {
-                Settings.Load(_jsonFileManager.Open<SettingsRaw>(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "default.json"));
-            }
-            catch (Exception e)
-            {
-                _logger.Log(e.Message);
-            }
+            LoadCommand = new RelayCommand(this.Settings.LoadFromFile);
+            SaveCommand = new RelayCommand(this.Settings.SaveToFile);
         }
 
         public ICommand StartStopCommand { get; private set; }
@@ -60,7 +44,6 @@ namespace AbsoluteMouseToJoystick.ViewModels
         public ISettingsManager Settings { get; private set; }
 
         private readonly ISimpleLogger _logger;
-        private readonly JsonFileManager _jsonFileManager;
         private readonly Feeder _feeder;
         private bool _isRunning = false;
 
@@ -70,33 +53,6 @@ namespace AbsoluteMouseToJoystick.ViewModels
             else Stop();
         }
 
-        // Extract to other class
-        private void SaveSettings()
-        {
-            _jsonFileManager.Save(Settings);
-        }
-
-        private void LoadSettings()
-        {
-            _jsonFileManager.OnFileLoaded += OnSettingsLoaded;
-            _jsonFileManager.OpenWithDialog<SettingsRaw>();
-        }
-
-        private void OnSettingsLoaded(object sender, object settings)
-        {
-            _jsonFileManager.OnFileLoaded -= OnSettingsLoaded;
-
-            if (settings is ISettings castedSettings)
-            {
-                Settings.Load(castedSettings);
-
-                if (IsRunning)
-                {
-                    Stop();
-                    Start();
-                }
-            }
-        }
         private void Start()
         {
             try

@@ -13,13 +13,13 @@ namespace AbsoluteMouseToJoystick.Data
         public int ResolutionX { get; set; } = 1920;
         public int ResolutionY { get; set; } = 1080;
         public double TimerInterval { get; set; } = 5;
-        public AxisSettings AxisX { get; set; } = new AxisSettings();
-        public AxisSettings AxisY { get; set; } = new AxisSettings();
+        public AxisSettings AxisX { get; set; } = new AxisSettings { MouseAxis = MouseAxis.X };
+        public AxisSettings AxisY { get; set; } = new AxisSettings { MouseAxis = MouseAxis.Y };
         public AxisSettings AxisZ { get; set; } = new AxisSettings();
         public bool[] Buttons { get; set; } = new bool[5]
         {
-            true,
-            true,
+            false,
+            false,
             true,
             true,
             true

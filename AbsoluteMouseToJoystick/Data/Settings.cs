@@ -1,8 +1,10 @@
-﻿using AbsoluteMouseToJoystick.Logging;
+﻿using AbsoluteMouseToJoystick.IO;
+using AbsoluteMouseToJoystick.Logging;
 using GalaSoft.MvvmLight;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +13,12 @@ namespace AbsoluteMouseToJoystick.Data
 {
     public class Settings : ObservableObject, ISettingsManager
     {
-        public Settings(ISimpleLogger logger)
+        public Settings(ISimpleLogger logger, JsonFileManager jsonFileManager)
         {
-            _logger = logger;
+            this._logger = logger;
+            this._jsonFileManager = jsonFileManager;
+
+            LoadDefault();
         }
 
         public void Load(ISettings source)
@@ -84,6 +89,7 @@ namespace AbsoluteMouseToJoystick.Data
             get => _axisZ;
             set => Set(ref _axisZ, value);
         }
+
         public bool[] Buttons
         {
             get => _buttons;
@@ -91,23 +97,48 @@ namespace AbsoluteMouseToJoystick.Data
         }
 
         private readonly ISimpleLogger _logger;
+        private readonly JsonFileManager _jsonFileManager;
 
-        private int _resolutionX = 1920;
-        private int _resolutionY = 1080;
-        private double _timerInterval = 5;
-        private uint _deviceID = 1;
+        private readonly string DefaultPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "default.json";
 
-        private AxisSettings _axisX = new AxisSettings { MouseAxis = MouseAxis.X };
-        private AxisSettings _axisY = new AxisSettings { MouseAxis = MouseAxis.Y };
-        private AxisSettings _axisZ = new AxisSettings();
+        private int _resolutionX, _resolutionY;
+        private double _timerInterval;
+        private uint _deviceID;
 
-        private bool[] _buttons = new bool[]
+        private AxisSettings _axisX, _axisY, _axisZ;
+
+        private bool[] _buttons;
+
+        private void LoadDefault()
         {
-            true,
-            true,
-            true,
-            true,
-            true
-        };
+            try
+            {
+                Load(new SettingsRaw());
+                Load(_jsonFileManager.Open<SettingsRaw>(this.DefaultPath));
+            }
+            catch (Exception e)
+            {
+                _logger.Log(e.Message);
+            }
+        }
+
+        public void SaveToFile()
+            => _jsonFileManager.Save(this);
+
+        public void LoadFromFile()
+        {
+            _jsonFileManager.OnFileLoaded += OnSettingsLoaded;
+            _jsonFileManager.OpenWithDialog<SettingsRaw>();
+        }
+
+        private void OnSettingsLoaded(object sender, object settings)
+        {
+            _jsonFileManager.OnFileLoaded -= OnSettingsLoaded;
+
+            if (settings is ISettings castedSettings)
+            {
+                Load(castedSettings);
+            }
+        }
     }
 }
