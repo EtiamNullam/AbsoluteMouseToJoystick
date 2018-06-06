@@ -30,8 +30,6 @@ namespace AbsoluteMouseToJoystick
 
         // bitwise testing needed
         public bool IsMouseButtonDown(MouseButton mouseButton)
-        {
-            return GetAsyncKeyState((ushort)mouseButton) < 0;
-        }
+            => GetAsyncKeyState((ushort)mouseButton) < 0;
     }
 }
