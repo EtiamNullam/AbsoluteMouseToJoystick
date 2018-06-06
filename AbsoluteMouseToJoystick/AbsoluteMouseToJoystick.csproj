@@ -118,11 +118,12 @@
     </ApplicationDefinition>
     <Compile Include="Data\AxisSettings.cs" />
     <Compile Include="Data\ISettings.cs" />
+    <Compile Include="Data\ISettingsBindable.cs" />
     <Compile Include="Data\ISettingsManager.cs" />
     <Compile Include="Data\MouseAxis.cs" />
     <Compile Include="Data\MouseButton.cs" />
+    <Compile Include="Data\SettingsManager.cs" />
     <Compile Include="Data\Settings.cs" />
-    <Compile Include="Data\SettingsRaw.cs" />
     <Compile Include="Data\Zone.cs" />
     <Compile Include="Interop.cs" />
     <Compile Include="Data\IntPoint.cs" />

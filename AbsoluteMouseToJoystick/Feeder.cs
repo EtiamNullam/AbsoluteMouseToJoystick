@@ -15,7 +15,7 @@ namespace AbsoluteMouseToJoystick
     // TODO: extract non feeder related things to another class
     public class Feeder : IDisposable
     {
-        public Feeder(vJoy joy, ISimpleLogger logger, ISettings settings, Interop interop)
+        public Feeder(vJoy joy, ISimpleLogger logger, ISettingsBindable settings, Interop interop)
         {
             _joy = joy;
             _logger = logger;
@@ -71,7 +71,7 @@ namespace AbsoluteMouseToJoystick
 
         private readonly ISimpleLogger _logger;
         private readonly vJoy _joy;
-        private readonly ISettings _settings;
+        private readonly ISettingsBindable _settings;
         private readonly Interop _interop;
         private readonly short AxisDisabledValue = short.MaxValue / 2;
         private readonly short AxisMaxValue = short.MaxValue;

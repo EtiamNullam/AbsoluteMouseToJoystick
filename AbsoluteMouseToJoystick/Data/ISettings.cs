@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace AbsoluteMouseToJoystick.Data
 {
-    public interface ISettings : INotifyPropertyChanged
+    public interface ISettings
     {
         uint DeviceID { get; set; }
         int ResolutionY { get; set; }

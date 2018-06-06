@@ -52,8 +52,8 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
             container.Register<vJoy>();
             container.Register<ISimpleLogger, MessageBasedLogger>();
-            container.Register<ISettingsManager, Settings>();
-            container.Register<ISettings>(() => container.GetInstance<ISettingsManager>());
+            container.Register<ISettingsBindable, Settings>();
+            container.Register<ISettingsManager, SettingsManager>();
             container.Register<JsonFileManager>();
             container.Register<Feeder>();
             container.Register<Interop>();

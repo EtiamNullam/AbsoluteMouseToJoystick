@@ -19,16 +19,17 @@ namespace AbsoluteMouseToJoystick.ViewModels
 {
     public class ControlsViewModel : ViewModelBase
     {
-        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settings, Feeder feeder)
+        public ControlsViewModel(ISimpleLogger logger, ISettingsManager settingsManager, ISettingsBindable settings, Feeder feeder)
         {
             _logger = logger;
             _feeder = feeder;
 
+            _settingsManager = settingsManager;
             Settings = settings;
 
             StartStopCommand = new RelayCommand(this.StartStop);
-            LoadCommand = new RelayCommand(this.Settings.LoadFromFile);
-            SaveCommand = new RelayCommand(this.Settings.SaveToFile);
+            LoadCommand = new RelayCommand(this._settingsManager.LoadFromFile);
+            SaveCommand = new RelayCommand(this._settingsManager.SaveToFile);
         }
 
         public ICommand StartStopCommand { get; private set; }
@@ -41,7 +42,9 @@ namespace AbsoluteMouseToJoystick.ViewModels
             set => Set(ref _isRunning, value);
         }
 
-        public ISettingsManager Settings { get; private set; }
+        public ISettingsBindable Settings { get; private set; }
+
+        private readonly ISettingsManager _settingsManager;
 
         private readonly ISimpleLogger _logger;
         private readonly Feeder _feeder;

@@ -1,75 +1,38 @@
-﻿using AbsoluteMouseToJoystick.IO;
-using AbsoluteMouseToJoystick.Logging;
+﻿using AbsoluteMouseToJoystick.Logging;
 using GalaSoft.MvvmLight;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AbsoluteMouseToJoystick.Data
 {
-    public class Settings : ObservableObject, ISettingsManager
+    public class Settings : ObservableObject, ISettingsBindable
     {
-        public Settings(ISimpleLogger logger, JsonFileManager jsonFileManager)
-        {
-            this._logger = logger;
-            this._jsonFileManager = jsonFileManager;
-
-            LoadDefault();
-        }
-
-        public void Load(ISettings source)
-        {
-            this.ResolutionX = source.ResolutionX;
-            this.ResolutionY = source.ResolutionY;
-            this.TimerInterval = source.TimerInterval;
-            this.DeviceID = source.DeviceID;
-            this.AxisX = source.AxisX;
-            this.AxisY = source.AxisY;
-            this.AxisZ = source.AxisZ;
-            this.Buttons = source.Buttons;
-        }
-
         public int ResolutionX
         {
             get => _resolutionX;
-            set
-            {
-                Set(ref _resolutionX, value);
-                _logger?.Log("Resolution X changed");
-            }
+            set => Set(ref _resolutionX, value);
         }
         public int ResolutionY
         {
             get => _resolutionY;
-            set
-            {
-                Set(ref _resolutionY, value);
-                _logger?.Log("Resolution Y changed");
-            }
+            set => Set(ref _resolutionY, value);
         }
 
         public double TimerInterval
         {
             get => _timerInterval;
-            set
-            {
-                Set(ref _timerInterval, value);
-                _logger?.Log("Timer interval changed");
-            }
+            set => Set(ref _timerInterval, value);
         }
 
         public uint DeviceID
         {
             get => _deviceID;
-            set
-            {
-                Set(ref _deviceID, value);
-                _logger?.Log("Device ID changed");
-            }
+            set => Set(ref _deviceID, value);
         }
 
         public AxisSettings AxisX
@@ -96,49 +59,22 @@ namespace AbsoluteMouseToJoystick.Data
             set => Set(ref _buttons, value);
         }
 
-        private readonly ISimpleLogger _logger;
-        private readonly JsonFileManager _jsonFileManager;
+        private int _resolutionX = 1920;
+        private int _resolutionY = 1080;
+        private double _timerInterval = 5;
+        private uint _deviceID = 1;
 
-        private readonly string DefaultPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "default.json";
+        private AxisSettings _axisX = new AxisSettings { MouseAxis = MouseAxis.X };
+        private AxisSettings _axisY = new AxisSettings { MouseAxis = MouseAxis.Y };
+        private AxisSettings _axisZ = new AxisSettings();
 
-        private int _resolutionX, _resolutionY;
-        private double _timerInterval;
-        private uint _deviceID;
-
-        private AxisSettings _axisX, _axisY, _axisZ;
-
-        private bool[] _buttons;
-
-        private void LoadDefault()
+        private bool[] _buttons = new bool[5]
         {
-            try
-            {
-                Load(new SettingsRaw());
-                Load(_jsonFileManager.Open<SettingsRaw>(this.DefaultPath));
-            }
-            catch (Exception e)
-            {
-                _logger.Log(e.Message);
-            }
-        }
-
-        public void SaveToFile()
-            => _jsonFileManager.Save(this);
-
-        public void LoadFromFile()
-        {
-            _jsonFileManager.OnFileLoaded += OnSettingsLoaded;
-            _jsonFileManager.OpenWithDialog<SettingsRaw>();
-        }
-
-        private void OnSettingsLoaded(object sender, object settings)
-        {
-            _jsonFileManager.OnFileLoaded -= OnSettingsLoaded;
-
-            if (settings is ISettings castedSettings)
-            {
-                Load(castedSettings);
-            }
-        }
+            false,
+            false,
+            true,
+            true,
+            true
+        };
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AbsoluteMouseToJoystick.Data
 {
-    public interface ISettingsManager : ISettings
+    public interface ISettingsManager
     {
         void Load(ISettings settings);
         void SaveToFile();
