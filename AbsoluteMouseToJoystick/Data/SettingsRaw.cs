@@ -16,7 +16,7 @@ namespace AbsoluteMouseToJoystick.Data
         public AxisSettings AxisX { get; set; } = new AxisSettings();
         public AxisSettings AxisY { get; set; } = new AxisSettings();
         public AxisSettings AxisZ { get; set; } = new AxisSettings();
-        public IList<bool> Buttons { get; set; } = new List<bool>(5)
+        public bool[] Buttons { get; set; } = new bool[5]
         {
             true,
             true,

@@ -12,6 +12,6 @@ namespace AbsoluteMouseToJoystick.Data
         AxisSettings AxisX { get; set; }
         AxisSettings AxisY { get; set; }
         AxisSettings AxisZ { get; set; }
-        IList<bool> Buttons { get; set; }
+        bool[] Buttons { get; set; }
     }
 }
