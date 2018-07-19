@@ -30,7 +30,6 @@ namespace AbsoluteMouseToJoystick.Data
             this._settings.DeviceID = source.DeviceID;
             this._settings.AxisX = source.AxisX;
             this._settings.AxisY = source.AxisY;
-            this._settings.AxisZ = source.AxisZ;
             this._settings.Buttons = source.Buttons;
         }
 

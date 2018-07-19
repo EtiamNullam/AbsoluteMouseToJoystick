@@ -11,7 +11,6 @@ namespace AbsoluteMouseToJoystick.Data
         double TimerInterval { get; set; }
         AxisSettings AxisX { get; set; }
         AxisSettings AxisY { get; set; }
-        AxisSettings AxisZ { get; set; }
         bool[] Buttons { get; set; }
     }
 }

@@ -93,9 +93,8 @@ namespace AbsoluteMouseToJoystick
             
             var xAxisValue = CalculateAxisValue(mousePosition, _settings.AxisX);
             var yAxisValue = CalculateAxisValue(mousePosition, _settings.AxisY);
-            var zAxisValue = CalculateAxisValue(mousePosition, _settings.AxisZ);
 
-            SetAxes(xAxisValue, yAxisValue, zAxisValue);
+            SetAxes(xAxisValue, yAxisValue);
         }
 
         // extract button logic
@@ -177,13 +176,12 @@ namespace AbsoluteMouseToJoystick
             => this.SetAxes(AxisDisabledValue);
 
         private void SetAxes(int value)
-            => this.SetAxes(value, value, value);
+            => this.SetAxes(value, value);
 
-        private void SetAxes(int x, int y, int z)
+        private void SetAxes(int x, int y)
         {
             this._joystickState.AxisX = x;
             this._joystickState.AxisY = y;
-            this._joystickState.AxisZ = z;
         }
 
         private void Update()

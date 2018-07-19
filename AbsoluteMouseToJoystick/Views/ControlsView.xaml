@@ -57,9 +57,6 @@
         
         <Label FontWeight="Bold" Content="Axis Y" />
         <local:AxisSettingsView DataContext="{Binding Settings.AxisY}"/>
-        
-        <Label FontWeight="Bold" Content="Axis Z" />
-        <local:AxisSettingsView DataContext="{Binding Settings.AxisZ}"/>
 
         <Label Content="Mouse buttons" Grid.Row="3" Grid.ColumnSpan="5" FontWeight="Bold"/>
  

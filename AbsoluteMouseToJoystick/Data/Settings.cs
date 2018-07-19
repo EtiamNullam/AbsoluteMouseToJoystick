@@ -47,12 +47,6 @@ namespace AbsoluteMouseToJoystick.Data
             set => Set(ref _axisY, value);
         }
 
-        public AxisSettings AxisZ
-        {
-            get => _axisZ;
-            set => Set(ref _axisZ, value);
-        }
-
         public bool[] Buttons
         {
             get => _buttons;
@@ -66,7 +60,6 @@ namespace AbsoluteMouseToJoystick.Data
 
         private AxisSettings _axisX = new AxisSettings { MouseAxis = MouseAxis.X };
         private AxisSettings _axisY = new AxisSettings { MouseAxis = MouseAxis.Y };
-        private AxisSettings _axisZ = new AxisSettings();
 
         private bool[] _buttons = new bool[5]
         {
