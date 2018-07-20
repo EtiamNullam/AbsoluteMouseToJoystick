@@ -43,26 +43,26 @@ namespace AbsoluteMouseToJoystick.Data
         {
             try
             {
-                Load(_jsonFileManager.Open<Settings>(this.DefaultPath));
+                Load(this._jsonFileManager.Open<Settings>(this.DefaultPath));
             }
             catch (Exception e)
             {
-                _logger.Log(e.Message);
+                this._logger.Log(e.Message);
             }
         }
 
         public void SaveToFile()
-            => _jsonFileManager.Save(_settings);
+            => this._jsonFileManager.Save(this._settings);
 
         public void LoadFromFile()
         {
-            _jsonFileManager.OnFileLoaded += OnSettingsLoaded;
-            _jsonFileManager.OpenWithDialog<Settings>();
+            this._jsonFileManager.OnFileLoaded += this.OnSettingsLoaded;
+            this._jsonFileManager.OpenWithDialog<Settings>();
         }
 
         private void OnSettingsLoaded(object sender, object settings)
         {
-            _jsonFileManager.OnFileLoaded -= OnSettingsLoaded;
+            this._jsonFileManager.OnFileLoaded -= this.OnSettingsLoaded;
 
             if (settings is ISettings castedSettings)
             {

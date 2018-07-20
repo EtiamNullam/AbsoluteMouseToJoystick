@@ -14,43 +14,43 @@ namespace AbsoluteMouseToJoystick.Data
     {
         public int ResolutionX
         {
-            get => _resolutionX;
-            set => Set(ref _resolutionX, value);
+            get => this._resolutionX;
+            set => Set(ref this._resolutionX, value);
         }
         public int ResolutionY
         {
-            get => _resolutionY;
-            set => Set(ref _resolutionY, value);
+            get => this._resolutionY;
+            set => Set(ref this._resolutionY, value);
         }
 
         public double TimerInterval
         {
-            get => _timerInterval;
-            set => Set(ref _timerInterval, value);
+            get => this._timerInterval;
+            set => Set(ref this._timerInterval, value);
         }
 
         public uint DeviceID
         {
-            get => _deviceID;
-            set => Set(ref _deviceID, value);
+            get => this._deviceID;
+            set => Set(ref this._deviceID, value);
         }
 
         public AxisSettings AxisX
         {
-            get => _axisX;
-            set => Set(ref _axisX, value);
+            get => this._axisX;
+            set => Set(ref this._axisX, value);
         }
 
         public AxisSettings AxisY
         {
-            get => _axisY;
-            set => Set(ref _axisY, value);
+            get => this._axisY;
+            set => Set(ref this._axisY, value);
         }
 
         public bool[] Buttons
         {
-            get => _buttons;
-            set => Set(ref _buttons, value);
+            get => this._buttons;
+            set => Set(ref this._buttons, value);
         }
 
         private int _resolutionX = 1920;

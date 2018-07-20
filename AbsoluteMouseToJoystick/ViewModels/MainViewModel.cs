@@ -33,7 +33,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
         /// </summary>
         public MainViewModel(ISettingsBindable settings)
         {
-            Settings = settings;
+            this.Settings = settings;
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.

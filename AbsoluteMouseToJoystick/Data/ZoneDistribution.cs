@@ -16,83 +16,83 @@ namespace AbsoluteMouseToJoystick.Data
 
         public double NegativeDeadZone
         {
-            get => _negativeDeadZone;
+            get => this._negativeDeadZone;
             set
             {
-                Set(ref _negativeDeadZone, value);
-                RaisePropertyChanged(nameof(NegativeDeadZoneEnd));
-                RaisePropertyChanged(nameof(NegativeZoneEnd));
-                RaisePropertyChanged(nameof(NeutralDeadZoneEnd));
-                RaisePropertyChanged(nameof(PositiveZoneEnd));
-                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
-                RaisePropertyChanged(nameof(Total));
+                Set(ref this._negativeDeadZone, value);
+                RaisePropertyChanged(nameof(this.NegativeDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.NegativeZoneEnd));
+                RaisePropertyChanged(nameof(this.NeutralDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.PositiveZoneEnd));
+                RaisePropertyChanged(nameof(this.PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.Total));
                 LogZoneChanged();
             }
         }
         public double NegativeZone
         {
-            get => _negativeZone;
+            get => this._negativeZone;
             set
             {
-                Set(ref _negativeZone, value);
-                RaisePropertyChanged(nameof(NegativeZoneEnd));
-                RaisePropertyChanged(nameof(NeutralDeadZoneEnd));
-                RaisePropertyChanged(nameof(PositiveZoneEnd));
-                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
-                RaisePropertyChanged(nameof(Total));
+                Set(ref this._negativeZone, value);
+                RaisePropertyChanged(nameof(this.NegativeZoneEnd));
+                RaisePropertyChanged(nameof(this.NeutralDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.PositiveZoneEnd));
+                RaisePropertyChanged(nameof(this.PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.Total));
                 LogZoneChanged();
             }
         }
         public double NeutralDeadZone
         {
-            get => _neutralDeadZone;
+            get => this._neutralDeadZone;
             set
             {
-                Set(ref _neutralDeadZone, value);
-                RaisePropertyChanged(nameof(NeutralDeadZoneEnd));
-                RaisePropertyChanged(nameof(PositiveZoneEnd));
-                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
-                RaisePropertyChanged(nameof(Total));
+                Set(ref this._neutralDeadZone, value);
+                RaisePropertyChanged(nameof(this.NeutralDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.PositiveZoneEnd));
+                RaisePropertyChanged(nameof(this.PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.Total));
                 LogZoneChanged();
             }
         }
         public double PositiveZone
         {
-            get => _positiveZone;
+            get => this._positiveZone;
             set
             {
-                Set(ref _positiveZone, value);
-                RaisePropertyChanged(nameof(PositiveZoneEnd));
-                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
-                RaisePropertyChanged(nameof(Total));
+                Set(ref this._positiveZone, value);
+                RaisePropertyChanged(nameof(this.PositiveZoneEnd));
+                RaisePropertyChanged(nameof(this.PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.Total));
                 LogZoneChanged();
             }
         }
         public double PositiveDeadZone
         {
-            get => _positiveDeadZone;
+            get => this._positiveDeadZone;
             set
             {
-                Set(ref _positiveDeadZone, value);
-                RaisePropertyChanged(nameof(PositiveDeadZoneEnd));
-                RaisePropertyChanged(nameof(Total));
+                Set(ref this._positiveDeadZone, value);
+                RaisePropertyChanged(nameof(this.PositiveDeadZoneEnd));
+                RaisePropertyChanged(nameof(this.Total));
                 LogZoneChanged();
             }
         }
 
         [JsonIgnore]
-        public double NegativeDeadZoneEnd => NegativeDeadZone;
+        public double NegativeDeadZoneEnd => this.NegativeDeadZone;
         [JsonIgnore]
-        public double NegativeZoneEnd => NegativeDeadZoneEnd + NegativeZone;
+        public double NegativeZoneEnd => this.NegativeDeadZoneEnd + this.NegativeZone;
         [JsonIgnore]
-        public double NeutralDeadZoneEnd => NegativeZoneEnd + NeutralDeadZone;
+        public double NeutralDeadZoneEnd => this.NegativeZoneEnd + this.NeutralDeadZone;
         [JsonIgnore]
-        public double PositiveZoneEnd => NeutralDeadZoneEnd + PositiveZone;
+        public double PositiveZoneEnd => this.NeutralDeadZoneEnd + this.PositiveZone;
         [JsonIgnore]
-        public double PositiveDeadZoneEnd => PositiveZoneEnd + PositiveDeadZone;
+        public double PositiveDeadZoneEnd => this.PositiveZoneEnd + this.PositiveDeadZone;
 
         [JsonIgnore]
-        public double Total => NegativeDeadZone + NegativeZone + NeutralDeadZone + PositiveZone + PositiveDeadZone;
+        public double Total => this.NegativeDeadZone + this.NegativeZone + this.NeutralDeadZone + this.PositiveZone + this.PositiveDeadZone;
 
         private double _negativeDeadZone = 0;
         private double _negativeZone = 1;
@@ -102,7 +102,7 @@ namespace AbsoluteMouseToJoystick.Data
 
         private void LogZoneChanged()
         {
-            Logger?.Log("Property of zone distribution changed");
+            this.Logger?.Log("Property of zone distribution changed");
         }
     }
 }

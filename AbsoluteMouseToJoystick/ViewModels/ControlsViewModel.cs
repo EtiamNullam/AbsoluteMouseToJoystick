@@ -21,15 +21,15 @@ namespace AbsoluteMouseToJoystick.ViewModels
     {
         public ControlsViewModel(ISimpleLogger logger, ISettingsManager settingsManager, ISettingsBindable settings, Feeder feeder)
         {
-            _logger = logger;
-            _feeder = feeder;
+            this._logger = logger;
+            this._feeder = feeder;
 
-            _settingsManager = settingsManager;
-            Settings = settings;
+            this._settingsManager = settingsManager;
+            this.Settings = settings;
 
-            StartStopCommand = new RelayCommand(this.StartStop);
-            LoadCommand = new RelayCommand(this._settingsManager.LoadFromFile);
-            SaveCommand = new RelayCommand(this._settingsManager.SaveToFile);
+            this.StartStopCommand = new RelayCommand(this.StartStop);
+            this.LoadCommand = new RelayCommand(this._settingsManager.LoadFromFile);
+            this.SaveCommand = new RelayCommand(this._settingsManager.SaveToFile);
         }
 
         public ICommand StartStopCommand { get; private set; }
@@ -38,8 +38,8 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
         public bool IsRunning
         {
-            get => _isRunning;
-            set => Set(ref _isRunning, value);
+            get => this._isRunning;
+            set => Set(ref this._isRunning, value);
         }
 
         public ISettingsBindable Settings { get; private set; }
@@ -52,7 +52,7 @@ namespace AbsoluteMouseToJoystick.ViewModels
 
         private void StartStop()
         {
-            if (!IsRunning) Start();
+            if (!this.IsRunning) Start();
             else Stop();
         }
 
@@ -60,26 +60,26 @@ namespace AbsoluteMouseToJoystick.ViewModels
         {
             try
             {
-                if (_feeder.Start())
+                if (this._feeder.Start())
                 {
-                    IsRunning = true;
-                    _logger.Log("Device acquired. Feeder started.");
+                    this.IsRunning = true;
+                    this._logger.Log("Device acquired. Feeder started.");
                 }
-                else _logger.Log("Device acquire FAILED.");
+                else this._logger.Log("Device acquire FAILED.");
             }
 
             catch (Exception e)
             {
-                _logger.Log(e.Message);
+                this._logger.Log(e.Message);
             }
         }
 
         private void Stop()
         {
-            _feeder.Stop();
-            IsRunning = false;
+            this._feeder.Stop();
+            this.IsRunning = false;
 
-            _logger.Log("Device relinquished.");
+            this._logger.Log("Device relinquished.");
         }
     }
 }

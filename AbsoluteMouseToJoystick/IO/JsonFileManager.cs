@@ -15,8 +15,8 @@ namespace AbsoluteMouseToJoystick.IO
     {
         public JsonFileManager(ISimpleLogger logger, JsonSerializer jsonSerializer)
         {
-            _logger = logger;
-            _jsonSerializer = jsonSerializer;
+            this._logger = logger;
+            this._jsonSerializer = jsonSerializer;
         }
 
         public event EventHandler<object> OnFileLoaded;
@@ -38,7 +38,7 @@ namespace AbsoluteMouseToJoystick.IO
                 Tag = obj,
             };
 
-            dialog.FileOk += OnFileForSaveSelected;
+            dialog.FileOk += this.OnFileForSaveSelected;
             dialog.ShowDialog();
         }
 
@@ -54,7 +54,7 @@ namespace AbsoluteMouseToJoystick.IO
                 Multiselect = false,
             };
 
-            dialog.FileOk += OnFileForOpenSelected<T>;
+            dialog.FileOk += this.OnFileForOpenSelected<T>;
             dialog.ShowDialog();
         }
 
@@ -65,14 +65,14 @@ namespace AbsoluteMouseToJoystick.IO
         {
             using (var streamReader = new StreamReader(path))
             using (var jsonTextReader = new JsonTextReader(streamReader))
-                return _jsonSerializer.Deserialize<T>(jsonTextReader);
+                return this._jsonSerializer.Deserialize<T>(jsonTextReader);
         }
 
         private void OnFileForOpenSelected<T>(object sender, CancelEventArgs e)
         {
             if (sender is OpenFileDialog dialog)
             {
-                dialog.FileOk -= OnFileForOpenSelected<T>;
+                dialog.FileOk -= this.OnFileForOpenSelected<T>;
 
                 try
                 {
@@ -80,19 +80,19 @@ namespace AbsoluteMouseToJoystick.IO
                     using (var streamReader = new StreamReader(stream))
                     using (var jsonTextReader = new JsonTextReader(streamReader))
                     {
-                        var loadResult = _jsonSerializer.Deserialize<T>(jsonTextReader);
+                        var loadResult = this._jsonSerializer.Deserialize<T>(jsonTextReader);
 
                         this.OnFileLoaded?.Invoke(this, loadResult);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(ex.Message);
+                    this._logger.Log(ex.Message);
                 }
             }
             else
             {
-                _logger.Log("Invalid dialog received at OnFileForOpenSelected()");
+                this._logger.Log("Invalid dialog received at OnFileForOpenSelected()");
             }
         }
 
@@ -100,24 +100,24 @@ namespace AbsoluteMouseToJoystick.IO
         {
             if (sender is SaveFileDialog dialog)
             {
-                dialog.FileOk -= OnFileForSaveSelected;
+                dialog.FileOk -= this.OnFileForSaveSelected;
 
                 try
                 {
                     using (var stream = dialog.OpenFile())
                     using (var streamWriter = new StreamWriter(stream))
                     {
-                        _jsonSerializer.Serialize(streamWriter, dialog.Tag);
+                        this._jsonSerializer.Serialize(streamWriter, dialog.Tag);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(ex.Message);
+                    this._logger.Log(ex.Message);
                 }
             }
             else
             {
-                _logger.Log("Invalid dialog received at OnFileForSaveSelected()");
+                this._logger.Log("Invalid dialog received at OnFileForSaveSelected()");
             }
         }
     }

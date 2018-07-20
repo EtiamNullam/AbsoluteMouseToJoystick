@@ -14,22 +14,22 @@ namespace AbsoluteMouseToJoystick.Data
         private ZoneDistribution _zoneDistribution = new ZoneDistribution();
 
         [JsonIgnore]
-        public bool IsEnabled => MouseAxis != MouseAxis.None;
+        public bool IsEnabled => this.MouseAxis != MouseAxis.None;
 
         public MouseAxis MouseAxis
         {
-            get => _mouseAxis;
+            get => this._mouseAxis;
             set
             {
-                Set(ref _mouseAxis, value);
-                RaisePropertyChanged(nameof(IsEnabled));
+                Set(ref this._mouseAxis, value);
+                RaisePropertyChanged(nameof(this.IsEnabled));
             }
         }
 
         public ZoneDistribution ZoneDistribution
         {
-            get => _zoneDistribution;
-            set => Set(ref _zoneDistribution, value);
+            get => this._zoneDistribution;
+            set => Set(ref this._zoneDistribution, value);
         }
     }
 }

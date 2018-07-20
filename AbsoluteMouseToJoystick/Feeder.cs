@@ -18,17 +18,17 @@ namespace AbsoluteMouseToJoystick
     {
         public Feeder(vJoy joy, ISimpleLogger logger, ISettingsBindable settings, Interop interop)
         {
-            _joy = joy;
-            _logger = logger;
-            _settings = settings;
-            _interop = interop;
+            this._joy = joy;
+            this._logger = logger;
+            this._settings = settings;
+            this._interop = interop;
 
-            _timer.Interval = settings.TimerInterval;
+            this._timer.Interval = settings.TimerInterval;
 
-            _timer.Elapsed += OnTimerTick;
-            _settings.PropertyChanged += OnSettingsPropertyChanged;
+            this._timer.Elapsed += this.OnTimerTick;
+            this._settings.PropertyChanged += this.OnSettingsPropertyChanged;
 
-            _joy.ResetVJD(_settings.DeviceID);
+            this._joy.ResetVJD(this._settings.DeviceID);
         }
 
         public bool Start()
@@ -36,11 +36,11 @@ namespace AbsoluteMouseToJoystick
             this.CheckVJoyState();
             this.ShowAdditionalVJoyInfo();
 
-            var acquireResult = _joy.AcquireVJD(_settings.DeviceID);
+            var acquireResult = this._joy.AcquireVJD(this._settings.DeviceID);
 
             if (acquireResult)
             {
-                _timer.Start();
+                this._timer.Start();
                 Feed();
             }
 
@@ -49,14 +49,14 @@ namespace AbsoluteMouseToJoystick
 
         public void Stop()
         {
-            _timer.Stop();
+            this._timer.Stop();
 
             ResetAxes();
             ResetButtons();
 
             Update();
 
-            _joy.RelinquishVJD(_settings.DeviceID);
+            this._joy.RelinquishVJD(this._settings.DeviceID);
 
             this.CheckVJoyState();
             this.ShowAdditionalVJoyInfo();
@@ -66,7 +66,7 @@ namespace AbsoluteMouseToJoystick
         {
             if (e.PropertyName == nameof(Settings.TimerInterval))
             {
-                _timer.Interval = _settings.TimerInterval;
+                this._timer.Interval = this._settings.TimerInterval;
             }
         }
 
@@ -93,10 +93,10 @@ namespace AbsoluteMouseToJoystick
 
         private void UpdateAxes()
         {
-            var mousePosition = _interop.GetCursorPosition();
+            var mousePosition = this._interop.GetCursorPosition();
 
-            var xAxisValue = CalculateAxisValue(mousePosition, _settings.AxisX);
-            var yAxisValue = CalculateAxisValue(mousePosition, _settings.AxisY);
+            var xAxisValue = CalculateAxisValue(mousePosition, this._settings.AxisX);
+            var yAxisValue = CalculateAxisValue(mousePosition, this._settings.AxisY);
 
             SetAxes(xAxisValue, yAxisValue);
         }
@@ -106,44 +106,44 @@ namespace AbsoluteMouseToJoystick
         {
             ResetButtons();
 
-            if (_settings.Buttons[0] && _interop.IsMouseButtonDown(MouseButton.Left))
+            if (this._settings.Buttons[0] && this._interop.IsMouseButtonDown(MouseButton.Left))
             {
-                _joystickState.Buttons |= 1;
+                this._joystickState.Buttons |= 1;
             }
-            if (_settings.Buttons[1] && _interop.IsMouseButtonDown(MouseButton.Right))
+            if (this._settings.Buttons[1] && this._interop.IsMouseButtonDown(MouseButton.Right))
             {
-                _joystickState.Buttons |= 1 << 1;
+                this._joystickState.Buttons |= 1 << 1;
             }
-            if (_settings.Buttons[2] && _interop.IsMouseButtonDown(MouseButton.Middle))
+            if (this._settings.Buttons[2] && this._interop.IsMouseButtonDown(MouseButton.Middle))
             {
-                _joystickState.Buttons |= 1 << 2;
+                this._joystickState.Buttons |= 1 << 2;
             }
-            if (_settings.Buttons[3] && _interop.IsMouseButtonDown(MouseButton.Extra))
+            if (this._settings.Buttons[3] && this._interop.IsMouseButtonDown(MouseButton.Extra))
             {
-                _joystickState.Buttons |= 1 << 3;
+                this._joystickState.Buttons |= 1 << 3;
             }
-            if (_settings.Buttons[4] && _interop.IsMouseButtonDown(MouseButton.Extra2))
+            if (this._settings.Buttons[4] && this._interop.IsMouseButtonDown(MouseButton.Extra2))
             {
-                _joystickState.Buttons |= 1 << 4;
+                this._joystickState.Buttons |= 1 << 4;
             }
         }
 
         private void ResetButtons()
-            => _joystickState.Buttons = 0;
+            => this._joystickState.Buttons = 0;
 
         private int CalculateAxisValue(IntPoint mousePosition, AxisSettings axisSettings)
         {
             switch (axisSettings.MouseAxis)
             {
                 case MouseAxis.X:
-                    return CalculateAxisValue(mousePosition.X, _settings.ResolutionX, axisSettings.ZoneDistribution);
+                    return CalculateAxisValue(mousePosition.X, this._settings.ResolutionX, axisSettings.ZoneDistribution);
                 case MouseAxis.Y:
-                    return CalculateAxisValue(mousePosition.Y, _settings.ResolutionY, axisSettings.ZoneDistribution);
+                    return CalculateAxisValue(mousePosition.Y, this._settings.ResolutionY, axisSettings.ZoneDistribution);
                 case MouseAxis.None:
-                    return AxisDisabledValue;
+                    return this.AxisDisabledValue;
                 default:
-                    _logger.Log("Invalid MouseAxis");
-                    return AxisDisabledValue;
+                    this._logger.Log("Invalid MouseAxis");
+                    return this.AxisDisabledValue;
             }
         }
 
@@ -170,14 +170,14 @@ namespace AbsoluteMouseToJoystick
                     value = 1;
                     break;
                 default:
-                    _logger.Log("Feeder: Invalid Zone");
+                    this._logger.Log("Feeder: Invalid Zone");
                     break;
             }
-            return Convert.ToInt32(value * AxisMaxValue);
+            return Convert.ToInt32(value * this.AxisMaxValue);
         }
 
         private void ResetAxes()
-            => this.SetAxes(AxisDisabledValue);
+            => this.SetAxes(this.AxisDisabledValue);
 
         private void SetAxes(int value)
             => this.SetAxes(value, value);
@@ -190,7 +190,7 @@ namespace AbsoluteMouseToJoystick
 
         private void Update()
         {
-            this._joy.UpdateVJD(_settings.DeviceID, ref this._joystickState);
+            this._joy.UpdateVJD(this._settings.DeviceID, ref this._joystickState);
         }
 
         private Zone GetZone(double value, ZoneDistribution zoneDistribution)
@@ -215,15 +215,15 @@ namespace AbsoluteMouseToJoystick
 
         public void Dispose()
         {
-            if (_timer != null)
+            if (this._timer != null)
             {
-                _timer.Elapsed -= OnTimerTick;
-                _timer = null;
+                this._timer.Elapsed -= this.OnTimerTick;
+                this._timer = null;
             }
 
-            if (_settings != null)
+            if (this._settings != null)
             {
-                _settings.PropertyChanged -= OnSettingsPropertyChanged;
+                this._settings.PropertyChanged -= this.OnSettingsPropertyChanged;
             }
 
             Stop();
@@ -232,26 +232,26 @@ namespace AbsoluteMouseToJoystick
         // TODO: extract
         private bool CheckVJoyState()
         {
-            StringBuilder stringBuilder = new StringBuilder().AppendLine("vJoy Device ID: " + _settings.DeviceID);
+            StringBuilder stringBuilder = new StringBuilder().AppendLine("vJoy Device ID: " + this._settings.DeviceID);
             bool canContinue = true;
             string message;
 
             // TODO: get actual DllVer and DrvVer
             UInt32 DllVer = 0, DrvVer = 0;
 
-            if (!_joy.DriverMatch(ref DllVer, ref DrvVer))
+            if (!this._joy.DriverMatch(ref DllVer, ref DrvVer))
             {
                 stringBuilder.AppendLine("Driver and library versions doesn't match.");
                 canContinue = false;
             }
 
-            if (!_joy.vJoyEnabled())
+            if (!this._joy.vJoyEnabled())
             {
                 stringBuilder.AppendLine("vJoy is not enabled.");
                 canContinue = false;
             }
 
-            VjdStat status = _joy.GetVJDStatus(_settings.DeviceID);
+            VjdStat status = this._joy.GetVJDStatus(this._settings.DeviceID);
 
             switch (status)
             {
@@ -286,7 +286,7 @@ namespace AbsoluteMouseToJoystick
                 stringBuilder.AppendLine("Cannot continue.");
             }
 
-            _logger.Log(stringBuilder.ToString());
+            this._logger.Log(stringBuilder.ToString());
 
             return canContinue;
         }
@@ -294,24 +294,24 @@ namespace AbsoluteMouseToJoystick
         // TODO: extract
         private void ShowAdditionalVJoyInfo()
         {
-            int virtualButtonsCount = _joy.GetVJDButtonNumber(_settings.DeviceID);
+            int virtualButtonsCount = this._joy.GetVJDButtonNumber(this._settings.DeviceID);
 
             if (virtualButtonsCount < 5)
             {
-                _logger.Log($"Only {virtualButtonsCount} virtual buttons enabled, while 5 might be needed for handling all mouse buttons");
+                this._logger.Log($"Only {virtualButtonsCount} virtual buttons enabled, while 5 might be needed for handling all mouse buttons");
             }
             else
             {
-                _logger.Log($"{virtualButtonsCount} virtual buttons enabled.");
+                this._logger.Log($"{virtualButtonsCount} virtual buttons enabled.");
             }
 
-            bool xAxisAvailable = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_X);
-            bool yAxisAvailable = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Y);
-            bool zAxisAvailable = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Z);
+            bool xAxisAvailable = this._joy.GetVJDAxisExist(this._settings.DeviceID, HID_USAGES.HID_USAGE_X);
+            bool yAxisAvailable = this._joy.GetVJDAxisExist(this._settings.DeviceID, HID_USAGES.HID_USAGE_Y);
+            bool zAxisAvailable = this._joy.GetVJDAxisExist(this._settings.DeviceID, HID_USAGES.HID_USAGE_Z);
 
-            if (!xAxisAvailable) _logger.Log($"Virtual axis X is disabled and will be unavailable.");
-            if (!yAxisAvailable) _logger.Log($"Virtual axis Y is disabled and will be unavailable.");
-            if (!zAxisAvailable) _logger.Log($"Virtual axis Z is disabled and will be unavailable.");
+            if (!xAxisAvailable) this._logger.Log($"Virtual axis X is disabled and will be unavailable.");
+            if (!yAxisAvailable) this._logger.Log($"Virtual axis Y is disabled and will be unavailable.");
+            if (!zAxisAvailable) this._logger.Log($"Virtual axis Z is disabled and will be unavailable.");
         }
     }
 }

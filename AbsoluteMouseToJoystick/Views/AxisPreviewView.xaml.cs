@@ -25,7 +25,7 @@ namespace AbsoluteMouseToJoystick.Views
         {
             InitializeComponent();
 
-            RotatePreview(MouseAxis);
+            RotatePreview(this.MouseAxis);
         }
 
         public static readonly DependencyProperty MouseAxisProperty =
