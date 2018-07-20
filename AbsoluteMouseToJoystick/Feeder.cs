@@ -13,6 +13,7 @@ using vJoyInterfaceWrap;
 namespace AbsoluteMouseToJoystick
 {
     // TODO: extract non feeder related things to another class
+    // TODO: make Feeder less mutable?
     public class Feeder : IDisposable
     {
         public Feeder(vJoy joy, ISimpleLogger logger, ISettingsBindable settings, Interop interop)
@@ -28,13 +29,15 @@ namespace AbsoluteMouseToJoystick
             _settings.PropertyChanged += OnSettingsPropertyChanged;
 
             _joy.ResetVJD(_settings.DeviceID);
-            ShowInfo();
         }
 
         public bool Start()
         {
+            this.CheckVJoyState();
+            this.ShowAdditionalVJoyInfo();
+
             var acquireResult = _joy.AcquireVJD(_settings.DeviceID);
-        
+
             if (acquireResult)
             {
                 _timer.Start();
@@ -55,7 +58,8 @@ namespace AbsoluteMouseToJoystick
 
             _joy.RelinquishVJD(_settings.DeviceID);
 
-            ShowInfo();
+            this.CheckVJoyState();
+            this.ShowAdditionalVJoyInfo();
         }
 
         private void OnSettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -90,7 +94,7 @@ namespace AbsoluteMouseToJoystick
         private void UpdateAxes()
         {
             var mousePosition = _interop.GetCursorPosition();
-            
+
             var xAxisValue = CalculateAxisValue(mousePosition, _settings.AxisX);
             var yAxisValue = CalculateAxisValue(mousePosition, _settings.AxisY);
 
@@ -225,46 +229,89 @@ namespace AbsoluteMouseToJoystick
             Stop();
         }
 
-        // TODO: refactor (move to other class?)
-        private bool ShowInfo()
+        // TODO: extract
+        private bool CheckVJoyState()
         {
+            StringBuilder stringBuilder = new StringBuilder().AppendLine("vJoy Device ID: " + _settings.DeviceID);
+            bool canContinue = true;
+            string message;
+
+            // TODO: get actual DllVer and DrvVer
             UInt32 DllVer = 0, DrvVer = 0;
-            if (_joy.DriverMatch(ref DllVer, ref DrvVer) && _joy.vJoyEnabled())
+
+            if (!_joy.DriverMatch(ref DllVer, ref DrvVer))
             {
-                // Get the state of the requested device
-                VjdStat status = _joy.GetVJDStatus(_settings.DeviceID);
-
-                switch (status)
-                {
-                    case VjdStat.VJD_STAT_OWN:
-                        _logger.Log($"vJoy Device {_settings.DeviceID} is already owned by this feeder");
-                        break;
-                    case VjdStat.VJD_STAT_FREE:
-                        _logger.Log($"vJoy Device {_settings.DeviceID} is free");
-                        break;
-                    case VjdStat.VJD_STAT_BUSY:
-                        _logger.Log($"vJoy Device {_settings.DeviceID} is already owned by another feeder\nCannot continue");
-                        return false;
-                    case VjdStat.VJD_STAT_MISS:
-                        _logger.Log($"vJoy Device {_settings.DeviceID} is not installed or disabled\nCannot continue");
-                        return false;
-                    default:
-                        _logger.Log($"vJoy Device {_settings.DeviceID} general error\nCannot continue");
-                        return false;
-                }
-
-                ///// vJoy Device properties
-                int nBtn = _joy.GetVJDButtonNumber(_settings.DeviceID);
-                int nDPov = _joy.GetVJDDiscPovNumber(_settings.DeviceID);
-                int nCPov = _joy.GetVJDContPovNumber(_settings.DeviceID);
-                bool X_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_X);
-                bool Y_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Y);
-                bool Z_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Z);
-                bool RX_Exist = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_RX);
-                _logger.Log($"Device[{_settings.DeviceID}]: Buttons={nBtn}; DiscPOVs:{nDPov}; ContPOVs:{nCPov}");
-                return true;
+                stringBuilder.AppendLine("Driver and library versions doesn't match.");
+                canContinue = false;
             }
-            else return false;
+
+            if (!_joy.vJoyEnabled())
+            {
+                stringBuilder.AppendLine("vJoy is not enabled.");
+                canContinue = false;
+            }
+
+            VjdStat status = _joy.GetVJDStatus(_settings.DeviceID);
+
+            switch (status)
+            {
+                case VjdStat.VJD_STAT_OWN:
+                    message = "vJoy Device is already owned by this feeder.";
+                    break;
+                case VjdStat.VJD_STAT_FREE:
+                    message = "vJoy Device is free.";
+                    break;
+                case VjdStat.VJD_STAT_BUSY:
+                    message = "vJoy Device is already owned by another feeder.";
+                    canContinue = false;
+                    break;
+                case VjdStat.VJD_STAT_MISS:
+                    message = "vJoy Device is not installed or disabled.";
+                    canContinue = false;
+                    break;
+                default:
+                    message = "vJoy Device general error.";
+                    canContinue = false;
+                    break;
+            }
+
+            stringBuilder.AppendLine(message);
+
+            if (canContinue)
+            {
+                stringBuilder.AppendLine("vJoy check OK.");
+            }
+            else
+            {
+                stringBuilder.AppendLine("Cannot continue.");
+            }
+
+            _logger.Log(stringBuilder.ToString());
+
+            return canContinue;
+        }
+
+        // TODO: extract
+        private void ShowAdditionalVJoyInfo()
+        {
+            int virtualButtonsCount = _joy.GetVJDButtonNumber(_settings.DeviceID);
+
+            if (virtualButtonsCount < 5)
+            {
+                _logger.Log($"Only {virtualButtonsCount} virtual buttons enabled, while 5 might be needed for handling all mouse buttons");
+            }
+            else
+            {
+                _logger.Log($"{virtualButtonsCount} virtual buttons enabled.");
+            }
+
+            bool xAxisAvailable = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_X);
+            bool yAxisAvailable = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Y);
+            bool zAxisAvailable = _joy.GetVJDAxisExist(_settings.DeviceID, HID_USAGES.HID_USAGE_Z);
+
+            if (!xAxisAvailable) _logger.Log($"Virtual axis X is disabled and will be unavailable.");
+            if (!yAxisAvailable) _logger.Log($"Virtual axis Y is disabled and will be unavailable.");
+            if (!zAxisAvailable) _logger.Log($"Virtual axis Z is disabled and will be unavailable.");
         }
     }
 }
