@@ -2,6 +2,9 @@
 
 namespace AbsoluteMouseToJoystick.Data
 {
+    /// <summary>
+    /// Required by interop.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct IntPoint
     {

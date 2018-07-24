@@ -14,6 +14,9 @@ namespace AbsoluteMouseToJoystick
 {
     // TODO: extract non feeder related things to another class
     // TODO: make Feeder less mutable?
+    /// <summary>
+    /// Feeds vJoy with mouse data based on interval from self-managed timer.
+    /// </summary>
     public class Feeder : IDisposable
     {
         public Feeder(vJoy joy, ISimpleLogger logger, ISettingsBindable settings, Interop interop)
@@ -298,11 +301,11 @@ namespace AbsoluteMouseToJoystick
 
             if (virtualButtonsCount < 5)
             {
-                this._logger.Log($"Only {virtualButtonsCount} virtual buttons enabled, while 5 might be needed for handling all mouse buttons");
+                this._logger.Log($"Only {virtualButtonsCount} virtual buttons are enabled, while 5 might be needed for handling all mouse buttons");
             }
             else
             {
-                this._logger.Log($"{virtualButtonsCount} virtual buttons enabled.");
+                this._logger.Log($"{virtualButtonsCount} virtual buttons are enabled.");
             }
 
             bool xAxisAvailable = this._joy.GetVJDAxisExist(this._settings.DeviceID, HID_USAGES.HID_USAGE_X);

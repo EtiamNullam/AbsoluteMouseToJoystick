@@ -9,6 +9,9 @@ using System.Windows.Data;
 
 namespace AbsoluteMouseToJoystick.ValueConverters
 {
+    /// <summary>
+    /// Converts double value to proportional GridLength (Grid star system) to be used in RowDefinition or ColumnDefinition.
+    /// </summary>
     public class DoubleToStarConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
