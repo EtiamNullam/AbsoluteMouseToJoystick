@@ -139,9 +139,9 @@ namespace AbsoluteMouseToJoystick
             switch (axisSettings.MouseAxis)
             {
                 case MouseAxis.X:
-                    return CalculateAxisValue(mousePosition.X, this._settings.ResolutionX, axisSettings.ZoneDistribution);
+                    return CalculateAxisValue(mousePosition.X, this._settings.ResolutionX, axisSettings.ZoneDistribution, axisSettings.FunctionType);
                 case MouseAxis.Y:
-                    return CalculateAxisValue(mousePosition.Y, this._settings.ResolutionY, axisSettings.ZoneDistribution);
+                    return CalculateAxisValue(mousePosition.Y, this._settings.ResolutionY, axisSettings.ZoneDistribution, axisSettings.FunctionType);
                 case MouseAxis.None:
                     return this.AxisDisabledValue;
                 default:
@@ -150,7 +150,7 @@ namespace AbsoluteMouseToJoystick
             }
         }
 
-        private int CalculateAxisValue(int pixel, int pixelsCount, ZoneDistribution zoneDistribution)
+        private int CalculateAxisValue(int pixel, int pixelsCount, ZoneDistribution zoneDistribution, FunctionType function)
         {
             var value = (double)pixel / (pixelsCount - 1);
             value *= zoneDistribution.Total;
@@ -161,13 +161,36 @@ namespace AbsoluteMouseToJoystick
                     value = 0;
                     break;
                 case Zone.Negative:
-                    value = (value - zoneDistribution.NegativeDeadZoneEnd) / zoneDistribution.NegativeZone / 2;
+                    // value is hard to define
+                    value -= zoneDistribution.NegativeDeadZoneEnd;
+                    value /= zoneDistribution.NegativeZone;
+
+                    // value is between 0 and 1 (easiest to manipulate)
+                    if (function == FunctionType.Square)
+                    {
+                        value = Math.Sqrt(value);
+                    }
+                    //
+                    value /= 2;
+                    // value is between 0 and 0.5
                     break;
                 case Zone.NeutralDead:
                     value = 0.5f;
                     break;
                 case Zone.Positive:
-                    value = (value - zoneDistribution.NeutralDeadZoneEnd) / zoneDistribution.PositiveZone / 2 + 0.5f;
+                    // value is hard to define
+                    value -= zoneDistribution.NeutralDeadZoneEnd;
+                    value /= zoneDistribution.PositiveZone;
+
+                    // value is between 0 and 1 (easiest to manipulate)
+                    if (function == FunctionType.Square)
+                    {
+                        value = Math.Pow(value, 2);
+                    }
+                    //
+                    value /= 2;
+                    value += 0.5f;
+                    // value is between 0.5 and 1
                     break;
                 case Zone.PositiveDead:
                     value = 1;

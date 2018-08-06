@@ -58,8 +58,8 @@ namespace AbsoluteMouseToJoystick.Data
         private double _timerInterval = 5;
         private uint _deviceID = 1;
 
-        private AxisSettings _axisX = new AxisSettings { MouseAxis = MouseAxis.X };
-        private AxisSettings _axisY = new AxisSettings { MouseAxis = MouseAxis.Y };
+        private AxisSettings _axisX = new AxisSettings { MouseAxis = MouseAxis.X, FunctionType = FunctionType.Square };
+        private AxisSettings _axisY = new AxisSettings { MouseAxis = MouseAxis.Y, FunctionType = FunctionType.Linear };
 
         private bool[] _buttons = new bool[5]
         {
