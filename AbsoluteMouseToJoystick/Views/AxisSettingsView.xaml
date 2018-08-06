@@ -7,11 +7,17 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:data="clr-namespace:AbsoluteMouseToJoystick.Data"
              mc:Ignorable="d"
-             d:DesignHeight="100" d:DesignWidth="400">
+             d:DesignHeight="150" d:DesignWidth="400">
     <UserControl.Resources>
-        <ObjectDataProvider x:Key="enumValues" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider x:Key="mouseAxisEnumValues" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="data:MouseAxis"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
+        <ObjectDataProvider x:Key="functionTypeEnumValues" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="data:FunctionType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
@@ -30,6 +36,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition Height="30"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
@@ -41,16 +48,17 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Source" Grid.ColumnSpan="2"/>
-        <ComboBox Grid.Column="2" Grid.ColumnSpan="3" ItemsSource="{Binding Source={StaticResource enumValues}}" SelectedItem="{Binding MouseAxis}" Margin="5">
-        
-        </ComboBox>
-        
-        <Label Content="Zones" Grid.Row="1" Grid.ColumnSpan="5"/>
+        <ComboBox Grid.Column="2" Grid.ColumnSpan="3" ItemsSource="{Binding Source={StaticResource mouseAxisEnumValues}}" SelectedItem="{Binding MouseAxis}" Margin="5"/>
 
-        <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeDeadZone}" />
-        <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeZone}" Grid.Column="1"/>
-        <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NeutralDeadZone}" Grid.Column="2"/>
-        <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveZone}" Grid.Column="3"/>
-        <TextBox Grid.Row="2" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveDeadZone}" Grid.Column="4"/>
+        <Label Content="Zones" Grid.Row="2" Grid.ColumnSpan="5"/>
+
+        <Label Content="Function" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="5" ItemsSource="{Binding Source={StaticResource functionTypeEnumValues}}" SelectedItem="{Binding FunctionType}"/>
+
+        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeDeadZone}" />
+        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeZone}" Grid.Column="1"/>
+        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NeutralDeadZone}" Grid.Column="2"/>
+        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveZone}" Grid.Column="3"/>
+        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveDeadZone}" Grid.Column="4"/>
     </Grid>
 </UserControl>
