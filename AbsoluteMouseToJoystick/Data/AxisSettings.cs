@@ -12,7 +12,8 @@ namespace AbsoluteMouseToJoystick.Data
     {
         private MouseAxis _mouseAxis = MouseAxis.None;
         private ZoneDistribution _zoneDistribution = new ZoneDistribution();
-        private FunctionType _functionType = FunctionType.Linear;
+        private FunctionType _positiveFunctionType = FunctionType.Linear;
+        private FunctionType _negativeFunctionType = FunctionType.Linear;
 
         [JsonIgnore]
         public bool IsEnabled => this.MouseAxis != MouseAxis.None;
@@ -33,10 +34,16 @@ namespace AbsoluteMouseToJoystick.Data
             set => Set(ref this._zoneDistribution, value);
         }
 
-        public FunctionType FunctionType
+        public FunctionType NegativeFunctionType
         {
-            get => this._functionType;
-            set => Set(ref this._functionType, value);
+            get => this._negativeFunctionType;
+            set => Set(ref this._negativeFunctionType, value);
+        }
+
+        public FunctionType PositiveFunctionType
+        {
+            get => this._positiveFunctionType;
+            set => Set(ref this._positiveFunctionType, value);
         }
     }
 }

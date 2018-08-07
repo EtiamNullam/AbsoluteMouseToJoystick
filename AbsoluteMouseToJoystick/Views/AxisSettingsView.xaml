@@ -35,6 +35,7 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
             <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -50,15 +51,18 @@
         <Label Content="Source" Grid.ColumnSpan="2"/>
         <ComboBox Grid.Column="2" Grid.ColumnSpan="3" ItemsSource="{Binding Source={StaticResource mouseAxisEnumValues}}" SelectedItem="{Binding MouseAxis}" Margin="5"/>
 
-        <Label Content="Zones" Grid.Row="2" Grid.ColumnSpan="5"/>
 
-        <Label Content="Function" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="5" ItemsSource="{Binding Source={StaticResource functionTypeEnumValues}}" SelectedItem="{Binding FunctionType}"/>
+        <Label Content="Negative Function" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <ComboBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="5" ItemsSource="{Binding Source={StaticResource functionTypeEnumValues}}" SelectedItem="{Binding NegativeFunctionType}"/>
+        
+        <Label Content="Positive Function" Grid.Row="2" Grid.ColumnSpan="2"/>
+        <ComboBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Margin="5" ItemsSource="{Binding Source={StaticResource functionTypeEnumValues}}" SelectedItem="{Binding PositiveFunctionType}"/>
 
-        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeDeadZone}" />
-        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeZone}" Grid.Column="1"/>
-        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NeutralDeadZone}" Grid.Column="2"/>
-        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveZone}" Grid.Column="3"/>
-        <TextBox Grid.Row="3" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveDeadZone}" Grid.Column="4"/>
+        <Label Content="Zones" Grid.Row="3" Grid.ColumnSpan="5"/>
+        <TextBox Grid.Row="4" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeDeadZone}" />
+        <TextBox Grid.Row="4" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NegativeZone}" Grid.Column="1"/>
+        <TextBox Grid.Row="4" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.NeutralDeadZone}" Grid.Column="2"/>
+        <TextBox Grid.Row="4" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveZone}" Grid.Column="3"/>
+        <TextBox Grid.Row="4" IsEnabled="{Binding MouseAxis, Converter={StaticResource mouseAxisToBoolean}}" Text="{Binding ZoneDistribution.PositiveDeadZone}" Grid.Column="4"/>
     </Grid>
 </UserControl>

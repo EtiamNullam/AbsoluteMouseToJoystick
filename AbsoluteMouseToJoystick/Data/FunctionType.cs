@@ -9,6 +9,7 @@ namespace AbsoluteMouseToJoystick.Data
     public enum FunctionType
     {
         Linear,
-        Square
+        Square,
+        InvertedSquare
     }
 }

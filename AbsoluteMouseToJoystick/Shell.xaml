@@ -7,11 +7,11 @@
         xmlns:views="clr-namespace:AbsoluteMouseToJoystick.Views"
         mc:Ignorable="d"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
-        Title="Absolute Mouse To Joystick - vJoy Feeder" MinHeight="300" MinWidth="320" Height="650" Width="800">
+        Title="Absolute Mouse To Joystick - vJoy Feeder" MinHeight="300" MinWidth="320" Height="750" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 

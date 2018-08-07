@@ -139,9 +139,9 @@ namespace AbsoluteMouseToJoystick
             switch (axisSettings.MouseAxis)
             {
                 case MouseAxis.X:
-                    return CalculateAxisValue(mousePosition.X, this._settings.ResolutionX, axisSettings.ZoneDistribution, axisSettings.FunctionType);
+                    return CalculateAxisValue(mousePosition.X, this._settings.ResolutionX, axisSettings);
                 case MouseAxis.Y:
-                    return CalculateAxisValue(mousePosition.Y, this._settings.ResolutionY, axisSettings.ZoneDistribution, axisSettings.FunctionType);
+                    return CalculateAxisValue(mousePosition.Y, this._settings.ResolutionY, axisSettings);
                 case MouseAxis.None:
                     return this.AxisDisabledValue;
                 default:
@@ -150,8 +150,11 @@ namespace AbsoluteMouseToJoystick
             }
         }
 
-        private int CalculateAxisValue(int pixel, int pixelsCount, ZoneDistribution zoneDistribution, FunctionType function)
+        // TODO: refactor
+        private int CalculateAxisValue(int pixel, int pixelsCount, AxisSettings axisSettings)
         {
+            var zoneDistribution = axisSettings.ZoneDistribution;
+
             var value = (double)pixel / (pixelsCount - 1);
             value *= zoneDistribution.Total;
             var zone = GetZone(value, zoneDistribution);
@@ -166,9 +169,17 @@ namespace AbsoluteMouseToJoystick
                     value /= zoneDistribution.NegativeZone;
 
                     // value is between 0 and 1 (easiest to manipulate)
-                    if (function == FunctionType.Square)
+                    switch (axisSettings.NegativeFunctionType)
                     {
-                        value = Math.Sqrt(value);
+                        case FunctionType.Square:
+                            value = Math.Pow(value, 2);
+                            break;
+                        case FunctionType.InvertedSquare:
+                            value = Math.Sqrt(value);
+                            break;
+                        case FunctionType.Linear:
+                        default:
+                            break;
                     }
                     //
                     value /= 2;
@@ -183,9 +194,17 @@ namespace AbsoluteMouseToJoystick
                     value /= zoneDistribution.PositiveZone;
 
                     // value is between 0 and 1 (easiest to manipulate)
-                    if (function == FunctionType.Square)
+                    switch (axisSettings.PositiveFunctionType)
                     {
-                        value = Math.Pow(value, 2);
+                        case FunctionType.Square:
+                            value = Math.Pow(value, 2);
+                            break;
+                        case FunctionType.InvertedSquare:
+                            value = Math.Sqrt(value);
+                            break;
+                        case FunctionType.Linear:
+                        default:
+                            break;
                     }
                     //
                     value /= 2;
