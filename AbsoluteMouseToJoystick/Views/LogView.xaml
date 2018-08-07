@@ -14,7 +14,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         
-        <Label Content="Log"/>
+        <Label Content="Log" FontWeight="Bold"/>
         <TextBox Grid.Row="1" Margin="3" IsReadOnly="True" Text="{Binding Log}" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap"/>
         <Button Grid.Row="2" Margin="3" Content="Clear Log" Command="{Binding ClearLogCommand}"/>
     </Grid>

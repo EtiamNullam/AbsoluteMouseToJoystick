@@ -24,7 +24,7 @@
             <ColumnDefinition Width="{Binding ZoneDistribution.PositiveDeadZone, Converter={StaticResource doubleToStar}}" Tag="d"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.ColumnSpan="5" Content="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"/>
+        <Label Grid.ColumnSpan="5" Content="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" FontWeight="Bold"/>
 
         <Border Background="Red" Grid.Row="1" Visibility="{Binding IsEnabled, Converter={StaticResource boolToVisibility}}">
             <Viewbox>

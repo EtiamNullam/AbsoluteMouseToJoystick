@@ -38,7 +38,7 @@
         </Style>
     </UserControl.Resources>
     <StackPanel Grid.Column="1" Grid.RowSpan="2" >
-        <Label Content="Resolution" />
+        <Label Content="Resolution" FontWeight="Bold"/>
 
         <Grid Height="30" Style="{StaticResource indent}">
             <Grid.ColumnDefinitions>
@@ -87,7 +87,7 @@
             <CheckBox Grid.Row="2" IsChecked="{Binding Settings.Buttons[4]}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="4"/>
         </Grid>
         
-        <Label Content="Timer interval (ms)"/>
+        <Label Content="Timer interval (ms)" FontWeight="Bold"/>
         <TextBox Text="{Binding Settings.TimerInterval}" Style="{StaticResource indent}" />
 
         <Button Content="Sta_rt/Stop" IsDefault="True" Command="{Binding StartStopCommand}"/>
@@ -103,7 +103,7 @@
         </Grid>
 
         <StackPanel Orientation="Horizontal">
-            <Label Content="Is running"/>
+            <Label Content="Is running" FontWeight="Bold"/>
             <CheckBox IsEnabled="False" IsChecked="{Binding IsRunning}" Margin="7"/>
         </StackPanel>
     </StackPanel>
