@@ -281,15 +281,6 @@ namespace AbsoluteMouseToJoystick
             bool canContinue = true;
             string message;
 
-            // TODO: get actual DllVer and DrvVer
-            UInt32 DllVer = 0, DrvVer = 0;
-
-            if (!this._joy.DriverMatch(ref DllVer, ref DrvVer))
-            {
-                stringBuilder.AppendLine("Driver and library versions doesn't match.");
-                canContinue = false;
-            }
-
             if (!this._joy.vJoyEnabled())
             {
                 stringBuilder.AppendLine("vJoy is not enabled.");
