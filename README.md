@@ -1,5 +1,7 @@
 # Absolute Mouse To Joystick
 
+[Download](https://github.com/EtiamNullam/AbsoluteMouseToJoystick/releases/latest)
+
 This application emulates a joystick postion from mouse position on the screen and converts mouse buttons to joystick buttons.
 
 It's highly customizable and easy to use with axis preview.
